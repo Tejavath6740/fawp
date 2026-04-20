@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register – FAWP | Digital Farmer Assistance & Welfare Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark:  #1b5e20;
+      --green-mid:   #2e7d32;
+      --green-main:  #388e3c;
+      --green-light: #4caf50;
+      --green-pale:  #e8f5e9;
+      --white:       #ffffff;
+      --off-white:   #f9fdf9;
+      --border:      #c8e6c9;
+      --text-main:   #1a2e1a;
+      --text-sub:    #4a6349;
+      --text-hint:   #7a9b79;
+      --radius:      14px;
+      --shadow:      0 8px 40px rgba(27,94,32,0.13);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background: var(--off-white);
+      color: var(--text-main);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .topbar-brand .logo-icon { font-size: 26px; }
+    .topbar-brand .logo-text { font-size: 18px; font-weight: 700; color: var(--green-dark); letter-spacing: 1px; }
+
+    .topbar-nav a {
+      font-size: 13px;
+      color: var(--text-sub);
+      text-decoration: none;
+      margin-left: 20px;
+      transition: color 0.2s;
+    }
+    .topbar-nav a:hover { color: var(--green-main); }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 40px 44px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 6px;
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: var(--text-hint);
+      margin-bottom: 28px;
+    }
+
+    /* ── FORM ── */
+    .field { margin-bottom: 18px; }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+      letter-spacing: 0.4px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text-main);
+      background: var(--off-white);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus { border-color: var(--green-main); background: var(--white); }
+
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      background: var(--green-mid);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 6px;
+    }
+
+    .btn-primary:hover { background: var(--green-dark); }
+
+    .form-error {
+      background: #ffebee;
+      color: #c62828;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .form-error.show { display: block; }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    .login-link a { color: var(--green-main); text-decoration: none; font-weight: 600; }
+    .login-link a:hover { text-decoration: underline; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 18px;
+      font-size: 12px;
+      color: var(--text-hint);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <a href="index.html" class="topbar-brand">
+    <span class="logo-icon">🌾</span>
+    <div>
+      <div class="logo-text">FAWP</div>
+    </div>
+  </a>
+  <nav class="topbar-nav">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</div>
+
+<!-- Main card -->
+<main>
+  <div class="card">
+    <div class="card-title">🌱 Farmer Registration</div>
+    <div class="card-sub">Create your FAWP account to access all services</div>
+
+    <div class="form-error" id="form-error">Please fill in all required fields correctly.</div>
+
+    <div class="field">
+      <label>Full Name *</label>
+      <input type="text" id="inp-name" placeholder="Enter your full name" />
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Age *</label>
+        <input type="number" id="inp-age" placeholder="e.g. 35" min="18" max="100" />
+      </div>
+      <div class="field">
+        <label>Category *</label>
+        <select id="inp-category">
+          <option value="">Select</option>
+          <option value="General">General</option>
+          <option value="OBC">OBC</option>
+          <option value="SC">SC</option>
+          <option value="ST">ST</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Village / Town *</label>
+        <input type="text" id="inp-village" placeholder="Village name" />
+      </div>
+      <div class="field">
+        <label>State *</label>
+        <input type="text" id="inp-state" placeholder="e.g. Telangana" />
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Land (acres) *</label>
+        <input type="number" id="inp-land" placeholder="e.g. 2.5" min="0" step="0.1" />
+      </div>
+      <div class="field">
+        <label>Annual Income (₹) *</label>
+        <input type="number" id="inp-income" placeholder="e.g. 85000" min="0" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Email Address *</label>
+      <input type="email" id="inp-email" placeholder="you@example.com" />
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Password *</label>
+        <input type="password" id="inp-pass" placeholder="Min 6 characters" />
+      </div>
+      <div class="field">
+        <label>Confirm Password *</label>
+        <input type="password" id="inp-confirm" placeholder="Repeat password" />
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="handleRegister()">Register</button>
+
+    <div class="login-link">
+      Already have an account? <a href="login.html">Login here</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 FAWP – Digital Farmer Assistance &amp; Welfare Platform
+</footer>
+
+<script>
+  function handleRegister() {
+    const name     = document.getElementById('inp-name').value.trim();
+    const age      = document.getElementById('inp-age').value;
+    const category = document.getElementById('inp-category').value;
+    const village  = document.getElementById('inp-village').value.trim();
+    const state    = document.getElementById('inp-state').value.trim();
+    const land     = document.getElementById('inp-land').value;
+    const income   = document.getElementById('inp-income').value;
+    const email    = document.getElementById('inp-email').value.trim();
+    const pass     = document.getElementById('inp-pass').value;
+    const confirm  = document.getElementById('inp-confirm').value;
+    const errEl    = document.getElementById('form-error');
+
+    // Basic validation
+    if (!name || !age || !category || !village || !state || !land || !income || !email || !pass) {
+      errEl.textContent = 'Please fill in all required fields.';
+      errEl.classList.add('show');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = 'Please enter a valid email address.';
+      errEl.classList.add('show');
+      return;
+    }
+
+    if (pass.length < 6) {
+      errEl.textContent = 'Password must be at least 6 characters.';
+      errEl.classList.add('show');
+      return;
+    }
+
+    if (pass !== confirm) {
+      errEl.textContent = 'Passwords do not match.';
+      errEl.classList.add('show');
+      return;
+    }
+
+    errEl.classList.remove('show');
+
+    /* ── REPLACE THIS BLOCK with your actual registration API call ──
+       e.g.:
+       fetch('/api/farmers', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ name, age: parseInt(age), category, village,
+                                state, land_acres: parseFloat(land),
+                                annual_income: parseInt(income) })
+       })
+       .then(r => r.json())
+       .then(data => {
+         localStorage.setItem('farmerId', data.id);
+         window.location.href = 'services.html';
+       });
+    */
+    alert('Registration successful!\n\nRedirecting to login...\n\n(Connect your backend /api/farmers endpoint here.)');
+    window.location.href = 'login.html';
+  }
+
+  // Allow Enter key to submit
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') handleRegister();
+  });
+</script>
+
+</body>
+</html>

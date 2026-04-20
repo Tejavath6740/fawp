@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scheme Finder – FAWP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(to right, #e8f5e9, #e3f2fd);
+      color: #333;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #2e7d32;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav {
+      background: #1b5e20;
+      padding: 12px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 8px 12px;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    nav a:hover { background: #43a047; }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .farmer-info {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-left: 6px solid #2e7d32;
+    }
+
+    .farmer-info h2 { color: #2e7d32; margin-bottom: 8px; }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 30px 0 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .eligible-title   { color: #2e7d32; }
+    .ineligible-title { color: #c62828; }
+
+    .scheme-card {
+      background: white;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 14px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .scheme-card.eligible   { border-left: 5px solid #43a047; }
+    .scheme-card.ineligible { border-left: 5px solid #e53935; }
+
+    .scheme-card h4 { margin-bottom: 4px; color: #1a2e1a; }
+    .scheme-card .full-name { font-size: 12px; color: #666; margin-bottom: 6px; }
+    .scheme-card .benefit   { font-size: 13px; color: #2e7d32; font-weight: 600; }
+    .scheme-card .reason    { font-size: 12px; color: #888; margin-top: 4px; }
+    .scheme-card .reason.fail { color: #c62828; }
+
+    .badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .badge.eligible   { background: #e8f5e9; color: #2e7d32; }
+    .badge.ineligible { background: #ffebee; color: #c62828; }
+
+    .loading, .error-msg {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+      font-size: 16px;
+    }
+
+    .error-msg { color: #c62828; }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 22px;
+      background: #2e7d32;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .back-btn:hover { background: #1b5e20; }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 13px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🏛️ Scheme Finder Results</h1>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="benefits.html">Benefits</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<div class="container">
+  <div id="app">
+    <div class="loading">⏳ Loading scheme results...</div>
+  </div>
+  <a href="services.html" class="back-btn">← Back to Services</a>
+</div>
+
+<footer>FAWP – Digital Farmer Assistance &amp; Welfare Platform</footer>
+
+<script>
+  // TODO: Replace with your actual deployed backend URL
+const BACKEND_URL = "http://localhost:8000";
+  function renderResults(data) {
+    const app = document.getElementById("app");
+
+    let html = `
+      <div class="farmer-info">
+        <h2>👤 ${data.farmer.name}</h2>
+        <p>State: <strong>${data.farmer.state}</strong> &nbsp;|&nbsp; Farmer ID: <strong>${data.farmer.id}</strong></p>
+      </div>
+
+      <div class="section-title eligible-title">
+        ✅ Eligible Schemes (${data.eligible.length})
+      </div>`;
+
+    if (data.eligible.length === 0) {
+      html += `<p style="color:#666; padding:10px 0;">No eligible schemes found.</p>`;
+    } else {
+      data.eligible.forEach(s => {
+        html += `
+          <div class="scheme-card eligible">
+            <div>
+              <h4>${s.scheme_name}</h4>
+              <div class="full-name">${s.full_name}</div>
+              <div class="benefit">💰 ${s.benefit}</div>
+              <div class="reason">${s.reason}</div>
+            </div>
+            <span class="badge eligible">Eligible</span>
+          </div>`;
+      });
+    }
+
+    html += `
+      <div class="section-title ineligible-title" style="margin-top:40px;">
+        ❌ Not Eligible (${data.not_eligible.length})
+      </div>`;
+
+    if (data.not_eligible.length === 0) {
+      html += `<p style="color:#666; padding:10px 0;">All schemes are eligible!</p>`;
+    } else {
+      data.not_eligible.forEach(s => {
+        html += `
+          <div class="scheme-card ineligible">
+            <div>
+              <h4>${s.scheme_name}</h4>
+              <div class="full-name">${s.full_name}</div>
+              <div class="benefit">💰 ${s.benefit}</div>
+              <div class="reason fail">⚠️ ${s.reason}</div>
+            </div>
+            <span class="badge ineligible">Not Eligible</span>
+          </div>`;
+      });
+    }
+
+    app.innerHTML = html;
+  }
+
+  function showError(msg) {
+    document.getElementById("app").innerHTML =
+      `<div class="error-msg">❌ ${msg}</div>`;
+  }
+
+  // Try to load from localStorage first (set by services.html)
+  const cached = localStorage.getItem("schemeData");
+  if (cached) {
+    try {
+      renderResults(JSON.parse(cached));
+    } catch(e) {
+      showError("Could not parse scheme data. Please go back and try again.");
+    }
+  } else {
+    // Fallback: fetch directly using stored farmerId
+    const farmerId = localStorage.getItem("farmerId") || 1;
+    fetch(`/api/match/${farmerId}`)
+      .then(res => {
+        if (!res.ok) throw new Error("Server error: " + res.status);
+        return res.json();
+      })
+      .then(data => renderResults(data))
+      .catch(err => {
+        console.error(err);
+        showError("Could not load scheme results. Please ensure the backend server is running.");
+      });
+  }
+</script>
+
+</body>
+</html>
