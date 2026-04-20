@@ -4,242 +4,523 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scheme Finder – FAWP</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Poppins', Arial, sans-serif;
-      background: linear-gradient(to right, #e8f5e9, #e3f2fd);
-      color: #333;
+    :root {
+      --green-dark:  #1b5e20;
+      --green-mid:   #2e7d32;
+      --green-main:  #388e3c;
+      --green-light: #4caf50;
+      --green-pale:  #e8f5e9;
+      --red-dark:    #b71c1c;
+      --red-mid:     #c62828;
+      --red-pale:    #ffebee;
+      --gold:        #f9a825;
+      --gold-pale:   #fff8e1;
+      --white:       #ffffff;
+      --bg:          #f0f4f0;
+      --text:        #1a2e1a;
+      --text-sub:    #4a6349;
+      --shadow:      0 4px 24px rgba(27,94,32,0.10);
+    }
+
+    html, body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
     }
 
+    /* ── HEADER ── */
     header {
-      background: #2e7d32;
+      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-main) 100%);
       color: white;
-      padding: 20px;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: 40px;
+      width: 140px; height: 140px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+
+    .header-inner {
+      position: relative;
+      z-index: 1;
+      padding: 36px 40px 28px;
       text-align: center;
     }
 
+    .header-inner .icon { font-size: 48px; margin-bottom: 10px; display: block; }
+    .header-inner h1   { font-size: 28px; font-weight: 700; letter-spacing: 0.5px; }
+    .header-inner p    { font-size: 14px; opacity: 0.8; margin-top: 6px; }
+
+    /* ── NAV ── */
     nav {
-      background: #1b5e20;
-      padding: 12px;
-      text-align: center;
+      background: var(--green-dark);
+      padding: 0 20px;
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      flex-wrap: wrap;
     }
 
     nav a {
-      color: white;
-      margin: 8px 12px;
+      color: rgba(255,255,255,0.85);
       text-decoration: none;
-      font-weight: bold;
-      padding: 6px 10px;
-      border-radius: 6px;
-      transition: background 0.2s;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 12px 16px;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
     }
 
-    nav a:hover { background: #43a047; }
+    nav a:hover {
+      color: white;
+      border-bottom-color: var(--green-light);
+    }
 
+    /* ── MAIN CONTAINER ── */
     .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
     }
 
-    .farmer-info {
+    /* ── SUMMARY STRIP ── */
+    .summary-strip {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 16px;
+      align-items: center;
       background: white;
-      border-radius: 12px;
-      padding: 20px 25px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      border-left: 6px solid #2e7d32;
+      border-radius: 16px;
+      padding: 22px 28px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow);
+      border-top: 4px solid var(--green-main);
     }
 
-    .farmer-info h2 { color: #2e7d32; margin-bottom: 8px; }
-
-    .section-title {
+    .farmer-name {
       font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .farmer-name .avatar {
+      width: 46px; height: 46px;
+      background: var(--green-pale);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .farmer-meta { font-size: 13px; color: var(--text-sub); margin-top: 3px; }
+
+    .stat-pill {
+      text-align: center;
+      padding: 10px 20px;
+      border-radius: 12px;
+      min-width: 90px;
+    }
+
+    .stat-pill.green { background: var(--green-pale); }
+    .stat-pill.red   { background: var(--red-pale); }
+
+    .stat-pill .num {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .stat-pill.green .num { color: var(--green-mid); }
+    .stat-pill.red   .num { color: var(--red-mid); }
+
+    .stat-pill .lbl {
+      font-size: 11px;
       font-weight: 600;
-      margin: 30px 0 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 3px;
+    }
+
+    .stat-pill.green .lbl { color: var(--green-main); }
+    .stat-pill.red   .lbl { color: var(--red-mid); }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 32px 0 16px;
+    }
+
+    .section-header .line {
+      flex: 1;
+      height: 2px;
+      border-radius: 2px;
+    }
+
+    .section-header.eligible .line   { background: linear-gradient(to right, var(--green-light), transparent); }
+    .section-header.ineligible .line { background: linear-gradient(to right, #ef9a9a, transparent); }
+
+    .section-header h2 {
+      font-size: 16px;
+      font-weight: 700;
+      white-space: nowrap;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .eligible-title   { color: #2e7d32; }
-    .ineligible-title { color: #c62828; }
+    .section-header.eligible   h2 { color: var(--green-mid); }
+    .section-header.ineligible h2 { color: var(--red-mid); }
+
+    /* ── SCHEME CARDS ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
 
     .scheme-card {
       background: white;
-      border-radius: 12px;
-      padding: 18px 22px;
-      margin-bottom: 14px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .scheme-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .scheme-card.eligible::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(to right, var(--green-light), var(--green-dark));
+    }
+
+    .scheme-card.ineligible::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(to right, #ef9a9a, var(--red-mid));
+    }
+
+    .card-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 12px;
+      gap: 8px;
     }
 
-    .scheme-card.eligible   { border-left: 5px solid #43a047; }
-    .scheme-card.ineligible { border-left: 5px solid #e53935; }
-
-    .scheme-card h4 { margin-bottom: 4px; color: #1a2e1a; }
-    .scheme-card .full-name { font-size: 12px; color: #666; margin-bottom: 6px; }
-    .scheme-card .benefit   { font-size: 13px; color: #2e7d32; font-weight: 600; }
-    .scheme-card .reason    { font-size: 12px; color: #888; margin-top: 4px; }
-    .scheme-card .reason.fail { color: #c62828; }
-
-    .badge {
+    .scheme-id-badge {
       font-size: 11px;
+      font-weight: 700;
       padding: 3px 10px;
       border-radius: 20px;
+      letter-spacing: 0.3px;
       white-space: nowrap;
+    }
+
+    .eligible   .scheme-id-badge { background: var(--green-pale); color: var(--green-dark); }
+    .ineligible .scheme-id-badge { background: var(--red-pale);   color: var(--red-dark); }
+
+    .card-category {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #999;
       font-weight: 600;
     }
 
-    .badge.eligible   { background: #e8f5e9; color: #2e7d32; }
-    .badge.ineligible { background: #ffebee; color: #c62828; }
-
-    .loading, .error-msg {
-      text-align: center;
-      padding: 60px 20px;
-      color: #666;
-      font-size: 16px;
+    .card-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
     }
 
-    .error-msg { color: #c62828; }
+    .card-fullname {
+      font-size: 11px;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
 
-    .back-btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 10px 22px;
-      background: #2e7d32;
-      color: white;
+    .card-benefit {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--gold-pale);
       border-radius: 8px;
-      text-decoration: none;
+      padding: 8px 12px;
+      font-size: 12px;
       font-weight: 600;
-      transition: background 0.2s;
+      color: #795548;
     }
 
-    .back-btn:hover { background: #1b5e20; }
+    .card-benefit .coin { font-size: 16px; }
 
+    .card-reason {
+      font-size: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+
+    .eligible   .card-reason { background: var(--green-pale); color: var(--green-dark); }
+    .ineligible .card-reason { background: var(--red-pale);   color: var(--red-dark); }
+
+    /* ── BACK BUTTON ── */
+    .actions {
+      margin-top: 40px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn-primary   { background: var(--green-mid); color: white; }
+    .btn-primary:hover { background: var(--green-dark); }
+    .btn-secondary { background: white; color: var(--green-mid); border: 2px solid var(--green-mid); }
+    .btn-secondary:hover { background: var(--green-pale); }
+
+    /* ── LOADING / ERROR ── */
+    .center-msg {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .center-msg .icon { font-size: 52px; margin-bottom: 16px; display: block; }
+    .center-msg h3    { font-size: 18px; color: var(--text); margin-bottom: 8px; }
+    .center-msg p     { font-size: 14px; color: var(--text-sub); }
+
+    .spinner {
+      width: 40px; height: 40px;
+      border: 4px solid var(--green-pale);
+      border-top-color: var(--green-main);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FOOTER ── */
     footer {
       text-align: center;
-      padding: 20px;
-      color: #666;
-      font-size: 13px;
-      margin-top: 40px;
+      padding: 24px;
+      font-size: 12px;
+      color: #aaa;
+      border-top: 1px solid #e0e0e0;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .summary-strip { grid-template-columns: 1fr; }
+      .cards-grid    { grid-template-columns: 1fr; }
+      .header-inner  { padding: 24px 20px 20px; }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>🏛️ Scheme Finder Results</h1>
+  <div class="header-inner">
+    <span class="icon">🌾</span>
+    <h1>Scheme Finder Results</h1>
+    <p>Personalised government scheme eligibility report</p>
+  </div>
 </header>
 
 <nav>
-  <a href="index.html">Home</a>
+  <a href="index.html">🏠 Home</a>
   <a href="about.html">About</a>
   <a href="services.html">Services</a>
   <a href="benefits.html">Benefits</a>
   <a href="contact.html">Contact</a>
+  <a href="login.html">Login</a>
 </nav>
 
 <div class="container">
   <div id="app">
-    <div class="loading">⏳ Loading scheme results...</div>
+    <div class="center-msg">
+      <div class="spinner"></div>
+      <h3>Analysing eligibility...</h3>
+      <p>Matching your profile against all government schemes</p>
+    </div>
   </div>
-  <a href="services.html" class="back-btn">← Back to Services</a>
 </div>
 
-<footer>FAWP – Digital Farmer Assistance &amp; Welfare Platform</footer>
+<footer>🌾 FAWP – Digital Farmer Assistance &amp; Welfare Platform &nbsp;|&nbsp; Empowering Farmers Through Technology</footer>
 
 <script>
-  // TODO: Replace with your actual deployed backend URL
-const BACKEND_URL = "https://fawp.onrender.com";
   function renderResults(data) {
     const app = document.getElementById("app");
 
-    let html = `
-      <div class="farmer-info">
-        <h2>👤 ${data.farmer.name}</h2>
-        <p>State: <strong>${data.farmer.state}</strong> &nbsp;|&nbsp; Farmer ID: <strong>${data.farmer.id}</strong></p>
-      </div>
+    const totalSchemes = data.eligible.length + data.not_eligible.length;
+    const pct = totalSchemes ? Math.round((data.eligible.length / totalSchemes) * 100) : 0;
 
-      <div class="section-title eligible-title">
-        ✅ Eligible Schemes (${data.eligible.length})
+    let html = `
+      <div class="summary-strip">
+        <div>
+          <div class="farmer-name">
+            <div class="avatar">👨‍🌾</div>
+            <div>
+              <div>${data.farmer.name}</div>
+              <div class="farmer-meta">📍 ${data.farmer.state} &nbsp;·&nbsp; Farmer ID #${data.farmer.id} &nbsp;·&nbsp; ${pct}% schemes eligible</div>
+            </div>
+          </div>
+        </div>
+        <div class="stat-pill green">
+          <div class="num">${data.eligible.length}</div>
+          <div class="lbl">Eligible</div>
+        </div>
+        <div class="stat-pill red">
+          <div class="num">${data.not_eligible.length}</div>
+          <div class="lbl">Not Eligible</div>
+        </div>
+      </div>`;
+
+    // ── ELIGIBLE SECTION ──
+    html += `
+      <div class="section-header eligible">
+        <h2>✅ Eligible Schemes (${data.eligible.length})</h2>
+        <div class="line"></div>
       </div>`;
 
     if (data.eligible.length === 0) {
-      html += `<p style="color:#666; padding:10px 0;">No eligible schemes found.</p>`;
+      html += `<div class="center-msg" style="padding:30px 0"><span class="icon">🔍</span><p>No eligible schemes found for this profile.</p></div>`;
     } else {
+      html += `<div class="cards-grid">`;
       data.eligible.forEach(s => {
         html += `
           <div class="scheme-card eligible">
-            <div>
-              <h4>${s.scheme_name}</h4>
-              <div class="full-name">${s.full_name}</div>
-              <div class="benefit">💰 ${s.benefit}</div>
-              <div class="reason">${s.reason}</div>
+            <div class="card-top">
+              <div>
+                <div class="card-category">${s.category}</div>
+                <div class="card-name">${s.scheme_name}</div>
+              </div>
+              <span class="scheme-id-badge">✓ Eligible</span>
             </div>
-            <span class="badge eligible">Eligible</span>
+            <div class="card-fullname">📋 ${s.full_name}</div>
+            <div class="card-benefit"><span class="coin">💰</span>${s.benefit}</div>
+            <div class="card-reason">✅ ${s.reason}</div>
           </div>`;
       });
+      html += `</div>`;
     }
 
+    // ── NOT ELIGIBLE SECTION ──
     html += `
-      <div class="section-title ineligible-title" style="margin-top:40px;">
-        ❌ Not Eligible (${data.not_eligible.length})
+      <div class="section-header ineligible">
+        <h2>❌ Not Eligible (${data.not_eligible.length})</h2>
+        <div class="line"></div>
       </div>`;
 
     if (data.not_eligible.length === 0) {
-      html += `<p style="color:#666; padding:10px 0;">All schemes are eligible!</p>`;
+      html += `<div class="center-msg" style="padding:30px 0"><span class="icon">🎉</span><p>You qualify for all schemes!</p></div>`;
     } else {
+      html += `<div class="cards-grid">`;
       data.not_eligible.forEach(s => {
         html += `
           <div class="scheme-card ineligible">
-            <div>
-              <h4>${s.scheme_name}</h4>
-              <div class="full-name">${s.full_name}</div>
-              <div class="benefit">💰 ${s.benefit}</div>
-              <div class="reason fail">⚠️ ${s.reason}</div>
+            <div class="card-top">
+              <div>
+                <div class="card-category">${s.category}</div>
+                <div class="card-name">${s.scheme_name}</div>
+              </div>
+              <span class="scheme-id-badge">✗ Not Eligible</span>
             </div>
-            <span class="badge ineligible">Not Eligible</span>
+            <div class="card-fullname">📋 ${s.full_name}</div>
+            <div class="card-benefit"><span class="coin">💰</span>${s.benefit}</div>
+            <div class="card-reason">⚠️ ${s.reason}</div>
           </div>`;
       });
+      html += `</div>`;
     }
+
+    // ── ACTIONS ──
+    html += `
+      <div class="actions">
+        <a href="services.html" class="btn btn-primary">← Back to Services</a>
+        <a href="schemes.html" class="btn btn-secondary">📋 View All Schemes</a>
+      </div>`;
 
     app.innerHTML = html;
   }
 
   function showError(msg) {
-    document.getElementById("app").innerHTML =
-      `<div class="error-msg">❌ ${msg}</div>`;
+    document.getElementById("app").innerHTML = `
+      <div class="center-msg">
+        <span class="icon">⚠️</span>
+        <h3>Could not load results</h3>
+        <p>${msg}</p>
+        <div class="actions" style="justify-content:center; margin-top:20px;">
+          <a href="services.html" class="btn btn-primary">← Back to Services</a>
+        </div>
+      </div>`;
   }
 
-  // Try to load from localStorage first (set by services.html)
   const cached = localStorage.getItem("schemeData");
   if (cached) {
-    try {
-      renderResults(JSON.parse(cached));
-    } catch(e) {
-      showError("Could not parse scheme data. Please go back and try again.");
-    }
+    try { renderResults(JSON.parse(cached)); }
+    catch(e) { showError("Could not parse scheme data. Please go back and try again."); }
   } else {
-    // Fallback: fetch directly using stored farmerId
     const farmerId = localStorage.getItem("farmerId") || 1;
     fetch(`/api/match/${farmerId}`)
-      .then(res => {
-        if (!res.ok) throw new Error("Server error: " + res.status);
-        return res.json();
-      })
+      .then(res => { if (!res.ok) throw new Error("Server error: " + res.status); return res.json(); })
       .then(data => renderResults(data))
-      .catch(err => {
-        console.error(err);
-        showError("Could not load scheme results. Please ensure the backend server is running.");
-      });
+      .catch(err => { console.error(err); showError("Backend server not reachable. Please ensure it is running."); });
   }
 </script>
 
