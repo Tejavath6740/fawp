@@ -270,7 +270,7 @@ function openSchemesPage(){ window.location.href="schemes.html"; }
 function openSchemesFindePage(){
     // TODO: Replace BACKEND_URL with your actual deployed backend URL
     // e.g. https://fawp-project.onrender.com
-const BACKEND_URL = "http://localhost:8000";
+const BACKEND_URL = "https://fawp.onrender.com";
     const farmerId = localStorage.getItem("farmerId") || 1;
 
     fetch(`${BACKEND_URL}/api/match/${farmerId}`)
