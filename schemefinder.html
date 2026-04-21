@@ -4,139 +4,242 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scheme Finder – FAWP</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --green-dark:  #1b5e20;
+      --green-mid:   #2e7d32;
+      --green-main:  #388e3c;
+      --green-pale:  #e8f5e9;
+      --white:       #ffffff;
+      --off-white:   #f4f9f4;
+      --border:      #c8e6c9;
+      --text-main:   #1a2e1a;
+      --text-sub:    #4a6349;
+      --text-hint:   #7a9b79;
+      --red:         #c62828;
+      --red-pale:    #ffebee;
+      --radius:      12px;
+      --shadow:      0 4px 18px rgba(27,94,32,0.10);
+    }
+
     body {
-      font-family: 'Poppins', Arial, sans-serif;
-      background: linear-gradient(to right, #e8f5e9, #e3f2fd);
-      color: #333;
+      font-family:'Poppins', Arial, sans-serif;
+      background: linear-gradient(135deg, #e8f5e9 0%, #e3f2fd 100%);
+      color: var(--text-main);
       min-height: 100vh;
     }
 
-    header {
-      background: #2e7d32;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
+    header { background:var(--green-mid); color:white; padding:20px; text-align:center; }
+    header h1 { font-size: 1.5rem; }
 
-    nav {
-      background: #1b5e20;
-      padding: 12px;
-      text-align: center;
-    }
-
+    nav { background:var(--green-dark); padding:12px; text-align:center; }
     nav a {
-      color: white;
-      margin: 8px 12px;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 6px 10px;
-      border-radius: 6px;
-      transition: background 0.2s;
+      color:white; margin:8px 12px; text-decoration:none;
+      font-weight:600; font-size:14px; padding:6px 10px;
+      border-radius:6px; transition:background 0.2s;
+    }
+    nav a:hover { background:#43a047; }
+
+    .container { max-width:920px; margin:0 auto; padding:32px 20px 60px; }
+
+    /* ── FARMER SELECTOR CARD ── */
+    .selector-card {
+      background:white;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px 28px;
+      margin-bottom:28px;
+      border-top:4px solid var(--green-main);
+    }
+    .selector-card h3 {
+      font-size:1rem; font-weight:700; color:var(--green-dark);
+      margin-bottom:16px; display:flex; align-items:center; gap:8px;
     }
 
-    nav a:hover { background: #43a047; }
-
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
+    .farmer-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+      gap:10px;
     }
 
+    .farmer-btn {
+      background:var(--green-pale);
+      border:2px solid var(--border);
+      border-radius:10px;
+      padding:12px 14px;
+      cursor:pointer;
+      text-align:left;
+      transition:all 0.2s;
+      font-family:inherit;
+    }
+    .farmer-btn:hover { border-color:var(--green-main); background:#d4edda; transform:translateY(-2px); }
+    .farmer-btn.selected {
+      background:var(--green-mid);
+      border-color:var(--green-dark);
+      color:white;
+      transform:translateY(-2px);
+      box-shadow:0 4px 14px rgba(46,125,50,0.3);
+    }
+    .farmer-btn .fname { font-size:13px; font-weight:700; display:block; margin-bottom:2px; }
+    .farmer-btn .fmeta { font-size:11px; opacity:0.8; }
+
+    .search-row {
+      display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;
+    }
+    .search-row input {
+      flex:1; min-width:160px; padding:9px 14px;
+      border:1.5px solid var(--border); border-radius:8px;
+      font-size:13px; font-family:inherit; outline:none;
+      transition:border-color 0.2s;
+    }
+    .search-row input:focus { border-color:var(--green-main); }
+    .search-row select {
+      padding:9px 13px; border:1.5px solid var(--border);
+      border-radius:8px; font-size:13px; font-family:inherit; outline:none;
+    }
+
+    .btn-check {
+      padding:10px 28px;
+      background:var(--green-mid); color:white;
+      border:none; border-radius:8px; font-size:14px; font-weight:700;
+      font-family:inherit; cursor:pointer; transition:background 0.2s;
+      display:flex; align-items:center; gap:8px; margin-top:16px;
+    }
+    .btn-check:hover { background:var(--green-dark); }
+    .btn-check:disabled { opacity:0.6; pointer-events:none; }
+
+    /* ── RESULTS ── */
     .farmer-info {
-      background: white;
-      border-radius: 12px;
-      padding: 20px 25px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      border-left: 6px solid #2e7d32;
+      background:white;
+      border-radius:var(--radius);
+      padding:20px 24px;
+      margin-bottom:24px;
+      box-shadow:var(--shadow);
+      border-left:6px solid var(--green-main);
+      animation:fadeIn 0.3s ease;
     }
-
-    .farmer-info h2 { color: #2e7d32; margin-bottom: 8px; }
+    .farmer-info h2 { color:var(--green-dark); margin-bottom:10px; font-size:1.15rem; }
+    .info-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
+      gap:10px; margin-top:12px;
+    }
+    .info-pill {
+      background:var(--green-pale); border-radius:8px;
+      padding:8px 12px; font-size:12px;
+    }
+    .info-pill span { font-weight:700; color:var(--green-dark); display:block; font-size:13px; }
 
     .section-title {
-      font-size: 20px;
-      font-weight: 600;
-      margin: 30px 0 15px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size:1.05rem; font-weight:700;
+      margin:28px 0 14px;
+      display:flex; align-items:center; gap:8px;
     }
-
-    .eligible-title   { color: #2e7d32; }
-    .ineligible-title { color: #c62828; }
+    .eligible-title   { color:var(--green-dark); }
+    .ineligible-title { color:var(--red); }
 
     .scheme-card {
-      background: white;
-      border-radius: 12px;
-      padding: 18px 22px;
-      margin-bottom: 14px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
+      background:white;
+      border-radius:var(--radius);
+      padding:18px 22px;
+      margin-bottom:12px;
+      box-shadow:var(--shadow);
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      animation:fadeIn 0.3s ease;
+      transition:transform 0.2s;
     }
+    .scheme-card:hover { transform:translateX(4px); }
+    .scheme-card.eligible   { border-left:5px solid #43a047; }
+    .scheme-card.ineligible { border-left:5px solid var(--red); }
 
-    .scheme-card.eligible   { border-left: 5px solid #43a047; }
-    .scheme-card.ineligible { border-left: 5px solid #e53935; }
-
-    .scheme-card h4 { margin-bottom: 4px; color: #1a2e1a; }
-    .scheme-card .full-name { font-size: 12px; color: #666; margin-bottom: 6px; }
-    .scheme-card .benefit   { font-size: 13px; color: #2e7d32; font-weight: 600; }
-    .scheme-card .reason    { font-size: 12px; color: #888; margin-top: 4px; }
-    .scheme-card .reason.fail { color: #c62828; }
+    .scheme-card h4    { margin-bottom:3px; color:var(--text-main); font-size:0.95rem; }
+    .full-name         { font-size:11px; color:var(--text-hint); margin-bottom:6px; }
+    .benefit           { font-size:13px; color:var(--green-dark); font-weight:700; }
+    .reason            { font-size:12px; color:#888; margin-top:4px; }
+    .reason.fail       { color:var(--red); }
 
     .badge {
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      white-space: nowrap;
-      font-weight: 600;
+      font-size:11px; padding:4px 12px;
+      border-radius:20px; white-space:nowrap; font-weight:700; flex-shrink:0;
+    }
+    .badge.eligible   { background:#e8f5e9; color:var(--green-dark); }
+    .badge.ineligible { background:var(--red-pale); color:var(--red); }
+
+    /* Summary bar */
+    .summary-bar {
+      display:flex; gap:14px; flex-wrap:wrap;
+      background:white; border-radius:var(--radius);
+      padding:16px 22px; box-shadow:var(--shadow);
+      margin-bottom:24px;
+    }
+    .sum-pill {
+      display:flex; flex-direction:column;
+      align-items:center; padding:10px 20px;
+      border-radius:10px; flex:1; min-width:100px;
+    }
+    .sum-pill .num { font-size:1.6rem; font-weight:800; }
+    .sum-pill .lbl { font-size:11px; font-weight:600; margin-top:2px; }
+    .sum-pill.total   { background:#e3f2fd; color:#1565c0; }
+    .sum-pill.yes     { background:var(--green-pale); color:var(--green-dark); }
+    .sum-pill.no      { background:var(--red-pale); color:var(--red); }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(10px); }
+      to   { opacity:1; transform:translateY(0); }
     }
 
-    .badge.eligible   { background: #e8f5e9; color: #2e7d32; }
-    .badge.ineligible { background: #ffebee; color: #c62828; }
-
-    .loading, .error-msg {
-      text-align: center;
-      padding: 60px 20px;
-      color: #666;
-      font-size: 16px;
+    .placeholder {
+      text-align:center; padding:48px 20px;
+      color:var(--text-hint); font-size:15px;
     }
+    .placeholder .big { font-size:52px; display:block; margin-bottom:12px; }
 
-    .error-msg { color: #c62828; }
+    .loading-box {
+      text-align:center; padding:48px; color:var(--text-sub);
+      display:none;
+    }
+    .spinner {
+      width:36px; height:36px;
+      border:3px solid var(--border);
+      border-top-color:var(--green-main);
+      border-radius:50%;
+      animation:spin 0.7s linear infinite;
+      margin:0 auto 14px;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    .error-box {
+      background:var(--red-pale); color:var(--red);
+      border-radius:var(--radius); padding:20px 24px;
+      border-left:4px solid var(--red);
+      display:none;
+    }
 
     .back-btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 10px 22px;
-      background: #2e7d32;
-      color: white;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.2s;
+      display:inline-flex; align-items:center; gap:6px;
+      margin-top:32px; padding:10px 22px;
+      background:var(--green-mid); color:white;
+      border-radius:8px; text-decoration:none;
+      font-weight:700; font-size:14px; transition:background 0.2s;
     }
-
-    .back-btn:hover { background: #1b5e20; }
+    .back-btn:hover { background:var(--green-dark); }
 
     footer {
-      text-align: center;
-      padding: 20px;
-      color: #666;
-      font-size: 13px;
-      margin-top: 40px;
+      text-align:center; padding:20px;
+      color:var(--text-hint); font-size:12px; margin-top:40px;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>🏛️ Scheme Finder Results</h1>
+  <h1>🏛️ Scheme Finder – Government Benefits for Farmers</h1>
 </header>
 
 <nav>
@@ -145,102 +248,335 @@
   <a href="services.html">Services</a>
   <a href="benefits.html">Benefits</a>
   <a href="contact.html">Contact</a>
+  <a href="login.html">Login</a>
 </nav>
 
 <div class="container">
-  <div id="app">
-    <div class="loading">⏳ Loading scheme results...</div>
+
+  <!-- ── FARMER SELECTOR ── -->
+  <div class="selector-card">
+    <h3>👨‍🌾 Select a Farmer to Check Eligibility</h3>
+    <div class="search-row">
+      <input type="text" id="searchFarmer" placeholder="🔍 Search by name or state..." oninput="renderPills()" />
+      <select id="stateFilter" onchange="renderPills()">
+        <option value="">All States</option>
+        <option value="Telangana">Telangana</option>
+        <option value="Andhra Pradesh">Andhra Pradesh</option>
+        <option value="Karnataka">Karnataka</option>
+        <option value="Maharashtra">Maharashtra</option>
+        <option value="Punjab">Punjab</option>
+        <option value="Rajasthan">Rajasthan</option>
+        <option value="Bihar">Bihar</option>
+        <option value="Uttar Pradesh">Uttar Pradesh</option>
+        <option value="Chhattisgarh">Chhattisgarh</option>
+      </select>
+    </div>
+    <div class="farmer-grid" id="farmer-grid"></div>
+    <button class="btn-check" id="check-btn" onclick="runSchemeCheck()" disabled>
+      🔍 Check Eligible Schemes
+    </button>
   </div>
+
+  <!-- ── LOADING ── -->
+  <div class="loading-box" id="loading-box">
+    <div class="spinner"></div>
+    <p>Matching schemes to farmer profile...</p>
+  </div>
+
+  <!-- ── ERROR ── -->
+  <div class="error-box" id="error-box"></div>
+
+  <!-- ── RESULTS ── -->
+  <div id="results-area">
+    <div class="placeholder">
+      <span class="big">🌾</span>
+      Select a farmer above and click <strong>Check Eligible Schemes</strong> to see which government programs they qualify for.
+    </div>
+  </div>
+
   <a href="services.html" class="back-btn">← Back to Services</a>
 </div>
 
 <footer>FAWP – Digital Farmer Assistance &amp; Welfare Platform</footer>
 
 <script>
-  // TODO: Replace with your actual deployed backend URL
-const BACKEND_URL = "http://localhost:8000";
-  function renderResults(data) {
-    const app = document.getElementById("app");
+// ──────────────────────────────────────────────────────────
+// Full farmer seed (mirrors app.py FARMERS_SEED exactly)
+// ──────────────────────────────────────────────────────────
+const FARMERS = [
+  { id:1,  name:"Ramaiah Goud",     village:"Nalgonda",   state:"Telangana",      land:2.5,  income:85000,  age:48, category:"OBC",     irrigated:true,  bpl:false, loan:true,  crops:["Rice","Maize"]        },
+  { id:2,  name:"Lakshmi Devi",     village:"Karimnagar", state:"Telangana",      land:1.2,  income:42000,  age:39, category:"SC",      irrigated:false, bpl:true,  loan:false, crops:["Cotton"]              },
+  { id:3,  name:"Suresh Patil",     village:"Bidar",      state:"Karnataka",      land:6.0,  income:210000, age:55, category:"General", irrigated:true,  bpl:false, loan:true,  crops:["Soybean","Jowar"]     },
+  { id:4,  name:"Anita Kumari",     village:"Patna",      state:"Bihar",          land:0.8,  income:28000,  age:34, category:"ST",      irrigated:false, bpl:true,  loan:false, crops:["Wheat","Mustard"]     },
+  { id:5,  name:"Vijay Reddy",      village:"Guntur",     state:"Andhra Pradesh", land:4.0,  income:145000, age:42, category:"OBC",     irrigated:true,  bpl:false, loan:true,  crops:["Chilli","Rice"]       },
+  { id:6,  name:"Meena Bai",        village:"Jhansi",     state:"Uttar Pradesh",  land:1.5,  income:36000,  age:52, category:"SC",      irrigated:false, bpl:true,  loan:false, crops:["Wheat"]               },
+  { id:7,  name:"Rajesh Kumar",     village:"Sikar",      state:"Rajasthan",      land:3.2,  income:98000,  age:46, category:"OBC",     irrigated:false, bpl:false, loan:true,  crops:["Bajra","Groundnut"]   },
+  { id:8,  name:"Savitri Naidu",    village:"Warangal",   state:"Telangana",      land:2.0,  income:68000,  age:38, category:"General", irrigated:true,  bpl:false, loan:false, crops:["Maize","Sunflower"]   },
+  { id:9,  name:"Harikrishna Rao",  village:"Vizag",      state:"Andhra Pradesh", land:8.5,  income:320000, age:60, category:"General", irrigated:true,  bpl:false, loan:false, crops:["Cashew","Coconut"]    },
+  { id:10, name:"Pushpa Verma",     village:"Raipur",     state:"Chhattisgarh",   land:1.0,  income:22000,  age:44, category:"ST",      irrigated:false, bpl:true,  loan:false, crops:["Rice","Vegetables"]   },
+  { id:11, name:"Mohan Lal",        village:"Ludhiana",   state:"Punjab",         land:12.0, income:580000, age:58, category:"General", irrigated:true,  bpl:false, loan:true,  crops:["Wheat","Paddy"]       },
+  { id:12, name:"Sunita Yadav",     village:"Nashik",     state:"Maharashtra",    land:3.5,  income:175000, age:41, category:"OBC",     irrigated:true,  bpl:false, loan:true,  crops:["Grapes","Onion"]      },
+  { id:13, name:"Basavaraj Nayak",  village:"Dharwad",    state:"Karnataka",      land:5.5,  income:240000, age:50, category:"OBC",     irrigated:true,  bpl:false, loan:true,  crops:["Sugarcane"]           },
+  { id:14, name:"Kamla Devi",       village:"Jaipur",     state:"Rajasthan",      land:1.8,  income:52000,  age:36, category:"SC",      irrigated:false, bpl:false, loan:false, crops:["Mustard","Wheat"]     },
+  { id:15, name:"Srinivasa Murthy", village:"Mysuru",     state:"Karnataka",      land:2.8,  income:92000,  age:47, category:"General", irrigated:true,  bpl:false, loan:false, crops:["Turmeric","Ragi"]     },
+];
 
-    let html = `
-      <div class="farmer-info">
-        <h2>👤 ${data.farmer.name}</h2>
-        <p>State: <strong>${data.farmer.state}</strong> &nbsp;|&nbsp; Farmer ID: <strong>${data.farmer.id}</strong></p>
+// ──────────────────────────────────────────────────────────
+// Scheme definitions (mirrors app.py SCHEMES_SEED)
+// ──────────────────────────────────────────────────────────
+const SCHEMES = [
+  { id:"PM-KISAN",  name:"PM-KISAN",         full:"Pradhan Mantri Kisan Samman Nidhi",           benefit:"₹6,000/year in 3 installments",           maxLand:null, minLand:null, bplOnly:false, cats:null,             states:null,             irrigReq:null },
+  { id:"PMFBY",     name:"PMFBY",             full:"Pradhan Mantri Fasal Bima Yojana",            benefit:"Crop insurance at subsidised premium",      maxLand:null, minLand:null, bplOnly:false, cats:null,             states:null,             irrigReq:null },
+  { id:"KCC",       name:"Kisan Credit Card", full:"Kisan Credit Card Scheme",                   benefit:"Short-term crop credit at 4% interest",     maxLand:null, minLand:0.5,  bplOnly:false, cats:null,             states:null,             irrigReq:null },
+  { id:"SMAM",      name:"SMAM",              full:"Sub-Mission on Agricultural Mechanisation",  benefit:"50–80% subsidy on farm equipment",           maxLand:5.0,  minLand:null, bplOnly:false, cats:null,             states:null,             irrigReq:null },
+  { id:"PMKSY",     name:"PMKSY",             full:"PM Krishi Sinchayee Yojana",                 benefit:"Drip/sprinkler irrigation subsidy up to 90%",maxLand:null, minLand:null, bplOnly:false, cats:null,             states:null,             irrigReq:false },
+  { id:"NFSM",      name:"NFSM",              full:"National Food Security Mission",             benefit:"Free seeds, demonstrations, training",       maxLand:null, minLand:null, bplOnly:false, cats:null,             states:null,             irrigReq:null },
+  { id:"RKVY",      name:"RKVY",              full:"Rashtriya Krishi Vikas Yojana",              benefit:"Agriculture development grants",             maxLand:null, minLand:null, bplOnly:false, cats:null,             states:null,             irrigReq:null },
+  { id:"SCSP",      name:"SC Sub-Plan",        full:"Scheduled Caste Sub-Plan (Agriculture)",    benefit:"Free equipment, seeds, and training for SC", maxLand:null, minLand:null, bplOnly:false, cats:["SC"],           states:null,             irrigReq:null },
+  { id:"TSP",       name:"TSP",               full:"Tribal Sub-Plan (Agriculture)",              benefit:"Subsidised inputs and free training for ST", maxLand:null, minLand:null, bplOnly:false, cats:["ST"],           states:null,             irrigReq:null },
+  { id:"RYTHU",     name:"Rythu Bandhu",       full:"Rythu Bandhu Scheme",                       benefit:"₹10,000 per acre per season",               maxLand:null, minLand:null, bplOnly:false, cats:null,             states:["Telangana"],    irrigReq:null },
+  { id:"YSRRC",     name:"YSR Rythu Bharosa", full:"YSR Rythu Bharosa & PM Kisan",              benefit:"₹13,500/year combined support",             maxLand:null, minLand:null, bplOnly:false, cats:null,             states:["Andhra Pradesh"],irrigReq:null },
+  { id:"PMKUSUM",   name:"PM-KUSUM Solar",    full:"PM-KUSUM Solar Pump Component",             benefit:"90% subsidy on solar-powered irrigation",   maxLand:null, minLand:null, bplOnly:false, cats:null,             states:null,             irrigReq:false },
+  { id:"PKVY",      name:"PKVY",              full:"Paramparagat Krishi Vikas Yojana",           benefit:"₹50,000/ha over 3 years for organic farming",maxLand:null, minLand:null, bplOnly:false, cats:null,             states:null,             irrigReq:null },
+  { id:"MIDH",      name:"MIDH",              full:"Mission for Integrated Development of Horticulture",benefit:"40–50% subsidy on horticulture infra",maxLand:null, minLand:null, bplOnly:false, cats:null,             states:null,             irrigReq:null },
+];
+
+// ──────────────────────────────────────────────────────────
+// State
+// ──────────────────────────────────────────────────────────
+let selectedFarmerId = parseInt(localStorage.getItem('farmerId')) || null;
+
+// ──────────────────────────────────────────────────────────
+// Render farmer pills
+// ──────────────────────────────────────────────────────────
+function renderPills() {
+  const search = document.getElementById('searchFarmer').value.toLowerCase();
+  const state  = document.getElementById('stateFilter').value;
+  const grid   = document.getElementById('farmer-grid');
+
+  const filtered = FARMERS.filter(f => {
+    const matchState  = !state  || f.state === state;
+    const matchSearch = !search || f.name.toLowerCase().includes(search) || f.state.toLowerCase().includes(search) || f.village.toLowerCase().includes(search);
+    return matchState && matchSearch;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<p style="color:var(--text-hint);font-size:13px;grid-column:1/-1;">No farmers match your filter.</p>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(f => `
+    <button class="farmer-btn ${selectedFarmerId === f.id ? 'selected' : ''}"
+            onclick="selectFarmer(${f.id})" id="pill-${f.id}">
+      <span class="fname">👤 ${f.name}</span>
+      <span class="fmeta">${f.state} · ${f.category} · ${f.land} acres</span>
+    </button>
+  `).join('');
+}
+
+function selectFarmer(id) {
+  selectedFarmerId = id;
+  document.getElementById('check-btn').disabled = false;
+  renderPills(); // re-render to highlight selected
+  // scroll results to top
+  document.getElementById('results-area').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+// ──────────────────────────────────────────────────────────
+// Run scheme eligibility check (client-side, mirrors app.py logic)
+// or calls backend if available
+// ──────────────────────────────────────────────────────────
+async function runSchemeCheck() {
+  if (!selectedFarmerId) return;
+
+  const BACKEND_URL = "https://fawp-project.onrender.com";
+  const loadBox  = document.getElementById('loading-box');
+  const errBox   = document.getElementById('error-box');
+  const results  = document.getElementById('results-area');
+  const checkBtn = document.getElementById('check-btn');
+
+  loadBox.style.display  = 'block';
+  errBox.style.display   = 'none';
+  results.innerHTML      = '';
+  checkBtn.disabled      = true;
+
+  // Try backend first
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/match/${selectedFarmerId}`);
+    if (!res.ok) throw new Error('Backend error');
+    const data = await res.json();
+    localStorage.setItem('farmerId', selectedFarmerId);
+    loadBox.style.display = 'none';
+    checkBtn.disabled = false;
+    renderResults(data);
+    return;
+  } catch(e) {
+    // Backend not reachable — run client-side matching
+  }
+
+  // Client-side matching (fallback, same logic as app.py)
+  await new Promise(r => setTimeout(r, 600)); // simulate load
+  const farmer = FARMERS.find(f => f.id === selectedFarmerId);
+  if (!farmer) {
+    loadBox.style.display = 'none';
+    errBox.textContent = `Farmer with ID ${selectedFarmerId} not found.`;
+    errBox.style.display = 'block';
+    checkBtn.disabled = false;
+    return;
+  }
+
+  const eligible     = [];
+  const not_eligible = [];
+
+  SCHEMES.forEach(s => {
+    let ok = true;
+    let reason = '';
+    let fail   = '';
+
+    // Category check
+    if (s.cats && !s.cats.includes(farmer.category)) {
+      ok = false;
+      fail = `Only for ${s.cats.join('/')} category (farmer is ${farmer.category})`;
+    }
+    // State check
+    if (ok && s.states && !s.states.includes(farmer.state)) {
+      ok = false;
+      fail = `Scheme limited to ${s.states.join('/')} (farmer is in ${farmer.state})`;
+    }
+    // Land max
+    if (ok && s.maxLand !== null && farmer.land > s.maxLand) {
+      ok = false;
+      fail = `Land holding (${farmer.land} acres) exceeds max ${s.maxLand} acres`;
+    }
+    // Land min
+    if (ok && s.minLand !== null && farmer.land < s.minLand) {
+      ok = false;
+      fail = `Land holding (${farmer.land} acres) below minimum ${s.minLand} acres`;
+    }
+    // Irrigation check (irrigReq:false means needs UN-irrigated land)
+    if (ok && s.irrigReq === false && farmer.irrigated) {
+      ok = false;
+      fail = `For un-irrigated farms only (farmer has irrigated land)`;
+    }
+    if (ok && s.irrigReq === true && !farmer.irrigated) {
+      ok = false;
+      fail = `Requires irrigated land`;
+    }
+
+    if (ok) {
+      reason = buildEligibleReason(farmer, s);
+      eligible.push({ scheme_name:s.name, full_name:s.full, benefit:s.benefit, reason });
+    } else {
+      not_eligible.push({ scheme_name:s.name, full_name:s.full, benefit:s.benefit, reason:fail });
+    }
+  });
+
+  localStorage.setItem('farmerId', selectedFarmerId);
+  loadBox.style.display = 'none';
+  checkBtn.disabled = false;
+  renderResults({ farmer:{ name:farmer.name, state:farmer.state, id:farmer.id }, eligible, not_eligible });
+}
+
+function buildEligibleReason(farmer, scheme) {
+  const parts = [`Farmer qualifies as ${farmer.category} category`];
+  if (scheme.states) parts.push(`Resident of ${farmer.state}`);
+  if (farmer.bpl) parts.push('BPL household eligible for priority benefits');
+  if (scheme.minLand && farmer.land >= scheme.minLand) parts.push(`Land holding (${farmer.land} ac) meets minimum`);
+  return parts.join(' · ');
+}
+
+// ──────────────────────────────────────────────────────────
+// Render results
+// ──────────────────────────────────────────────────────────
+function renderResults(data) {
+  const farmer = FARMERS.find(f => f.id === data.farmer.id) || {};
+  const results = document.getElementById('results-area');
+
+  let html = `
+    <div class="farmer-info">
+      <h2>👤 ${data.farmer.name}</h2>
+      <p style="font-size:13px;color:var(--text-sub);">Farmer ID: <strong>#${data.farmer.id}</strong></p>
+      <div class="info-grid">
+        <div class="info-pill"><span>${farmer.village || '—'}, ${data.farmer.state}</span>Location</div>
+        <div class="info-pill"><span>${farmer.age || '—'} years</span>Age</div>
+        <div class="info-pill"><span>${farmer.category || '—'}</span>Category</div>
+        <div class="info-pill"><span>${farmer.land || '—'} acres</span>Land</div>
+        <div class="info-pill"><span>₹${(farmer.income||0).toLocaleString('en-IN')}</span>Annual Income</div>
+        <div class="info-pill"><span>${farmer.irrigated ? '✅ Yes' : '❌ No'}</span>Irrigated</div>
+        <div class="info-pill"><span>${farmer.bpl ? '✅ Yes' : '❌ No'}</span>BPL</div>
+        <div class="info-pill"><span>${(farmer.crops||[]).join(', ') || '—'}</span>Crops</div>
       </div>
+    </div>
 
-      <div class="section-title eligible-title">
-        ✅ Eligible Schemes (${data.eligible.length})
-      </div>`;
+    <div class="summary-bar">
+      <div class="sum-pill total"><span class="num">${data.eligible.length + data.not_eligible.length}</span><span class="lbl">Total Schemes</span></div>
+      <div class="sum-pill yes"><span class="num">${data.eligible.length}</span><span class="lbl">✅ Eligible</span></div>
+      <div class="sum-pill no"><span class="num">${data.not_eligible.length}</span><span class="lbl">❌ Not Eligible</span></div>
+    </div>
 
-    if (data.eligible.length === 0) {
-      html += `<p style="color:#666; padding:10px 0;">No eligible schemes found.</p>`;
-    } else {
-      data.eligible.forEach(s => {
-        html += `
-          <div class="scheme-card eligible">
-            <div>
-              <h4>${s.scheme_name}</h4>
-              <div class="full-name">${s.full_name}</div>
-              <div class="benefit">💰 ${s.benefit}</div>
-              <div class="reason">${s.reason}</div>
-            </div>
-            <span class="badge eligible">Eligible</span>
-          </div>`;
-      });
-    }
+    <div class="section-title eligible-title">✅ Eligible Schemes (${data.eligible.length})</div>`;
 
-    html += `
-      <div class="section-title ineligible-title" style="margin-top:40px;">
-        ❌ Not Eligible (${data.not_eligible.length})
-      </div>`;
-
-    if (data.not_eligible.length === 0) {
-      html += `<p style="color:#666; padding:10px 0;">All schemes are eligible!</p>`;
-    } else {
-      data.not_eligible.forEach(s => {
-        html += `
-          <div class="scheme-card ineligible">
-            <div>
-              <h4>${s.scheme_name}</h4>
-              <div class="full-name">${s.full_name}</div>
-              <div class="benefit">💰 ${s.benefit}</div>
-              <div class="reason fail">⚠️ ${s.reason}</div>
-            </div>
-            <span class="badge ineligible">Not Eligible</span>
-          </div>`;
-      });
-    }
-
-    app.innerHTML = html;
-  }
-
-  function showError(msg) {
-    document.getElementById("app").innerHTML =
-      `<div class="error-msg">❌ ${msg}</div>`;
-  }
-
-  // Try to load from localStorage first (set by services.html)
-  const cached = localStorage.getItem("schemeData");
-  if (cached) {
-    try {
-      renderResults(JSON.parse(cached));
-    } catch(e) {
-      showError("Could not parse scheme data. Please go back and try again.");
-    }
+  if (data.eligible.length === 0) {
+    html += `<p style="color:var(--text-hint);padding:10px 0;font-size:14px;">No eligible schemes found for this profile.</p>`;
   } else {
-    // Fallback: fetch directly using stored farmerId
-    const farmerId = localStorage.getItem("farmerId") || 1;
-    fetch(`/api/match/${farmerId}`)
-      .then(res => {
-        if (!res.ok) throw new Error("Server error: " + res.status);
-        return res.json();
-      })
-      .then(data => renderResults(data))
-      .catch(err => {
-        console.error(err);
-        showError("Could not load scheme results. Please ensure the backend server is running.");
-      });
+    data.eligible.forEach(s => {
+      html += `
+        <div class="scheme-card eligible">
+          <div>
+            <h4>${s.scheme_name}</h4>
+            <div class="full-name">${s.full_name}</div>
+            <div class="benefit">💰 ${s.benefit}</div>
+            <div class="reason">${s.reason}</div>
+          </div>
+          <span class="badge eligible">Eligible ✅</span>
+        </div>`;
+    });
   }
+
+  html += `<div class="section-title ineligible-title" style="margin-top:36px;">❌ Not Eligible (${data.not_eligible.length})</div>`;
+
+  if (data.not_eligible.length === 0) {
+    html += `<p style="color:var(--text-hint);font-size:14px;">All schemes are eligible!</p>`;
+  } else {
+    data.not_eligible.forEach(s => {
+      html += `
+        <div class="scheme-card ineligible">
+          <div>
+            <h4>${s.scheme_name}</h4>
+            <div class="full-name">${s.full_name}</div>
+            <div class="benefit">💰 ${s.benefit}</div>
+            <div class="reason fail">⚠️ ${s.reason}</div>
+          </div>
+          <span class="badge ineligible">Not Eligible ❌</span>
+        </div>`;
+    });
+  }
+
+  results.innerHTML = html;
+  results.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ──────────────────────────────────────────────────────────
+// Init
+// ──────────────────────────────────────────────────────────
+renderPills();
+
+// If farmerId already in localStorage, pre-select it
+if (selectedFarmerId) {
+  document.getElementById('check-btn').disabled = false;
+}
+
+// Restore cached results if they exist
+const cached = localStorage.getItem('schemeData');
+if (cached) {
+  try {
+    const data = JSON.parse(cached);
+    // Only restore if same farmer
+    if (data.farmer && data.farmer.id === selectedFarmerId) {
+      renderResults(data);
+    }
+  } catch(e) {}
+}
 </script>
 
 </body>
