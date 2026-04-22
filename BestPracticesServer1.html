@@ -37,7 +37,6 @@
 
     body { font-family:'Poppins',Arial,sans-serif; background:var(--offwhite); color:var(--txt); min-height:100vh; }
 
-    /* ── HEADER ── */
     header {
       background: linear-gradient(135deg, var(--g-dark) 0%, var(--g-main) 100%);
       color: white; padding: 24px 28px 20px; text-align: center;
@@ -52,16 +51,6 @@
     header h1 { font-size:1.7rem; font-weight:800; position:relative; }
     header p  { font-size:0.85rem; opacity:0.85; margin-top:5px; position:relative; }
 
-    nav { background:var(--g-dark); padding:11px; text-align:center; }
-    nav a {
-      color:white; margin:7px 10px; text-decoration:none;
-      font-weight:600; font-size:13px; padding:6px 10px;
-      border-radius:6px; transition:background 0.2s;
-    }
-    nav a:hover { background:#43a047; }
-    nav a.active { background:var(--g-main); }
-
-    /* ── CONTROL BAR ── */
     .controls {
       background:white; border-bottom:1px solid var(--border);
       padding:16px 28px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;
@@ -84,10 +73,8 @@
     }
     .vbtn.active { background:var(--g-mid); border-color:var(--g-mid); color:white; }
 
-    /* ── LAYOUT WRAPPER ── */
     .page-wrap { display:flex; min-height:calc(100vh - 180px); }
 
-    /* ── SIDEBAR (state → district tree) ── */
     .sidebar {
       width:260px; flex-shrink:0;
       background:white; border-right:1px solid var(--border);
@@ -126,10 +113,8 @@
     .dist-btn.active  { background:var(--g-pale); color:var(--g-dark); font-weight:700; border-right:3px solid var(--g-main); }
     .dist-btn .dot { width:6px; height:6px; border-radius:50%; background:var(--g-light); flex-shrink:0; }
 
-    /* ── MAIN CONTENT ── */
     .main { flex:1; padding:24px 28px 60px; min-width:0; }
 
-    /* ── DISTRICT HERO ── */
     .district-hero {
       background: linear-gradient(135deg, var(--g-mid) 0%, var(--g-main) 60%, var(--g-lime) 100%);
       border-radius:var(--radius); padding:22px 28px; color:white;
@@ -147,7 +132,6 @@
     .dh-stat .val { font-size:1.25rem; font-weight:800; display:block; }
     .dh-stat .lbl { font-size:10px; opacity:0.85; text-transform:uppercase; letter-spacing:0.8px; }
 
-    /* ── SECTION HEADS ── */
     .sec-head {
       display:flex; align-items:center; gap:10px;
       font-size:1rem; font-weight:700; color:var(--g-dark);
@@ -156,20 +140,14 @@
     }
     .sec-head .icon { font-size:1.3rem; }
 
-    /* ── CROP CARDS GRID ── */
     .crop-grid {
       display:grid;
       grid-template-columns:repeat(auto-fill, minmax(270px, 1fr));
       gap:18px;
     }
-    /* list view */
-    .crop-grid.list-view {
-      grid-template-columns:1fr;
-    }
+    .crop-grid.list-view { grid-template-columns:1fr; }
     .crop-grid.list-view .crop-card {
-      display:grid;
-      grid-template-columns:80px 1fr;
-      border-radius:10px;
+      display:grid; grid-template-columns:80px 1fr; border-radius:10px;
     }
     .crop-grid.list-view .crop-card .card-emoji {
       font-size:2.8rem; border-radius:10px 0 0 10px;
@@ -192,8 +170,7 @@
 
     .card-emoji {
       font-size:3.5rem; padding:22px 0 10px;
-      text-align:center; background:var(--g-pale);
-      line-height:1;
+      text-align:center; background:var(--g-pale); line-height:1;
     }
     .card-body { padding:14px 16px 18px; }
     .crop-name { font-size:1rem; font-weight:800; color:var(--txt); margin-bottom:2px; }
@@ -240,7 +217,6 @@
     }
     .advice-box strong { color:var(--g-dark); }
 
-    /* ── CALENDAR STRIP ── */
     .cal-strip {
       display:grid; grid-template-columns:repeat(12,1fr);
       gap:3px; margin-top:10px; border-radius:6px; overflow:hidden;
@@ -258,7 +234,6 @@
     .cal-legend span { display:flex; align-items:center; gap:4px; }
     .cal-legend .dot { width:10px; height:10px; border-radius:2px; }
 
-    /* ── PEST / DISEASE PILLS ── */
     .pest-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
     .pest-tag  {
       background:var(--red-p); color:var(--red);
@@ -269,7 +244,6 @@
       border-radius:6px; padding:3px 10px; font-size:11px; font-weight:600;
     }
 
-    /* ── OVERVIEW CARDS ── */
     .overview-grid {
       display:grid;
       grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));
@@ -284,11 +258,9 @@
     .ov-card .ov-val  { font-size:1.3rem; font-weight:800; color:var(--g-dark); }
     .ov-card .ov-lbl  { font-size:11px; color:var(--txt-h); margin-top:2px; }
 
-    /* ── NO RESULTS ── */
     .empty { text-align:center; padding:60px 20px; color:var(--txt-h); font-size:15px; }
     .empty .big { font-size:52px; display:block; margin-bottom:12px; }
 
-    /* ── WELCOME SCREEN ── */
     .welcome {
       text-align:center; padding:60px 20px; max-width:560px; margin:0 auto;
     }
@@ -317,7 +289,6 @@
       color:var(--txt-h); border-top:1px solid var(--border); background:white;
     }
 
-    /* Responsive */
     @media(max-width:700px) {
       .sidebar { width:100%; position:static; max-height:200px; }
       .page-wrap { flex-direction:column; }
@@ -332,9 +303,6 @@
   <p id="hdr-sub">Select your state and district to see detailed crop information</p>
 </header>
 
-
-
-<!-- Controls -->
 <div class="controls">
   <select id="stateSelect" onchange="onStateChange()">
     <option value="">🗺 Select State</option>
@@ -367,6 +335,7 @@
     <option value="Cash Crop">💰 Cash Crops</option>
     <option value="Oilseed">🫙 Oilseeds</option>
     <option value="Spice">🌶️ Spices</option>
+    <option value="Fodder">🌿 Fodder</option>
   </select>
   <input type="text" id="searchInput" placeholder="🔍 Search crops..." oninput="applyFilters()" />
   <select id="langSel" onchange="applyLang(this.value)">
@@ -381,14 +350,11 @@
 </div>
 
 <div class="page-wrap">
-
-  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-title">States & Districts</div>
     <div id="sidebar-tree"></div>
   </aside>
 
-  <!-- Main area -->
   <div class="main" id="main-area">
     <div class="welcome" id="welcome-screen">
       <span class="big">🌾</span>
@@ -405,19 +371,13 @@
     </div>
     <div id="district-content" style="display:none;"></div>
   </div>
-
 </div>
 
 <footer>&copy; 2025 FAWP – Digital Farmer Assistance &amp; Welfare Platform</footer>
 
 <script>
-// ═══════════════════════════════════════════════════════════
-//  DATA
-// ═══════════════════════════════════════════════════════════
-
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-// States → Districts
 const STATE_DISTRICTS = {
   "Telangana":       ["Hyderabad","Nalgonda","Karimnagar","Warangal","Nizamabad","Khammam","Mahbubnagar","Adilabad","Sangareddy","Siddipet"],
   "Andhra Pradesh":  ["Guntur","Kurnool","Vijayawada","Vizag","Tirupati","Nellore","Kakinada","Ongole","Rajahmundry","Chittoor"],
@@ -430,10 +390,7 @@ const STATE_DISTRICTS = {
   "Chhattisgarh":    ["Raipur","Bilaspur","Durg","Jagdalpur","Raigarh","Rajnandgaon","Korba","Ambikapur","Dhamtari","Mahasamund"],
 };
 
-// ── CROP MASTER DATABASE ──────────────────────────────────
-// Each crop: full metadata for rendering
 const CROPS = {
-  // ── TELANGANA CROPS ──
   rice: {
     name:"Rice (Paddy)", sci:"Oryza sativa", emoji:"🍚", type:"Cereal",
     season:"Kharif", altSeason:"Rabi",
@@ -441,14 +398,13 @@ const CROPS = {
     msp:"₹2,183/qtl (2024–25)", avgYield:"25–35 qtl/acre",
     duration:"120–150 days",
     sow:[6,7,8], grow:[7,8,9,10], harv:[10,11,12],
-    varieties:["MTU-7029 (Swarna)","BPT-5204 (Sona Masuri)","RNR-15048 (Telangana Sona)","IR-64"],
-    fertilizer:"N:P:K = 60:30:30 kg/acre. Apply DAP at sowing, urea in splits.",
+    varieties:["MTU-7029 (Swarna)","BPT-5204 (Sona Masuri)","RNR-15048","IR-64"],
+    fertilizer:"N:P:K = 60:30:30 kg/acre. DAP at sowing, urea in splits.",
     irrigation:"Transplanted paddy needs continuous flooding. 4–5 cm standing water.",
     pests:["Stem Borer","Brown Plant Hopper","Leaf Folder","Blast","Sheath Blight"],
-    schemes:["PM-KISAN","PMFBY","Rythu Bandhu","Rythu Bandhu Plus"],
-    tips:"Use SRI method to save 30% water. Transplant 21-day-old seedlings at 25×25 cm spacing.",
+    schemes:["PM-KISAN","PMFBY","Rythu Bandhu","MSP Procurement"],
+    tips:"Use SRI method to save 30% water. Transplant 21-day-old seedlings at 25×25 cm.",
     market:"Hyderabad, Nalgonda, Karimnagar, Khammam APMCs",
-    districts:["Telangana","Andhra Pradesh","Chhattisgarh","Bihar","Punjab"],
   },
   cotton: {
     name:"Cotton (Kapas)", sci:"Gossypium hirsutum", emoji:"🌸", type:"Cash Crop",
@@ -458,13 +414,12 @@ const CROPS = {
     duration:"150–180 days",
     sow:[5,6,7], grow:[7,8,9,10], harv:[10,11,12],
     varieties:["Bt Cotton NK 6240","RCH-2 BG II","Bunny BG II","NCS 9004"],
-    fertilizer:"120:60:60 NPK kg/acre. Farmyard manure 4 tonnes/acre before sowing.",
-    irrigation:"3–5 irrigations. Critical at squaring and boll development stages.",
-    pests:["Bollworm","Aphid","Whitefly","Pink Bollworm","Sucking pests","Leaf Curl Virus"],
-    schemes:["PMFBY","PM-KISAN","PKVY (organic)","SMAM"],
-    tips:"Maintain 100×45 cm spacing. Pick at 45–50% boll opening. Avoid late sowing after July 15.",
+    fertilizer:"120:60:60 NPK kg/acre. FYM 4 tonnes/acre before sowing.",
+    irrigation:"3–5 irrigations. Critical at squaring and boll development.",
+    pests:["Bollworm","Aphid","Whitefly","Pink Bollworm","Leaf Curl Virus"],
+    schemes:["PMFBY","PM-KISAN","PKVY","SMAM"],
+    tips:"Maintain 100×45 cm spacing. Pick at 45–50% boll opening. Avoid sowing after July 15.",
     market:"Karimnagar, Adilabad, Warangal, Hinganghat",
-    districts:["Telangana","Andhra Pradesh","Maharashtra","Karnataka"],
   },
   maize: {
     name:"Maize (Corn)", sci:"Zea mays", emoji:"🌽", type:"Cereal",
@@ -474,13 +429,12 @@ const CROPS = {
     duration:"90–120 days",
     sow:[6,7], grow:[7,8,9], harv:[9,10],
     varieties:["DHM-117","HQPM-1","NK-6240","Pro-311","Pioneer 3396"],
-    fertilizer:"120:60:40 NPK. Apply 50% N + full P+K at sowing, 25% N at knee-high.",
+    fertilizer:"120:60:40 NPK. 50% N + full P+K at sowing, 25% N at knee-high.",
     irrigation:"5–6 irrigations. Critical at silking and grain-fill stages.",
-    pests:["Fall Armyworm","Stem Borer","Aphid","Turcicum Blight","FAW (new pest)"],
+    pests:["Fall Armyworm","Stem Borer","Aphid","Turcicum Blight"],
     schemes:["NFSM","PM-KISAN","PMFBY","RKVY"],
-    tips:"FAW spray: Emamectin Benzoate 5% SG @0.4 g/L. Plant at 60×25 cm spacing.",
+    tips:"FAW spray: Emamectin Benzoate 5% SG @0.4 g/L. Plant at 60×25 cm.",
     market:"Nizamabad, Karimnagar, Warangal, Hindupur",
-    districts:["Telangana","Andhra Pradesh","Karnataka","Maharashtra","Bihar"],
   },
   chilli: {
     name:"Red Chilli", sci:"Capsicum annuum", emoji:"🌶️", type:"Spice",
@@ -489,32 +443,29 @@ const CROPS = {
     msp:"No MSP (₹100–200/kg market)", avgYield:"4–8 qtl/acre (dry)",
     duration:"150–180 days",
     sow:[6,7,8], grow:[8,9,10,11], harv:[11,12,1,2],
-    varieties:["LCA-306 (Bullet)","334 (Hybrid)","Byadgi Kaddi","G-4","Pusa Jwala"],
-    fertilizer:"75:50:50 NPK kg/acre. Foliar spray of 0.5% ZnSO4 improves fruit set.",
-    irrigation:"8–10 irrigations. Drip irrigation saves 40% water and boosts yield.",
+    varieties:["LCA-306 (Bullet)","334 Hybrid","Byadgi Kaddi","G-4","Pusa Jwala"],
+    fertilizer:"75:50:50 NPK kg/acre. Foliar spray 0.5% ZnSO4 improves fruit set.",
+    irrigation:"8–10 irrigations. Drip saves 40% water and boosts yield.",
     pests:["Thrips","Mites","Aphids","Fruit Borer","Anthracnose","Viral diseases"],
     schemes:["MIDH","PMFBY","PM-KISAN","PKVY"],
     tips:"Guntur Red Chilli is GI-tagged. Use raised beds. Mulching reduces moisture stress.",
     market:"Guntur (Asia's largest chilli market), Khammam, Warangal",
-    districts:["Andhra Pradesh","Telangana","Karnataka","Maharashtra"],
   },
   turmeric: {
     name:"Turmeric", sci:"Curcuma longa", emoji:"🟡", type:"Spice",
     season:"Kharif",
     soilBest:["Sandy Loam","Alluvial","Red"], waterNeed:"Medium (1000–1500 mm)",
-    msp:"No MSP (₹7,000–12,000/qtl market)", avgYield:"25–35 qtl/acre (dry)",
+    msp:"No MSP (₹7,000–12,000/qtl)", avgYield:"25–35 qtl/acre (dry)",
     duration:"240–270 days",
     sow:[4,5,6], grow:[6,7,8,9,10,11], harv:[12,1,2],
     varieties:["Erode Local","Salem Local","Nizamabad Bulb","Alleppey"],
-    fertilizer:"60:50:80 NPK kg/acre. Rich in organic matter requirement.",
+    fertilizer:"60:50:80 NPK kg/acre. Rich organic matter needed.",
     irrigation:"7–8 irrigations. Mulch with green leaves after planting.",
     pests:["Rhizome Rot","Leaf Spot","Scale Insect","Shoot Borer"],
     schemes:["MIDH","PM-KISAN","PKVY","RKVY"],
     tips:"Nizamabad Bulb variety famous for high curcumin. Boil and dry rhizomes for 3 days.",
     market:"Nizamabad, Erode, Salem, Duggirala",
-    districts:["Telangana","Andhra Pradesh","Karnataka","Maharashtra"],
   },
-  // ── ANDHRA PRADESH ──
   groundnut: {
     name:"Groundnut", sci:"Arachis hypogaea", emoji:"🥜", type:"Oilseed",
     season:"Kharif", altSeason:"Rabi",
@@ -523,30 +474,27 @@ const CROPS = {
     duration:"100–130 days",
     sow:[6,7,1,2], grow:[7,8,9,2,3], harv:[9,10,4,5],
     varieties:["TAG-24","K-6","ICGS-76","Kadiri 5","JL-24"],
-    fertilizer:"10:40:20 NPK. Gypsum @200 kg/acre at pegging stage for pod filling.",
+    fertilizer:"10:40:20 NPK. Gypsum @200 kg/acre at pegging for pod filling.",
     irrigation:"4–5 irrigations. Critical at pegging and pod development.",
     pests:["Leaf Miner","Tikka Disease","Collar Rot","Aphid","White Grub"],
     schemes:["PM-KISAN","PMFBY","NFSM","YSR Rythu Bharosa"],
-    tips:"Inoculate seeds with Rhizobium culture. Avoid waterlogging. Harvest at 90% maturity.",
+    tips:"Inoculate seeds with Rhizobium culture. Avoid waterlogging.",
     market:"Guntur, Kurnool, Nellore, Rajkot",
-    districts:["Andhra Pradesh","Telangana","Rajasthan","Gujarat"],
   },
-  // ── KARNATAKA ──
   sugarcane: {
     name:"Sugarcane", sci:"Saccharum officinarum", emoji:"🎋", type:"Cash Crop",
     season:"Perennial",
     soilBest:["Deep Black","Alluvial","Sandy Loam"], waterNeed:"Very High (1500–2500 mm)",
-    msp:"₹340/qtl (FRP 2024–25)", avgYield:"400–600 qtl/acre",
+    msp:"₹340/qtl FRP (2024–25)", avgYield:"400–600 qtl/acre",
     duration:"12–18 months",
     sow:[10,11,12,1,2], grow:[1,2,3,4,5,6,7,8,9], harv:[10,11,12,1,2,3],
-    varieties:["Co-86032","CoM-265","Co-0238","SNK-0354","Co-94012"],
-    fertilizer:"250:100:100 NPK kg/acre. Trash mulching reduces water requirement by 30%.",
-    irrigation:"Drip irrigation highly recommended. 25–30 irrigations if flood irrigated.",
+    varieties:["Co-86032","CoM-265","Co-0238","SNK-0354"],
+    fertilizer:"250:100:100 NPK kg/acre. Trash mulching saves 30% water.",
+    irrigation:"Drip highly recommended. 25–30 irrigations if flood irrigated.",
     pests:["Early Shoot Borer","Top Shoot Borer","Pyrilla","Red Rot","Smut"],
     schemes:["PM-KISAN","PMFBY","RKVY","SMAM"],
-    tips:"Plant cane in furrows 90 cm apart. Ratoon crop takes 10–12 months.",
+    tips:"Plant in furrows 90 cm apart. Ratoon crop takes 10–12 months.",
     market:"Dharwad, Mandya, Belgaum, Kolhapur",
-    districts:["Karnataka","Maharashtra","Uttar Pradesh","Tamil Nadu"],
   },
   soybean: {
     name:"Soybean", sci:"Glycine max", emoji:"🫘", type:"Oilseed",
@@ -556,13 +504,12 @@ const CROPS = {
     duration:"95–110 days",
     sow:[6,7], grow:[7,8,9], harv:[9,10],
     varieties:["JS-335","JS-9305","MAUS-81","NRC-37","Pusa-16"],
-    fertilizer:"20:60:40 NPK. Rhizobium + PSB seed treatment doubles nitrogen fixation.",
-    irrigation:"3–4 irrigations. Drought tolerant but critical at flowering and pod fill.",
+    fertilizer:"20:60:40 NPK. Rhizobium + PSB seed treatment doubles N fixation.",
+    irrigation:"3–4 irrigations. Drought tolerant but critical at flowering.",
     pests:["Stem Fly","Girdle Beetle","Spodoptera","Yellow Mosaic Virus","Pod Borer"],
     schemes:["NFSM","PMFBY","PM-KISAN","RKVY"],
     tips:"Inoculate with Rhizobium bradyrhizobii. Harvest when 85% pods are brown.",
     market:"Indore, Latur, Bidar, Akola",
-    districts:["Karnataka","Maharashtra","Madhya Pradesh","Rajasthan"],
   },
   ragi: {
     name:"Ragi (Finger Millet)", sci:"Eleusine coracana", emoji:"🌾", type:"Cereal",
@@ -576,44 +523,39 @@ const CROPS = {
     irrigation:"3–4 irrigations. Highly drought tolerant.",
     pests:["Blast","Downy Mildew","Head Caterpillar","Aphids"],
     schemes:["NFSM","PM-KISAN","PKVY","RKVY"],
-    tips:"High calcium and iron — 'nutri-cereal'. Good for dry, degraded soils. Intercrop with groundnut.",
+    tips:"High calcium and iron – 'nutri-cereal'. Good for dry, degraded soils.",
     market:"Mysuru, Hassan, Davangere, Chitradurga",
-    districts:["Karnataka","Tamil Nadu","Andhra Pradesh","Chhattisgarh"],
   },
-  // ── MAHARASHTRA ──
   onion: {
     name:"Onion", sci:"Allium cepa", emoji:"🧅", type:"Vegetable",
     season:"Kharif", altSeason:"Rabi",
     soilBest:["Sandy Loam","Alluvial","Red"], waterNeed:"Medium (350–550 mm)",
-    msp:"No MSP (₹600–2,200/qtl market)", avgYield:"80–120 qtl/acre",
+    msp:"No MSP (₹600–2,200/qtl)", avgYield:"80–120 qtl/acre",
     duration:"90–120 days",
     sow:[10,11,12,5,6], grow:[12,1,2,7,8], harv:[2,3,4,9,10],
-    varieties:["Agri Found Dark Red","N-2-4-1","Bhima Red","Pusa Red","NHRDF Red"],
-    fertilizer:"60:40:40 NPK. Sulphur @30 kg/acre improves storage and pungency.",
-    irrigation:"8–10 irrigations. Stop irrigation 10 days before harvest.",
-    pests:["Thrips","Purple Blotch","Stemphylium Blight","Basal Rot","Colletotrichum"],
+    varieties:["Agri Found Dark Red","N-2-4-1","Bhima Red","Pusa Red"],
+    fertilizer:"60:40:40 NPK. Sulphur @30 kg/acre improves storage.",
+    irrigation:"8–10 irrigations. Stop 10 days before harvest.",
+    pests:["Thrips","Purple Blotch","Stemphylium Blight","Basal Rot"],
     schemes:["MIDH","PM-KISAN","PMFBY","RKVY"],
-    tips:"Nashik is India's onion capital. Cold storage at 0–2°C extends shelf life to 6 months.",
+    tips:"Nashik is India's onion capital. Cold storage at 0–2°C extends shelf life 6 months.",
     market:"Nashik (Lasalgaon), Pune, Solapur, Indore",
-    districts:["Maharashtra","Karnataka","Rajasthan","Andhra Pradesh"],
   },
   grapes: {
     name:"Grapes", sci:"Vitis vinifera", emoji:"🍇", type:"Fruit",
     season:"Perennial",
     soilBest:["Sandy Loam","Black","Alluvial"], waterNeed:"Medium (700–900 mm drip)",
-    msp:"No MSP (₹30–80/kg market)", avgYield:"60–100 qtl/acre",
-    duration:"Perennial (2–3 years to first harvest)",
+    msp:"No MSP (₹30–80/kg)", avgYield:"60–100 qtl/acre",
+    duration:"Perennial (2–3 yrs to first harvest)",
     sow:[10,11], grow:[11,12,1,2,3], harv:[3,4,5],
-    varieties:["Thompson Seedless","Sharad Seedless","Sonaka","Flame Seedless","Manjri Medika"],
-    fertilizer:"100:80:100 NPK per year. Foliar nutrition critical during berry development.",
-    irrigation:"Drip irrigation mandatory. Furrow/flood irrigation not suitable.",
+    varieties:["Thompson Seedless","Sharad Seedless","Sonaka","Flame Seedless"],
+    fertilizer:"100:80:100 NPK/year. Foliar nutrition critical during berry development.",
+    irrigation:"Drip irrigation mandatory.",
     pests:["Downy Mildew","Powdery Mildew","Anthracnose","Mealybug","Thrips"],
     schemes:["MIDH","PM-KISAN","RKVY","PMFBY"],
-    tips:"Nashik grapes exported to 40+ countries. Pruning technique critical — Oct & Apr pruning.",
+    tips:"Nashik grapes exported to 40+ countries. Pruning technique critical.",
     market:"Nashik, Pune, Sangli, Mumbai",
-    districts:["Maharashtra","Karnataka","Andhra Pradesh","Tamil Nadu"],
   },
-  // ── PUNJAB ──
   wheat: {
     name:"Wheat", sci:"Triticum aestivum", emoji:"🌾", type:"Cereal",
     season:"Rabi",
@@ -621,16 +563,14 @@ const CROPS = {
     msp:"₹2,275/qtl (2024–25)", avgYield:"18–25 qtl/acre",
     duration:"120–150 days",
     sow:[10,11], grow:[11,12,1,2], harv:[3,4],
-    varieties:["HD-3086","PBW-343","PBW-550","DBW-187","WH-1105","HD-2967"],
-    fertilizer:"120:60:40 NPK. Apply 50% N before sowing, 50% N at first irrigation.",
-    irrigation:"5–6 critical irrigations: CRI, Tillering, Jointing, Flowering, Milking, Dough stage.",
-    pests:["Yellow Rust","Brown Rust","Loose Smut","Karnal Bunt","Aphids","Termite"],
+    varieties:["HD-3086","PBW-343","PBW-550","DBW-187","HD-2967"],
+    fertilizer:"120:60:40 NPK. 50% N before sowing, 50% N at first irrigation.",
+    irrigation:"5–6 irrigations: CRI, Tillering, Jointing, Flowering, Milking, Dough.",
+    pests:["Yellow Rust","Brown Rust","Loose Smut","Karnal Bunt","Aphids"],
     schemes:["PM-KISAN","PMFBY","KCC","NFSM","MSP Procurement"],
-    tips:"Sow before Nov 15 for best yield. Zero-till sowing saves fuel and improves germination.",
+    tips:"Sow before Nov 15. Zero-till sowing saves fuel and improves germination.",
     market:"Ludhiana, Amritsar, Jalandhar, Bathinda mandis",
-    districts:["Punjab","Haryana","Uttar Pradesh","Rajasthan","Bihar"],
   },
-  // ── RAJASTHAN ──
   bajra: {
     name:"Bajra (Pearl Millet)", sci:"Pennisetum glaucum", emoji:"🌾", type:"Cereal",
     season:"Kharif",
@@ -639,13 +579,12 @@ const CROPS = {
     duration:"80–90 days",
     sow:[6,7], grow:[7,8], harv:[9,10],
     varieties:["HHB-67","Pusa-322","GHB-538","MH-169","Rajshree"],
-    fertilizer:"40:20:0 NPK. Very low input requirement. Well adapted to poor soils.",
+    fertilizer:"40:20:0 NPK. Low input. Well adapted to poor soils.",
     irrigation:"1–2 irrigations if rain is poor. Highly drought tolerant.",
     pests:["Downy Mildew","Ergot","Stem Borer","Shoot Fly"],
     schemes:["PM-KISAN","NFSM","RKVY","PMFBY"],
-    tips:"Staple food of Rajasthan. Intercrop with moth bean or cowpea. Residues used as fodder.",
+    tips:"Staple food of Rajasthan. Intercrop with moth bean or cowpea.",
     market:"Sikar, Bikaner, Jodhpur, Barmer",
-    districts:["Rajasthan","Haryana","Uttar Pradesh","Maharashtra"],
   },
   mustard: {
     name:"Mustard (Sarson)", sci:"Brassica juncea", emoji:"🌿", type:"Oilseed",
@@ -654,33 +593,29 @@ const CROPS = {
     msp:"₹5,650/qtl (2024–25)", avgYield:"5–8 qtl/acre",
     duration:"110–140 days",
     sow:[9,10], grow:[10,11,12], harv:[1,2,3],
-    varieties:["Pusa Bold","Kranti","Rohini","NRCHB-101","Seeta","Maya"],
-    fertilizer:"60:30:20 NPK. Sulphur @20 kg/acre is critical for oil content and yield.",
-    irrigation:"2–3 irrigations: one at rosette and one at flowering stage.",
+    varieties:["Pusa Bold","Kranti","Rohini","NRCHB-101","Seeta"],
+    fertilizer:"60:30:20 NPK. Sulphur @20 kg/acre critical for oil content.",
+    irrigation:"2–3 irrigations: rosette and flowering stage.",
     pests:["Aphid","Painted Bug","Alternaria Blight","White Rust","Stem Rot"],
     schemes:["NFSM","PM-KISAN","PMFBY","KCC"],
     tips:"Rajasthan produces 45% of India's mustard. Timely aphid control saves 20–25% yield.",
     market:"Jaipur, Bharatpur, Kota, Alwar",
-    districts:["Rajasthan","Haryana","Uttar Pradesh","Madhya Pradesh","Bihar"],
   },
-  // ── BIHAR / UP ──
   potato: {
     name:"Potato", sci:"Solanum tuberosum", emoji:"🥔", type:"Vegetable",
     season:"Rabi",
     soilBest:["Sandy Loam","Alluvial","Loamy"], waterNeed:"Medium (400–600 mm)",
-    msp:"No MSP (₹500–1,200/qtl market)", avgYield:"80–120 qtl/acre",
+    msp:"No MSP (₹500–1,200/qtl)", avgYield:"80–120 qtl/acre",
     duration:"75–100 days",
     sow:[9,10,11], grow:[11,12,1], harv:[1,2,3],
-    varieties:["Kufri Jyoti","Kufri Pukhraj","Kufri Chipsona","Kufri Sindhuri","Kufri Bahar"],
-    fertilizer:"120:60:100 NPK. Apply 50% N+K and full P at planting. Rest N at earthing up.",
-    irrigation:"7–8 irrigations. Critical at tuber initiation and bulking stages. Avoid waterlogging.",
-    pests:["Late Blight","Early Blight","Aphid","White Grub","Cutworm","Virus diseases"],
+    varieties:["Kufri Jyoti","Kufri Pukhraj","Kufri Chipsona","Kufri Sindhuri"],
+    fertilizer:"120:60:100 NPK. 50% N+K and full P at planting.",
+    irrigation:"7–8 irrigations. Critical at tuber initiation and bulking.",
+    pests:["Late Blight","Early Blight","Aphid","White Grub","Cutworm"],
     schemes:["PM-KISAN","PMFBY","MIDH","RKVY"],
-    tips:"Agra, Aligarh, Patna are major potato belts. Cold storage chain critical for price stability.",
+    tips:"Cold storage chain critical for price stability.",
     market:"Agra, Aligarh, Patna, Farrukhabad",
-    districts:["Uttar Pradesh","Bihar","Punjab","West Bengal","Madhya Pradesh"],
   },
-  // ── CHHATTISGARH ──
   arhar: {
     name:"Arhar (Pigeon Pea / Tur)", sci:"Cajanus cajan", emoji:"🫘", type:"Pulse",
     season:"Kharif",
@@ -690,119 +625,627 @@ const CROPS = {
     sow:[6,7], grow:[7,8,9,10,11], harv:[12,1,2],
     varieties:["ICPL-87119 (Asha)","GT-100","BDN-2","ICPL-151","CO-6"],
     fertilizer:"20:40:20 NPK. Rhizobium inoculation gives 30% extra yield.",
-    irrigation:"2–3 irrigations at critical stages. Drought tolerant.",
+    irrigation:"2–3 irrigations. Drought tolerant.",
     pests:["Pod Borer (H. armigera)","Wilt","Sterility Mosaic Virus","Pod Fly"],
     schemes:["NFSM","PM-KISAN","PMFBY","RKVY"],
-    tips:"Intercrop with sorghum or cotton. Rich protein source — 22–25% protein content.",
+    tips:"Intercrop with sorghum or cotton. Rich protein – 22–25% content.",
     market:"Latur, Gulbarga, Jabalpur, Raipur",
-    districts:["Chhattisgarh","Maharashtra","Karnataka","Andhra Pradesh","Telangana"],
+  },
+  // ── NEW CROPS ──
+  jowar: {
+    name:"Jowar (Sorghum)", sci:"Sorghum bicolor", emoji:"🌾", type:"Cereal",
+    season:"Kharif", altSeason:"Rabi",
+    soilBest:["Black","Red","Alluvial"], waterNeed:"Low (400–600 mm)",
+    msp:"₹3,371/qtl (2024–25)", avgYield:"10–18 qtl/acre",
+    duration:"100–120 days",
+    sow:[6,7,10,11], grow:[7,8,9,11,12,1], harv:[9,10,2,3],
+    varieties:["CSH-16","SPV-462","Phule Vasudha","CSV-15","NTJ-2"],
+    fertilizer:"60:40:20 NPK. FYM @5 tonnes/acre improves yield.",
+    irrigation:"3–4 irrigations. Critical at boot and grain-fill stage.",
+    pests:["Shoot Fly","Stem Borer","Aphid","Grain Mold","Downy Mildew"],
+    schemes:["NFSM","PM-KISAN","PMFBY","RKVY"],
+    tips:"Dual-purpose crop – grain + fodder. Rabi jowar is sweeter and more palatable.",
+    market:"Solapur, Latur, Gulbarga, Bijapur, Nizamabad",
+  },
+  sunflower: {
+    name:"Sunflower", sci:"Helianthus annuus", emoji:"🌻", type:"Oilseed",
+    season:"Kharif", altSeason:"Rabi",
+    soilBest:["Alluvial","Sandy Loam","Black"], waterNeed:"Low–Medium (400–600 mm)",
+    msp:"₹7,280/qtl (2024–25)", avgYield:"6–10 qtl/acre",
+    duration:"90–100 days",
+    sow:[6,7,10,11], grow:[7,8,9,11,12], harv:[9,10,1,2],
+    varieties:["KBSH-44","Morden","Sungold-1","PAC-1091","DRSH-1"],
+    fertilizer:"60:80:40 NPK. Boron @1.5 kg/acre increases seed set.",
+    irrigation:"4–5 irrigations. Critical at bud and seed formation.",
+    pests:["Capitulum Borer","Alternaria Blight","Downy Mildew","Aphid","Birds"],
+    schemes:["NFSM","PM-KISAN","PMFBY","RKVY"],
+    tips:"Place beehives near sunflower fields for better pollination. Harvests quickly and fits rice-fallows.",
+    market:"Raichur, Bellary, Kurnool, Solapur",
+  },
+  sesamum: {
+    name:"Sesamum (Til)", sci:"Sesamum indicum", emoji:"🌿", type:"Oilseed",
+    season:"Kharif",
+    soilBest:["Sandy Loam","Alluvial","Red"], waterNeed:"Very Low (300–400 mm)",
+    msp:"₹9,267/qtl (2024–25)", avgYield:"3–5 qtl/acre",
+    duration:"80–90 days",
+    sow:[6,7], grow:[7,8], harv:[9,10],
+    varieties:["TMV-3","RT-54","GT-1","NB-5","Pragati"],
+    fertilizer:"30:15:15 NPK. Low fertilizer requirement.",
+    irrigation:"2–3 irrigations. Very drought tolerant.",
+    pests:["Gall Midge","Leaf Webber","Phyllody","Cercospora Leaf Spot"],
+    schemes:["NFSM","PM-KISAN","PMFBY"],
+    tips:"Harvest when 75% capsules turn yellow. Shake stalks to collect seeds. High export value.",
+    market:"Rajkot, Jamnagar, Jodhpur, Barmer",
+  },
+  bengalgram: {
+    name:"Bengal Gram (Chickpea / Chana)", sci:"Cicer arietinum", emoji:"🫘", type:"Pulse",
+    season:"Rabi",
+    soilBest:["Sandy Loam","Loam","Alluvial"], waterNeed:"Low (250–400 mm)",
+    msp:"₹5,440/qtl (2024–25)", avgYield:"5–8 qtl/acre",
+    duration:"95–110 days",
+    sow:[10,11], grow:[11,12,1], harv:[2,3],
+    varieties:["JG-11","Vishal","Vijay","JAKI-9218","KAK-2"],
+    fertilizer:"20:40:20 NPK. Rhizobium inoculation. Avoid excess nitrogen.",
+    irrigation:"1–2 irrigations. Very drought tolerant. Avoid excess moisture.",
+    pests:["Pod Borer (H. armigera)","Wilt","Collar Rot","Dry Root Rot","Aphid"],
+    schemes:["NFSM","PM-KISAN","PMFBY","KCC"],
+    tips:"Sow in lines at 30×10 cm. Root nodules fix atmospheric nitrogen.",
+    market:"Nagpur, Latur, Bidar, Kalaburagi, Gulbarga",
+  },
+  greengram: {
+    name:"Green Gram (Moong)", sci:"Vigna radiata", emoji:"🫘", type:"Pulse",
+    season:"Kharif", altSeason:"Zaid",
+    soilBest:["Sandy Loam","Loam","Red"], waterNeed:"Low (350–500 mm)",
+    msp:"₹8,682/qtl (2024–25)", avgYield:"4–6 qtl/acre",
+    duration:"60–70 days",
+    sow:[6,7,3,4], grow:[7,8,4,5], harv:[8,9,5,6],
+    varieties:["K-851","Pusa Vishal","SML-668","MH-421","IPM-2-3"],
+    fertilizer:"20:40:20 NPK. Seed inoculation with Rhizobium essential.",
+    irrigation:"3–4 irrigations. Short duration, good for crop rotation.",
+    pests:["Yellow Mosaic Virus","Pod Borer","Leaf Hopper","Powdery Mildew"],
+    schemes:["NFSM","PM-KISAN","PMFBY"],
+    tips:"Excellent for soil health. Intercrop with sorghum/maize. Zaid crop fills seasonal gap.",
+    market:"Hyderabad, Nagpur, Jaipur, Lucknow",
+  },
+  blackgram: {
+    name:"Black Gram (Urad)", sci:"Vigna mungo", emoji:"🫘", type:"Pulse",
+    season:"Kharif", altSeason:"Rabi",
+    soilBest:["Sandy Loam","Alluvial","Red"], waterNeed:"Low (350–500 mm)",
+    msp:"₹7,400/qtl (2024–25)", avgYield:"4–6 qtl/acre",
+    duration:"70–80 days",
+    sow:[6,7,10,11], grow:[7,8,9,11,12], harv:[9,10,1,2],
+    varieties:["LBG-752","TAU-1","PU-31","Uttara","ADT-3"],
+    fertilizer:"20:40:20 NPK. Nitrogen fixation through Rhizobium.",
+    irrigation:"3–4 irrigations. Waterlogging severely harmful.",
+    pests:["Yellow Mosaic Virus","Cercospora Leaf Spot","Pod Borer","Thrips"],
+    schemes:["NFSM","PM-KISAN","PMFBY","RKVY"],
+    tips:"Popular in rice-fallows. Fixes 20–40 kg N/ha. Ready in 70 days.",
+    market:"Guntur, Karimnagar, Nagpur, Raipur",
+  },
+  tomato: {
+    name:"Tomato", sci:"Solanum lycopersicum", emoji:"🍅", type:"Vegetable",
+    season:"Kharif", altSeason:"Rabi",
+    soilBest:["Sandy Loam","Alluvial","Red"], waterNeed:"Medium (400–600 mm)",
+    msp:"No MSP (₹500–3,000/qtl)", avgYield:"100–200 qtl/acre",
+    duration:"90–120 days",
+    sow:[6,7,10,11], grow:[8,9,10,12,1,2], harv:[10,11,2,3,4],
+    varieties:["Pusa Ruby","NS-4266","Arka Vikash","CO-3","Abhinava"],
+    fertilizer:"80:60:60 NPK. Calcium spray at flowering to prevent blossom end rot.",
+    irrigation:"8–10 irrigations or drip. Critical at fruit set.",
+    pests:["Fruit Borer (H. armigera)","Early Blight","Late Blight","Leaf Curl Virus","Whitefly"],
+    schemes:["MIDH","PM-KISAN","PMFBY","RKVY"],
+    tips:"Stake plants at 30 cm height. Pruning lateral shoots increases fruit size.",
+    market:"Kolar, Pune, Nashik, Hyderabad, Varanasi",
+  },
+  brinjal: {
+    name:"Brinjal (Eggplant)", sci:"Solanum melongena", emoji:"🍆", type:"Vegetable",
+    season:"Kharif", altSeason:"Rabi",
+    soilBest:["Sandy Loam","Alluvial","Black"], waterNeed:"Medium (500–700 mm)",
+    msp:"No MSP (₹400–1,500/qtl)", avgYield:"100–160 qtl/acre",
+    duration:"90–130 days",
+    sow:[6,7,10,11], grow:[8,9,10,12,1], harv:[9,10,11,1,2,3],
+    varieties:["Pusa Purple Long","Arka Anand","Pant Samrat","Arka Nidhi"],
+    fertilizer:"75:50:50 NPK. Split nitrogen application.",
+    irrigation:"7–8 irrigations. Drip irrigation preferred.",
+    pests:["Shoot & Fruit Borer","Leaf Roller","Flea Beetle","Phomopsis Blight"],
+    schemes:["MIDH","PM-KISAN","PMFBY"],
+    tips:"Most popular vegetable in India. Harvest at tender stage every 5–7 days.",
+    market:"Hyderabad, Varanasi, Patna, Lucknow",
+  },
+  okra: {
+    name:"Okra (Bhindi / Lady's Finger)", sci:"Abelmoschus esculentus", emoji:"🥒", type:"Vegetable",
+    season:"Kharif", altSeason:"Zaid",
+    soilBest:["Sandy Loam","Alluvial","Black"], waterNeed:"Medium (400–600 mm)",
+    msp:"No MSP (₹600–2,000/qtl)", avgYield:"40–60 qtl/acre",
+    duration:"60–70 days",
+    sow:[6,7,3,4], grow:[7,8,9,4,5,6], harv:[8,9,10,5,6,7],
+    varieties:["Parbhani Kranti","Arka Anamika","VRO-6","Azad Kranti"],
+    fertilizer:"60:40:40 NPK. Side dress with N 30 days after sowing.",
+    irrigation:"5–6 irrigations. Avoid waterlogging.",
+    pests:["Yellow Vein Mosaic Virus","Fruit Borer","Leaf Hopper","Jassid"],
+    schemes:["MIDH","PM-KISAN","PMFBY"],
+    tips:"Harvest pods at 4–5 days interval when tender. Over-maturity reduces quality.",
+    market:"Delhi, Hyderabad, Pune, Lucknow",
+  },
+  cauliflower: {
+    name:"Cauliflower", sci:"Brassica oleracea var. botrytis", emoji:"🥦", type:"Vegetable",
+    season:"Rabi",
+    soilBest:["Sandy Loam","Clay Loam","Alluvial"], waterNeed:"Medium (400–500 mm)",
+    msp:"No MSP (₹400–1,500/qtl)", avgYield:"80–120 qtl/acre",
+    duration:"60–90 days",
+    sow:[9,10,11], grow:[10,11,12], harv:[12,1,2],
+    varieties:["Pusa Snowball","Pusa Deepali","Early Kunwari","Pusa Synthetic"],
+    fertilizer:"100:60:60 NPK. Boron deficiency causes hollow stem disease.",
+    irrigation:"7–8 irrigations. Critical at curd development.",
+    pests:["Diamond Back Moth","Cabbage Borer","Downy Mildew","Club Root"],
+    schemes:["MIDH","PM-KISAN","PMFBY"],
+    tips:"Cover developing curd with outer leaves (blanching) to prevent yellowing.",
+    market:"Patna, Delhi, Lucknow, Varanasi",
+  },
+  banana: {
+    name:"Banana", sci:"Musa spp.", emoji:"🍌", type:"Fruit",
+    season:"Perennial",
+    soilBest:["Alluvial","Sandy Loam","Clay Loam"], waterNeed:"High (1200–2200 mm)",
+    msp:"No MSP (₹8–25/kg)", avgYield:"200–400 qtl/acre",
+    duration:"11–14 months (first crop)",
+    sow:[2,3,6,7], grow:[3,4,5,6,7,8,9,10,11,12], harv:[1,2,3,4,12],
+    varieties:["Grand Naine","Robusta","Poovan","Nendran","Red Banana"],
+    fertilizer:"200:60:300 NPK g/plant/year. Potassium most critical.",
+    irrigation:"Drip irrigation saves water. 5–7 irrigations/month.",
+    pests:["Panama Wilt","Sigatoka Leaf Spot","Burrowing Nematode","Weevil","Bunchy Top Virus"],
+    schemes:["MIDH","PM-KISAN","RKVY","PMFBY"],
+    tips:"Tissue culture plants are disease-free. Remove suckers except ratoon. Support bunches with props.",
+    market:"Jalgaon (banana capital of India), Pune, Mumbai, Hyderabad",
+  },
+  mango: {
+    name:"Mango", sci:"Mangifera indica", emoji:"🥭", type:"Fruit",
+    season:"Perennial",
+    soilBest:["Deep Alluvial","Sandy Loam","Laterite"], waterNeed:"Low–Medium (750–2500 mm)",
+    msp:"No MSP (₹20–100/kg)", avgYield:"40–80 qtl/acre (mature)",
+    duration:"Perennial (3–5 yrs to first harvest)",
+    sow:[7,8], grow:[8,9,10,11,12,1,2,3,4], harv:[4,5,6,7],
+    varieties:["Alphonso","Dasheri","Langra","Totapuri","Neelam","Banganapalli"],
+    fertilizer:"1 kg N + 0.5 kg P + 1 kg K per tree/year. Increase with age.",
+    irrigation:"Drip irrigation recommended. 10–15 irrigations before flowering.",
+    pests:["Mango Hopper","Fruit Fly","Powdery Mildew","Anthracnose","Mealybug"],
+    schemes:["MIDH","PM-KISAN","RKVY","NHB"],
+    tips:"Alphonso mango is GI-tagged. Withhold irrigation 3 months before flowering to induce fruit.",
+    market:"Ratnagiri, Devgad, Vizag, Lucknow, Malihabad",
+  },
+  pomegranate: {
+    name:"Pomegranate", sci:"Punica granatum", emoji:"🔴", type:"Fruit",
+    season:"Perennial",
+    soilBest:["Sandy Loam","Black","Red"], waterNeed:"Low (500–800 mm)",
+    msp:"No MSP (₹40–100/kg)", avgYield:"60–100 qtl/acre",
+    duration:"Perennial (2–3 yrs to first harvest)",
+    sow:[7,8,2,3], grow:[9,10,11,12,1,2,3,4,5,6], harv:[8,9,10,11,1,2],
+    varieties:["Bhagwa","Ganesh","Mridula","Ruby","Araka Tara"],
+    fertilizer:"625:250:250 NPK g/plant/year. Micronutrient spray improves colour.",
+    irrigation:"Drip irrigation essential. 15–20 irrigations/year.",
+    pests:["Fruit Borer","Bacterial Blight","Leaf Spot","Aphid","Mealybug"],
+    schemes:["MIDH","PM-KISAN","RKVY","PMFBY"],
+    tips:"Bhagwa variety most popular for export. Bag fruits to prevent borer damage.",
+    market:"Solapur, Ahmednagar, Nashik, Bijapur",
+  },
+  coconut: {
+    name:"Coconut", sci:"Cocos nucifera", emoji:"🥥", type:"Fruit",
+    season:"Perennial",
+    soilBest:["Sandy Loam","Laterite","Alluvial"], waterNeed:"High (1500–2500 mm)",
+    msp:"No MSP (₹12–20/nut)", avgYield:"80–100 nuts/tree/year",
+    duration:"Perennial (5–6 yrs to first harvest)",
+    sow:[5,6,7], grow:[6,7,8,9,10,11,12,1,2,3,4], harv:[1,2,3,4,5,6,7,8,9,10,11,12],
+    varieties:["West Coast Tall","Chowghat Orange Dwarf","D×T Hybrid","Tiptur Tall"],
+    fertilizer:"1.5 kg N + 1 kg P + 3 kg K per tree/year. Fertilize in monsoon.",
+    irrigation:"Basin irrigation; 35–40 L/day in summer or drip.",
+    pests:["Rhinoceros Beetle","Red Palm Weevil","Eriophyid Mite","Bud Rot"],
+    schemes:["Coconut Development Board","MIDH","PM-KISAN","RKVY"],
+    tips:"Intercrop with cocoa, pepper, or banana for extra income.",
+    market:"Kakinada, Vizag, Kochi, Chennai",
+  },
+  tobacco: {
+    name:"Tobacco (FCV)", sci:"Nicotiana tabacum", emoji:"🌿", type:"Cash Crop",
+    season:"Rabi",
+    soilBest:["Sandy Loam","Light Red","Well-drained"], waterNeed:"Low–Medium (500–600 mm)",
+    msp:"No MSP (₹120–250/kg)", avgYield:"8–12 qtl/acre",
+    duration:"120–130 days",
+    sow:[9,10], grow:[10,11,12], harv:[1,2,3],
+    varieties:["K-326","Virginia Gold","Coker-347","NCTB-1"],
+    fertilizer:"60:60:120 NPK. High potassium essential for quality leaf.",
+    irrigation:"4–5 irrigations. Stop 3 weeks before harvest.",
+    pests:["Budworm","Aphid","Flea Beetle","Black Shank","Blue Mold"],
+    schemes:["TAI Subsidy","PM-KISAN","PMFBY"],
+    tips:"Guntur is Asia's largest tobacco market. Curing type (flue/air) determines price.",
+    market:"Guntur, Chirala, Ongole, Rajahmundry",
+  },
+  jute: {
+    name:"Jute", sci:"Corchorus olitorius", emoji:"🌿", type:"Cash Crop",
+    season:"Kharif",
+    soilBest:["Alluvial","Sandy Loam","Clay Loam"], waterNeed:"High (1200–1800 mm)",
+    msp:"₹5,335/qtl (2024–25)", avgYield:"15–20 qtl/acre",
+    duration:"100–120 days",
+    sow:[3,4,5], grow:[5,6,7], harv:[7,8],
+    varieties:["JRO-524","JRO-7835","Naveen","Suren","JRO-8432"],
+    fertilizer:"60:30:30 NPK. Responds well to organic manure.",
+    irrigation:"2–3 irrigations. Grows best in flood plain areas.",
+    pests:["Stem Rot","Semilooper","Jute Hairy Caterpillar","Jute Red Spider Mite"],
+    schemes:["JMDC","PM-KISAN","PMFBY","RKVY"],
+    tips:"Ret jute in running water for 15–20 days for best fibre quality. Natural fibre – high export demand.",
+    market:"Kolkata, Darbhanga, Siliguri, Muzaffarpur",
+  },
+  coriander: {
+    name:"Coriander (Dhaniya)", sci:"Coriandrum sativum", emoji:"🌿", type:"Spice",
+    season:"Rabi",
+    soilBest:["Sandy Loam","Alluvial","Black"], waterNeed:"Low (250–400 mm)",
+    msp:"No MSP (₹4,000–12,000/qtl)", avgYield:"4–7 qtl/acre (seed)",
+    duration:"90–120 days",
+    sow:[10,11], grow:[11,12,1], harv:[2,3],
+    varieties:["RCR-41","CO-3","Rajendra Swati","DH-5","CS-6"],
+    fertilizer:"40:30:20 NPK. Light soils – more fertilizer needed.",
+    irrigation:"4–5 irrigations. Spray irrigation preferred.",
+    pests:["Aphid","Powdery Mildew","Grain Mold","Stem Gall","Wilt"],
+    schemes:["MIDH","PM-KISAN","PMFBY"],
+    tips:"Rajasthan produces 80% of India's coriander. Both green leaf and dry seed are marketable.",
+    market:"Kota, Ramganj Mandi, Jaipur, Guna",
+  },
+  garlic: {
+    name:"Garlic", sci:"Allium sativum", emoji:"🧄", type:"Spice",
+    season:"Rabi",
+    soilBest:["Sandy Loam","Alluvial","Clay Loam"], waterNeed:"Medium (350–450 mm)",
+    msp:"No MSP (₹3,000–15,000/qtl)", avgYield:"40–60 qtl/acre",
+    duration:"130–180 days",
+    sow:[9,10,11], grow:[11,12,1], harv:[2,3,4],
+    varieties:["G-282","G-1","Yamuna Safed-2","Agrifound White","Bhima Purple"],
+    fertilizer:"60:40:40 NPK. Sulphur @25 kg/acre improves pungency.",
+    irrigation:"5–6 irrigations. Furrow irrigation preferred.",
+    pests:["Purple Blotch","Stemphylium Blight","Thrips","Leaf Miner"],
+    schemes:["MIDH","PM-KISAN","PMFBY","RKVY"],
+    tips:"Stop irrigation 2 weeks before harvest. Cure in shade for 2 weeks before storage.",
+    market:"Indore, Kota, Jaipur, Ahmedabad, Pune",
+  },
+  ginger: {
+    name:"Ginger", sci:"Zingiber officinale", emoji:"🫚", type:"Spice",
+    season:"Kharif",
+    soilBest:["Sandy Loam","Red","Laterite"], waterNeed:"High (1500–3000 mm)",
+    msp:"No MSP (₹5,000–15,000/qtl)", avgYield:"50–80 qtl/acre (fresh)",
+    duration:"180–240 days",
+    sow:[4,5,6], grow:[6,7,8,9,10,11], harv:[12,1,2],
+    varieties:["Suprabha","Suruchi","Suravi","Rio de Janeiro","China Ginger"],
+    fertilizer:"80:50:100 NPK. Heavy organic manure (25 t/ha) mandatory.",
+    irrigation:"8–10 irrigations. Mulching with dry leaves essential.",
+    pests:["Soft Rot (Pythium)","Bacterial Wilt","Shoot Borer","White Grub","Leaf Roller"],
+    schemes:["MIDH","PKVY","PM-KISAN","PMFBY"],
+    tips:"Seed rhizomes should be treated with mancozeb. Shade-loving – intercrop with coconut.",
+    market:"Ernakulam, Vizag, Karimnagar, Shillong",
+  },
+  mothbean: {
+    name:"Moth Bean (Matki)", sci:"Vigna aconitifolia", emoji:"🫘", type:"Pulse",
+    season:"Kharif",
+    soilBest:["Sandy","Sandy Loam","Red"], waterNeed:"Very Low (200–350 mm)",
+    msp:"₹8,682/qtl (2024–25)", avgYield:"2–4 qtl/acre",
+    duration:"75–90 days",
+    sow:[6,7], grow:[7,8], harv:[9,10],
+    varieties:["RMO-40","Motimath","FAR-8-1","HM-1","CAZM-33"],
+    fertilizer:"10:40:20 NPK. Very low input crop.",
+    irrigation:"1–2 irrigations. Highly drought tolerant. Rainfed crop.",
+    pests:["Cercospora Leaf Spot","Powdery Mildew","Pod Borer","Whitefly"],
+    schemes:["NFSM","PM-KISAN","PMFBY"],
+    tips:"Best pulse for arid Rajasthan. Nutritious – 23% protein. Good soil cover prevents erosion.",
+    market:"Bikaner, Jodhpur, Nagaur, Barmer",
+  },
+  linseed: {
+    name:"Linseed (Flaxseed)", sci:"Linum usitatissimum", emoji:"🌿", type:"Oilseed",
+    season:"Rabi",
+    soilBest:["Clay Loam","Alluvial","Loamy"], waterNeed:"Low (350–450 mm)",
+    msp:"₹7,000/qtl (2024–25)", avgYield:"3–6 qtl/acre",
+    duration:"100–120 days",
+    sow:[10,11], grow:[11,12,1], harv:[2,3],
+    varieties:["Shekhar","Parvati","Gaurav","NP-54","HUL-57"],
+    fertilizer:"40:20:10 NPK. Low fertilizer requirement.",
+    irrigation:"2–3 irrigations. Tolerates mild drought.",
+    pests:["Powdery Mildew","Rust","Budfly","Alternaria Blight"],
+    schemes:["NFSM","PM-KISAN","PMFBY"],
+    tips:"Dual-purpose – oil and fibre. Used in paints, varnish, medicines.",
+    market:"Raipur, Bilaspur, Jabalpur, Allahabad",
+  },
+  cowpea: {
+    name:"Cowpea (Lobia)", sci:"Vigna unguiculata", emoji:"🫘", type:"Pulse",
+    season:"Kharif", altSeason:"Zaid",
+    soilBest:["Sandy Loam","Red","Alluvial"], waterNeed:"Low (400–600 mm)",
+    msp:"₹7,755/qtl (2024–25)", avgYield:"4–6 qtl/acre",
+    duration:"65–75 days",
+    sow:[6,7,3,4], grow:[7,8,4,5], harv:[8,9,5,6],
+    varieties:["Pusa Komal","Lobia-1","V-16","Arka Garima","IARI selection"],
+    fertilizer:"20:40:20 NPK. Nitrogen fixation by Rhizobium.",
+    irrigation:"3–4 irrigations. Drought tolerant.",
+    pests:["Aphid","Cowpea Mosaic Virus","Leaf Hopper","Pod Borer"],
+    schemes:["NFSM","PM-KISAN","PMFBY"],
+    tips:"Excellent for green manure and fodder. Fixes 50–100 kg N/ha.",
+    market:"Patna, Lucknow, Hyderabad, Nagpur",
+  },
+  watermelon: {
+    name:"Watermelon", sci:"Citrullus lanatus", emoji:"🍉", type:"Fruit",
+    season:"Zaid",
+    soilBest:["Sandy Loam","Sandy","Alluvial"], waterNeed:"Medium (400–600 mm)",
+    msp:"No MSP (₹200–800/qtl)", avgYield:"100–200 qtl/acre",
+    duration:"75–90 days",
+    sow:[2,3], grow:[3,4,5], harv:[5,6],
+    varieties:["Sugar Baby","Arka Manik","Durgapura Meetha","Pusa Bedana"],
+    fertilizer:"60:40:60 NPK. Potassium increases sweetness.",
+    irrigation:"8–10 irrigations or drip. Critical at fruit fill.",
+    pests:["Fruit Fly","Aphid","Downy Mildew","Mosaic Virus","Red Pumpkin Beetle"],
+    schemes:["MIDH","PM-KISAN","PMFBY"],
+    tips:"Riverbed/sandy loam ideal. Very profitable in summer. Mulching improves quality.",
+    market:"Nellore, Karimnagar, Agra, Patna",
+  },
+  foddermaize: {
+    name:"Fodder Maize", sci:"Zea mays", emoji:"🌿", type:"Fodder",
+    season:"Kharif", altSeason:"Rabi",
+    soilBest:["Alluvial","Black","Sandy Loam"], waterNeed:"Medium (500–700 mm)",
+    msp:"No MSP (₹200–400/qtl green)", avgYield:"200–300 qtl/acre (green)",
+    duration:"60–70 days (green cutting)",
+    sow:[6,7,10,11], grow:[7,8,11,12], harv:[8,9,12,1],
+    varieties:["African Tall","J-1006","Moti","Pusa Composite-3"],
+    fertilizer:"80:40:20 NPK. Nitrogen split in 3 doses.",
+    irrigation:"4–5 irrigations.",
+    pests:["Stem Borer","Fall Armyworm","Leaf Aphid"],
+    schemes:["RKVY","PM-KISAN","Rashtriya Gokul Mission"],
+    tips:"Cut at 50% silking for best nutrition. High TDN – best fodder for dairy cattle.",
+    market:"Local dairy farms, cooperative societies",
+  },
+  napiergrass: {
+    name:"Napier Grass (Hybrid)", sci:"Pennisetum purpureum", emoji:"🌿", type:"Fodder",
+    season:"Perennial",
+    soilBest:["Alluvial","Black","Sandy Loam"], waterNeed:"Medium (600–1000 mm)",
+    msp:"No MSP (₹200–400/qtl)", avgYield:"400–600 qtl/acre/year",
+    duration:"Perennial (first cut in 75 days)",
+    sow:[2,3,6,7], grow:[3,4,5,6,7,8,9,10,11,12], harv:[1,2,3,4,5,6,7,8,9,10,11,12],
+    varieties:["CO-3","CO-4","NB-21 (BNH-10)","Hybrid Napier-1"],
+    fertilizer:"40 kg N per cutting. Responds heavily to nitrogen.",
+    irrigation:"Monthly irrigation. Drought semi-tolerant.",
+    pests:["Head Smut","Armyworm – generally low pest incidence"],
+    schemes:["Rashtriya Gokul Mission","RKVY","PM-KISAN"],
+    tips:"Multiplex – one planting for 5+ years. Cut every 45–60 days at knee height.",
+    market:"Local dairies, milk cooperatives, animal feed mills",
+  },
+  lentil: {
+    name:"Lentil (Masoor)", sci:"Lens culinaris", emoji:"🫘", type:"Pulse",
+    season:"Rabi",
+    soilBest:["Alluvial","Clay Loam","Sandy Loam"], waterNeed:"Low (250–400 mm)",
+    msp:"₹6,425/qtl (2024–25)", avgYield:"5–8 qtl/acre",
+    duration:"100–130 days",
+    sow:[10,11], grow:[11,12,1], harv:[2,3],
+    varieties:["Pusa Vaibhav","PL-8","DPL-62","HUL-57","K-75"],
+    fertilizer:"20:40:0 NPK. Rhizobium inoculation reduces fertilizer need.",
+    irrigation:"2–3 irrigations. Frost tolerant.",
+    pests:["Rust","Wilt","Collar Rot","Aphid","Stemphylium Blight"],
+    schemes:["NFSM","PM-KISAN","PMFBY","KCC"],
+    tips:"Rich protein – 26%. Important for Indo-Gangetic plain food security.",
+    market:"Patna, Lucknow, Agra, Ujjain",
+  },
+  peas: {
+    name:"Peas (Matar)", sci:"Pisum sativum", emoji:"🫛", type:"Vegetable",
+    season:"Rabi",
+    soilBest:["Sandy Loam","Alluvial","Loamy"], waterNeed:"Low–Medium (350–500 mm)",
+    msp:"No MSP (₹800–2,500/qtl)", avgYield:"30–50 qtl/acre (green pod)",
+    duration:"60–90 days",
+    sow:[10,11], grow:[11,12], harv:[12,1,2],
+    varieties:["Arkel","Pusa Pragati","AP-3","KPMR-400","Lincoln"],
+    fertilizer:"20:40:20 NPK. No extra nitrogen – Rhizobium nodules fix it.",
+    irrigation:"3–4 irrigations. Sensitive to waterlogging.",
+    pests:["Powdery Mildew","Rust","Pea Moth","Aphid","Wilt"],
+    schemes:["MIDH","PM-KISAN","PMFBY"],
+    tips:"Harvest at green stage for vegetable market. Early sowing (Oct) fetches premium price.",
+    market:"Delhi, Lucknow, Chandigarh, Patna",
+  },
+  carrot: {
+    name:"Carrot (Gajar)", sci:"Daucus carota", emoji:"🥕", type:"Vegetable",
+    season:"Rabi",
+    soilBest:["Sandy Loam","Deep Alluvial","Loamy"], waterNeed:"Medium (400–600 mm)",
+    msp:"No MSP (₹500–2,000/qtl)", avgYield:"100–150 qtl/acre",
+    duration:"90–120 days",
+    sow:[9,10,11], grow:[10,11,12], harv:[12,1,2,3],
+    varieties:["Pusa Kesar","Nantes","Pusa Meghali","Hisar Gairic","Early Nantes"],
+    fertilizer:"80:60:60 NPK. Avoid fresh FYM – causes forked roots.",
+    irrigation:"6–8 irrigations. Light frequent irrigation preferred.",
+    pests:["Alternaria Leaf Blight","Carrot Fly","Nematodes","Powdery Mildew"],
+    schemes:["MIDH","PM-KISAN","PMFBY"],
+    tips:"Deep, loose, stone-free soil gives straight roots. Punjab, UP, Rajasthan are major producers.",
+    market:"Delhi, Agra, Lucknow, Patna",
+  },
+  spinach: {
+    name:"Spinach (Palak)", sci:"Spinacia oleracea", emoji:"🥬", type:"Vegetable",
+    season:"Rabi",
+    soilBest:["Sandy Loam","Alluvial","Loamy"], waterNeed:"Low (300–400 mm)",
+    msp:"No MSP (₹400–1,200/qtl)", avgYield:"60–80 qtl/acre",
+    duration:"30–40 days (first cutting)",
+    sow:[9,10,11,12], grow:[10,11,12,1], harv:[10,11,12,1,2,3],
+    varieties:["Pusa Bharati","All Green","Tall Green","Virginia Savoy"],
+    fertilizer:"60:40:30 NPK. Heavy nitrogen for leaf growth.",
+    irrigation:"5–6 irrigations. Light spray irrigation preferred.",
+    pests:["Leaf Miner","Aphid","Damping Off","Downy Mildew"],
+    schemes:["MIDH","PM-KISAN"],
+    tips:"Multiple cuttings possible every 25–30 days. Popular peri-urban vegetable crop.",
+    market:"Delhi, Lucknow, Patna, Hyderabad",
+  },
+  amaranth: {
+    name:"Amaranth (Rajgira / Ramdana)", sci:"Amaranthus hypochondriacus", emoji:"🌾", type:"Cereal",
+    season:"Kharif",
+    soilBest:["Sandy Loam","Red","Alluvial"], waterNeed:"Very Low (300–400 mm)",
+    msp:"No MSP (₹6,000–12,000/qtl)", avgYield:"4–6 qtl/acre",
+    duration:"120–130 days",
+    sow:[6,7], grow:[7,8,9], harv:[10,11],
+    varieties:["RA-3","Suvarna","K-343","Annapurna","Local varieties"],
+    fertilizer:"40:20:20 NPK. Low input requirement.",
+    irrigation:"3–4 irrigations. Drought tolerant.",
+    pests:["Leaf Webber","Stem Weevil","Aphid","Damping Off"],
+    schemes:["PKVY","PM-KISAN","RKVY"],
+    tips:"Gluten-free superfood. High protein (15%) and calcium. Popular in Uttarakhand hills.",
+    market:"Delhi, Jodhpur, Pune, Mumbai health food market",
+  },
+  safflower: {
+    name:"Safflower (Kusumb)", sci:"Carthamus tinctorius", emoji:"🌸", type:"Oilseed",
+    season:"Rabi",
+    soilBest:["Black","Deep Alluvial","Red"], waterNeed:"Low (300–450 mm)",
+    msp:"₹5,800/qtl (2024–25)", avgYield:"4–7 qtl/acre",
+    duration:"110–130 days",
+    sow:[10,11], grow:[11,12,1], harv:[2,3],
+    varieties:["A-300","Nira","PBNS-12","Manjira","Bhima"],
+    fertilizer:"40:40:20 NPK. Sulphur application improves oil quality.",
+    irrigation:"1–2 irrigations. Very drought tolerant.",
+    pests:["Aphid","Leaf Spot","Alternaria Blight","Wilt"],
+    schemes:["NFSM","PM-KISAN","PMFBY"],
+    tips:"Deep taproot extracts moisture from subsoil. Maharashtra and Rajasthan main producers.",
+    market:"Solapur, Ahmednagar, Aurangabad, Rajkot",
+  },
+  castor: {
+    name:"Castor", sci:"Ricinus communis", emoji:"🌿", type:"Oilseed",
+    season:"Kharif",
+    soilBest:["Sandy Loam","Black","Red"], waterNeed:"Low (500–750 mm)",
+    msp:"No MSP (₹5,000–8,000/qtl)", avgYield:"6–12 qtl/acre",
+    duration:"160–200 days",
+    sow:[6,7], grow:[7,8,9,10,11], harv:[11,12,1,2],
+    varieties:["GAUCH-1","DCH-177","48-1","DCH-519","SKP-84"],
+    fertilizer:"60:40:20 NPK. Sulphur improves oil content.",
+    irrigation:"3–4 irrigations. Drought tolerant after establishment.",
+    pests:["Tobacco Caterpillar","Capsule Borer","Semilooper","Leaf Spot"],
+    schemes:["NFSM","PM-KISAN","PMFBY","RKVY"],
+    tips:"India accounts for 85% of world castor exports. Gujarat, Rajasthan major producers.",
+    market:"Gondal, Mahesana, Unjha, Kurnool",
+  },
+  hemp: {
+    name:"Hemp (Industrial)", sci:"Cannabis sativa var. industrialis", emoji:"🌿", type:"Cash Crop",
+    season:"Kharif",
+    soilBest:["Sandy Loam","Alluvial","Deep Loam"], waterNeed:"Medium (500–800 mm)",
+    msp:"No MSP (regulated crop)", avgYield:"8–12 qtl/acre (seed)",
+    duration:"90–120 days",
+    sow:[6,7], grow:[7,8,9], harv:[9,10],
+    varieties:["Licensed industrial varieties only"],
+    fertilizer:"60:30:20 NPK. Nitrogen critical for fibre quality.",
+    irrigation:"4–5 irrigations. Frost sensitive.",
+    pests:["Hemp Flea Beetle","Aphid","Botrytis","Downy Mildew"],
+    schemes:["State-specific licensing schemes","RKVY","PM-KISAN"],
+    tips:"Requires state license. Emerging crop for fibre, seed oil and CBD. Growing interest in Uttarakhand, MP.",
+    market:"Industrial markets – Kanpur, Indore",
+  },
+  isabgol: {
+    name:"Isabgol (Psyllium)", sci:"Plantago ovata", emoji:"🌿", type:"Cash Crop",
+    season:"Rabi",
+    soilBest:["Sandy Loam","Loamy","Well-drained"], waterNeed:"Very Low (200–350 mm)",
+    msp:"No MSP (₹8,000–18,000/qtl)", avgYield:"3–5 qtl/acre",
+    duration:"90–100 days",
+    sow:[10,11], grow:[11,12,1], harv:[2,3],
+    varieties:["Nitantar (RI-89)","HI-5","GI-2","Jalori Local"],
+    fertilizer:"20:20:0 NPK. Excess nitrogen reduces husk quality.",
+    irrigation:"2–3 irrigations. Avoid excess moisture.",
+    pests:["Downy Mildew","Powdery Mildew","Aphid"],
+    schemes:["NFSM","PM-KISAN","PMFBY","Spice Board"],
+    tips:"India supplies 85% of world isabgol. Gujarat and Rajasthan main states.",
+    market:"Unjha (Gujarat – world's largest isabgol market), Jodhpur",
   },
 };
 
-// District → recommended crops mapping
 const DISTRICT_CROPS = {
   // TELANGANA
-  "Nalgonda":    ["rice","cotton","maize","groundnut","arhar"],
-  "Karimnagar":  ["rice","cotton","maize","turmeric","chilli"],
-  "Warangal":    ["rice","cotton","maize","arhar","chilli"],
-  "Nizamabad":   ["rice","maize","turmeric","sugarcane","cotton"],
-  "Khammam":     ["rice","cotton","maize","arhar","groundnut"],
-  "Mahbubnagar": ["cotton","groundnut","maize","arhar","bajra"],
-  "Adilabad":    ["cotton","maize","rice","arhar","soybean"],
-  "Sangareddy":  ["cotton","maize","rice","groundnut","turmeric"],
-  "Siddipet":    ["rice","maize","cotton","turmeric","arhar"],
-  "Hyderabad":   ["rice","maize","cotton","chilli","turmeric"],
+  "Nalgonda":    ["rice","cotton","maize","groundnut","arhar","jowar","blackgram","greengram","sunflower","castor"],
+  "Karimnagar":  ["rice","cotton","maize","turmeric","chilli","arhar","jowar","blackgram","greengram","sugarcane"],
+  "Warangal":    ["rice","cotton","maize","arhar","chilli","jowar","blackgram","greengram","sunflower","groundnut"],
+  "Nizamabad":   ["rice","maize","turmeric","sugarcane","cotton","arhar","ginger","jowar","sunflower","groundnut"],
+  "Khammam":     ["rice","cotton","maize","arhar","groundnut","chilli","jowar","blackgram","greengram","ginger"],
+  "Mahbubnagar": ["cotton","groundnut","maize","arhar","bajra","jowar","sunflower","castor","blackgram","sesamum"],
+  "Adilabad":    ["cotton","maize","rice","arhar","soybean","jowar","blackgram","greengram","groundnut","turmeric"],
+  "Sangareddy":  ["cotton","maize","rice","groundnut","turmeric","sunflower","jowar","arhar","blackgram","castor"],
+  "Siddipet":    ["rice","maize","cotton","turmeric","arhar","greengram","blackgram","jowar","ginger","sunflower"],
+  "Hyderabad":   ["rice","maize","cotton","chilli","turmeric","tomato","brinjal","okra","greengram","blackgram"],
   // ANDHRA PRADESH
-  "Guntur":      ["chilli","cotton","rice","groundnut","arhar"],
-  "Kurnool":     ["cotton","groundnut","arhar","maize","rice"],
-  "Vijayawada":  ["rice","maize","cotton","chilli","sugarcane"],
-  "Vizag":       ["rice","arhar","maize","groundnut","sugarcane"],
-  "Tirupati":    ["groundnut","arhar","rice","maize","cotton"],
-  "Nellore":     ["rice","aquaculture crops","chilli","cotton","maize"],
-  "Kakinada":    ["rice","coconut","arhar","sugarcane","maize"],
-  "Ongole":      ["groundnut","arhar","cotton","maize","rice"],
-  "Rajahmundry": ["rice","sugarcane","arhar","chilli","maize"],
-  "Chittoor":    ["groundnut","arhar","maize","rice","chilli"],
+  "Guntur":      ["chilli","cotton","rice","groundnut","arhar","tobacco","blackgram","greengram","jowar","sunflower"],
+  "Kurnool":     ["cotton","groundnut","arhar","maize","rice","sunflower","jowar","sesamum","blackgram","castor"],
+  "Vijayawada":  ["rice","maize","cotton","chilli","sugarcane","blackgram","greengram","arhar","banana","coconut"],
+  "Vizag":       ["rice","arhar","maize","groundnut","sugarcane","coconut","ginger","turmeric","blackgram","cashew"],
+  "Tirupati":    ["groundnut","arhar","rice","maize","cotton","tomato","chilli","blackgram","jowar","mango"],
+  "Nellore":     ["rice","chilli","cotton","maize","sugarcane","groundnut","blackgram","greengram","coconut","aquaculture"],
+  "Kakinada":    ["rice","coconut","arhar","sugarcane","maize","banana","ginger","blackgram","greengram","tobacco"],
+  "Ongole":      ["groundnut","arhar","cotton","maize","rice","tobacco","sunflower","blackgram","castor","jowar"],
+  "Rajahmundry": ["rice","sugarcane","arhar","chilli","maize","tobacco","banana","coconut","blackgram","ginger"],
+  "Chittoor":    ["groundnut","arhar","maize","rice","chilli","tomato","mango","greengram","blackgram","banana"],
   // KARNATAKA
-  "Dharwad":     ["sugarcane","soybean","maize","ragi","cotton"],
-  "Bidar":       ["soybean","arhar","maize","cotton","ragi"],
-  "Mysuru":      ["ragi","sugarcane","rice","maize","arhar"],
-  "Mandya":      ["sugarcane","ragi","rice","maize","arhar"],
-  "Tumkur":      ["ragi","groundnut","arhar","maize","cotton"],
-  "Bellary":     ["cotton","groundnut","soybean","ragi","bajra"],
-  "Bangalore":   ["ragi","maize","arhar","groundnut","vegetables"],
-  "Hassan":      ["ragi","maize","potato","arhar","coffee"],
-  "Raichur":     ["cotton","rice","arhar","maize","sunflower"],
-  "Shivamogga":  ["rice","areca nut","maize","ragi","sugarcane"],
+  "Dharwad":     ["sugarcane","soybean","maize","ragi","cotton","jowar","arhar","sunflower","greengram","safflower"],
+  "Bidar":       ["soybean","arhar","maize","cotton","ragi","jowar","greengram","blackgram","bengalgram","sunflower"],
+  "Mysuru":      ["ragi","sugarcane","rice","maize","arhar","potato","tomato","onion","ginger","turmeric"],
+  "Mandya":      ["sugarcane","ragi","rice","maize","arhar","coconut","jowar","tomato","onion","bengalgram"],
+  "Tumkur":      ["ragi","groundnut","arhar","maize","cotton","sunflower","jowar","safflower","greengram","blackgram"],
+  "Bellary":     ["cotton","groundnut","soybean","ragi","bajra","jowar","sunflower","bengalgram","arhar","onion"],
+  "Bangalore":   ["ragi","maize","arhar","groundnut","tomato","potato","onion","carrot","brinjal","beans"],
+  "Hassan":      ["ragi","maize","potato","arhar","coffee","ginger","maize","onion","tomato","soybean"],
+  "Raichur":     ["cotton","rice","arhar","maize","sunflower","jowar","greengram","blackgram","banana","bengalgram"],
+  "Shivamogga":  ["rice","maize","ragi","sugarcane","arhar","ginger","turmeric","coconut","banana","blackgram"],
   // MAHARASHTRA
-  "Nashik":      ["grapes","onion","maize","wheat","cotton"],
-  "Pune":        ["onion","grapes","sugarcane","wheat","soybean"],
-  "Aurangabad":  ["sugarcane","cotton","soybean","onion","maize"],
-  "Nagpur":      ["orange","cotton","soybean","arhar","wheat"],
-  "Solapur":     ["sugarcane","cotton","soybean","arhar","grapes"],
-  "Kolhapur":    ["sugarcane","rice","soybean","maize","arhar"],
-  "Amravati":    ["cotton","soybean","arhar","maize","wheat"],
-  "Latur":       ["arhar","soybean","sugarcane","cotton","wheat"],
-  "Jalgaon":     ["cotton","banana","maize","wheat","soybean"],
-  "Ahmednagar":  ["sugarcane","onion","soybean","maize","wheat"],
+  "Nashik":      ["grapes","onion","maize","wheat","cotton","tomato","pomegranate","soybean","bengalgram","jowar"],
+  "Pune":        ["onion","grapes","sugarcane","wheat","soybean","tomato","potato","jowar","bengalgram","arhar"],
+  "Aurangabad":  ["sugarcane","cotton","soybean","onion","maize","jowar","arhar","bengalgram","sunflower","pomegranate"],
+  "Nagpur":      ["cotton","soybean","arhar","wheat","jowar","bengalgram","sunflower","tur","arhar","onion"],
+  "Solapur":     ["sugarcane","cotton","soybean","arhar","grapes","pomegranate","jowar","bengalgram","sunflower","safflower"],
+  "Kolhapur":    ["sugarcane","rice","soybean","maize","arhar","jowar","potato","onion","tomato","ginger"],
+  "Amravati":    ["cotton","soybean","arhar","maize","wheat","jowar","bengalgram","sunflower","greengram","blackgram"],
+  "Latur":       ["arhar","soybean","sugarcane","cotton","wheat","jowar","bengalgram","onion","maize","sunflower"],
+  "Jalgaon":     ["cotton","banana","maize","wheat","soybean","jowar","arhar","greengram","onion","papaya"],
+  "Ahmednagar":  ["sugarcane","onion","soybean","maize","wheat","pomegranate","safflower","arhar","jowar","bengalgram"],
   // PUNJAB
-  "Ludhiana":    ["wheat","rice","maize","potato","mustard"],
-  "Amritsar":    ["wheat","rice","maize","potato","arhar"],
-  "Jalandhar":   ["wheat","rice","potato","maize","sugarcane"],
-  "Patiala":     ["wheat","rice","maize","potato","mustard"],
-  "Bathinda":    ["wheat","mustard","cotton","maize","arhar"],
-  "Ferozepur":   ["wheat","rice","cotton","maize","potato"],
-  "Hoshiarpur":  ["wheat","maize","rice","arhar","potato"],
-  "Gurdaspur":   ["wheat","rice","maize","sugarcane","potato"],
-  "Sangrur":     ["wheat","rice","cotton","maize","arhar"],
-  "Moga":        ["wheat","rice","maize","potato","arhar"],
+  "Ludhiana":    ["wheat","rice","maize","potato","mustard","sugarcane","sunflower","peas","cauliflower","foddermaize"],
+  "Amritsar":    ["wheat","rice","maize","potato","arhar","mustard","sunflower","peas","carrot","cauliflower"],
+  "Jalandhar":   ["wheat","rice","potato","maize","sugarcane","mustard","peas","carrot","cauliflower","onion"],
+  "Patiala":     ["wheat","rice","maize","potato","mustard","foddermaize","sunflower","peas","arhar","napiergrass"],
+  "Bathinda":    ["wheat","mustard","cotton","maize","arhar","sunflower","chickpea","potato","peas","foddermaize"],
+  "Ferozepur":   ["wheat","rice","cotton","maize","potato","mustard","sunflower","peas","cauliflower","carrot"],
+  "Hoshiarpur":  ["wheat","maize","rice","arhar","potato","mustard","ginger","peas","tomato","mango"],
+  "Gurdaspur":   ["wheat","rice","maize","sugarcane","potato","mustard","tomato","peas","carrot","cauliflower"],
+  "Sangrur":     ["wheat","rice","cotton","maize","arhar","mustard","sunflower","potato","foddermaize","peas"],
+  "Moga":        ["wheat","rice","maize","potato","arhar","mustard","sunflower","peas","cauliflower","tomato"],
   // RAJASTHAN
-  "Jaipur":      ["mustard","wheat","bajra","maize","arhar"],
-  "Jodhpur":     ["bajra","mustard","wheat","arhar","groundnut"],
-  "Udaipur":     ["maize","wheat","soybean","arhar","bajra"],
-  "Kota":        ["mustard","wheat","soybean","maize","arhar"],
-  "Ajmer":       ["mustard","wheat","bajra","maize","arhar"],
-  "Bikaner":     ["bajra","mustard","wheat","groundnut","arhar"],
-  "Sikar":       ["bajra","mustard","wheat","groundnut","maize"],
-  "Barmer":      ["bajra","mustard","wheat","groundnut","sesame"],
-  "Nagaur":      ["bajra","mustard","wheat","maize","arhar"],
-  "Chittorgarh": ["maize","wheat","soybean","bajra","mustard"],
+  "Jaipur":      ["mustard","wheat","bajra","maize","arhar","coriander","garlic","greengram","bengalgram","isabgol"],
+  "Jodhpur":     ["bajra","mustard","wheat","arhar","groundnut","mothbean","sesamum","castor","coriander","isabgol"],
+  "Udaipur":     ["maize","wheat","soybean","arhar","bajra","coriander","greengram","blackgram","cotton","ginger"],
+  "Kota":        ["mustard","wheat","soybean","maize","arhar","coriander","soybean","bengalgram","garlic","sunflower"],
+  "Ajmer":       ["mustard","wheat","bajra","maize","arhar","coriander","greengram","mothbean","castor","garlic"],
+  "Bikaner":     ["bajra","mustard","wheat","groundnut","arhar","mothbean","sesamum","castor","greengram","isabgol"],
+  "Sikar":       ["bajra","mustard","wheat","groundnut","maize","coriander","greengram","mothbean","watermelon","garlic"],
+  "Barmer":      ["bajra","mustard","wheat","groundnut","sesamum","mothbean","castor","arhar","coriander","isabgol"],
+  "Nagaur":      ["bajra","mustard","wheat","maize","arhar","coriander","mothbean","greengram","garlic","watermelon"],
+  "Chittorgarh": ["maize","wheat","soybean","bajra","mustard","arhar","garlic","coriander","onion","bengalgram"],
   // BIHAR
-  "Patna":       ["wheat","rice","maize","potato","mustard"],
-  "Gaya":        ["wheat","rice","arhar","maize","potato"],
-  "Muzaffarpur": ["wheat","rice","maize","sugarcane","arhar"],
-  "Bhagalpur":   ["wheat","rice","maize","arhar","mustard"],
-  "Darbhanga":   ["wheat","rice","maize","jute","potato"],
-  "Sitamarhi":   ["wheat","rice","maize","sugarcane","potato"],
-  "Vaishali":    ["wheat","rice","maize","potato","arhar"],
-  "Nalanda":     ["wheat","rice","maize","arhar","potato"],
-  "Saran":       ["wheat","rice","arhar","maize","potato"],
-  "Champaran":   ["wheat","rice","sugarcane","arhar","maize"],
+  "Patna":       ["wheat","rice","maize","potato","mustard","arhar","lentil","peas","cauliflower","onion"],
+  "Gaya":        ["wheat","rice","arhar","maize","potato","mustard","lentil","bengalgram","blackgram","greengram"],
+  "Muzaffarpur": ["wheat","rice","maize","sugarcane","arhar","banana","potato","lentil","mango","litchi"],
+  "Bhagalpur":   ["wheat","rice","maize","arhar","mustard","jute","lentil","blackgram","greengram","mango"],
+  "Darbhanga":   ["wheat","rice","maize","jute","potato","mustard","arhar","lentil","sugarcane","maize"],
+  "Sitamarhi":   ["wheat","rice","maize","sugarcane","potato","arhar","mustard","lentil","jute","mango"],
+  "Vaishali":    ["wheat","rice","maize","potato","arhar","mustard","jute","lentil","greengram","sugarcane"],
+  "Nalanda":     ["wheat","rice","maize","arhar","potato","mustard","lentil","blackgram","greengram","onion"],
+  "Saran":       ["wheat","rice","arhar","maize","potato","mustard","lentil","jute","blackgram","greengram"],
+  "Champaran":   ["wheat","rice","sugarcane","arhar","maize","jute","mustard","lentil","banana","mango"],
   // UTTAR PRADESH
-  "Lucknow":     ["wheat","rice","sugarcane","potato","arhar"],
-  "Agra":        ["wheat","mustard","arhar","potato","maize"],
-  "Varanasi":    ["wheat","rice","arhar","maize","mustard"],
-  "Kanpur":      ["wheat","arhar","mustard","potato","maize"],
-  "Allahabad":   ["wheat","rice","arhar","maize","mustard"],
-  "Meerut":      ["wheat","sugarcane","maize","potato","rice"],
-  "Jhansi":      ["wheat","mustard","arhar","bajra","maize"],
-  "Mathura":     ["wheat","mustard","potato","maize","arhar"],
-  "Aligarh":     ["wheat","potato","mustard","arhar","maize"],
-  "Gorakhpur":   ["wheat","rice","arhar","sugarcane","maize"],
+  "Lucknow":     ["wheat","rice","sugarcane","potato","arhar","mustard","lentil","peas","tomato","mango"],
+  "Agra":        ["wheat","mustard","arhar","potato","maize","garlic","lentil","peas","carrot","cauliflower"],
+  "Varanasi":    ["wheat","rice","arhar","maize","mustard","lentil","potato","peas","spinach","cauliflower"],
+  "Kanpur":      ["wheat","arhar","mustard","potato","maize","lentil","peas","greengram","cauliflower","spinach"],
+  "Allahabad":   ["wheat","rice","arhar","maize","mustard","sugarcane","lentil","guava","peas","tomato"],
+  "Meerut":      ["wheat","sugarcane","maize","potato","rice","mustard","garlic","peas","cauliflower","carrot"],
+  "Jhansi":      ["wheat","mustard","arhar","bajra","maize","linseed","bengalgram","sesamum","greengram","groundnut"],
+  "Mathura":     ["wheat","mustard","potato","maize","arhar","brinjal","garlic","lentil","peas","cauliflower"],
+  "Aligarh":     ["wheat","potato","mustard","arhar","maize","spinach","garlic","lentil","peas","carrot"],
+  "Gorakhpur":   ["wheat","rice","arhar","sugarcane","maize","jute","mustard","lentil","banana","potato"],
   // CHHATTISGARH
-  "Raipur":      ["rice","arhar","maize","wheat","soybean"],
-  "Bilaspur":    ["rice","arhar","maize","wheat","mustard"],
-  "Durg":        ["rice","arhar","maize","wheat","groundnut"],
-  "Jagdalpur":   ["rice","arhar","maize","soybean","mustard"],
-  "Raigarh":     ["rice","arhar","maize","wheat","cotton"],
-  "Rajnandgaon": ["rice","cotton","arhar","maize","wheat"],
-  "Korba":       ["rice","arhar","maize","wheat","groundnut"],
-  "Ambikapur":   ["rice","wheat","arhar","maize","soybean"],
-  "Dhamtari":    ["rice","arhar","maize","wheat","soybean"],
-  "Mahasamund":  ["rice","arhar","maize","wheat","groundnut"],
+  "Raipur":      ["rice","arhar","maize","wheat","soybean","linseed","greengram","blackgram","lentil","castor"],
+  "Bilaspur":    ["rice","arhar","maize","wheat","mustard","linseed","soybean","blackgram","greengram","cowpea"],
+  "Durg":        ["rice","arhar","maize","wheat","groundnut","linseed","greengram","blackgram","tomato","brinjal"],
+  "Jagdalpur":   ["rice","arhar","maize","soybean","mustard","linseed","greengram","cowpea","ginger","turmeric"],
+  "Raigarh":     ["rice","arhar","maize","wheat","cotton","linseed","soybean","blackgram","greengram","sunflower"],
+  "Rajnandgaon": ["rice","cotton","arhar","maize","wheat","soybean","linseed","greengram","blackgram","sunflower"],
+  "Korba":       ["rice","arhar","maize","wheat","groundnut","linseed","greengram","cowpea","blackgram","soybean"],
+  "Ambikapur":   ["rice","wheat","arhar","maize","soybean","linseed","mustard","greengram","cowpea","amaranth"],
+  "Dhamtari":    ["rice","arhar","maize","wheat","soybean","linseed","greengram","blackgram","cowpea","tomato"],
+  "Mahasamund":  ["rice","arhar","maize","wheat","groundnut","linseed","soybean","greengram","blackgram","cowpea"],
 };
 
-// district metadata
 const DISTRICT_META = {
   default: { rainfall:"600–1200 mm", soil:"Mixed (alluvial/red)", area:"3–6 lakh ha", mainSeason:"Kharif & Rabi" },
   "Nalgonda":   { rainfall:"750 mm",    soil:"Black & Red",      area:"4.2 lakh ha",  mainSeason:"Kharif" },
@@ -813,60 +1256,48 @@ const DISTRICT_META = {
   "Jaipur":     { rainfall:"550 mm",    soil:"Sandy Loam",       area:"5.8 lakh ha",  mainSeason:"Rabi" },
   "Patna":      { rainfall:"1000 mm",   soil:"Alluvial",         area:"2.8 lakh ha",  mainSeason:"Kharif" },
   "Raipur":     { rainfall:"1300 mm",   soil:"Red Loam",         area:"3.5 lakh ha",  mainSeason:"Kharif" },
+  "Karimnagar": { rainfall:"900 mm",    soil:"Black & Sandy",    area:"4.5 lakh ha",  mainSeason:"Kharif" },
+  "Warangal":   { rainfall:"950 mm",    soil:"Red & Black",      area:"5.1 lakh ha",  mainSeason:"Kharif" },
+  "Nizamabad":  { rainfall:"1000 mm",   soil:"Alluvial & Black", area:"3.8 lakh ha",  mainSeason:"Kharif" },
+  "Khammam":    { rainfall:"1100 mm",   soil:"Red Loam",         area:"4.0 lakh ha",  mainSeason:"Kharif" },
+  "Mahbubnagar":{ rainfall:"650 mm",    soil:"Red Laterite",     area:"4.8 lakh ha",  mainSeason:"Kharif" },
+  "Jodhpur":    { rainfall:"320 mm",    soil:"Sandy",            area:"4.2 lakh ha",  mainSeason:"Kharif" },
+  "Bikaner":    { rainfall:"280 mm",    soil:"Sandy Desert",     area:"3.6 lakh ha",  mainSeason:"Kharif" },
+  "Muzaffarpur":{ rainfall:"1200 mm",   soil:"Alluvial",         area:"2.5 lakh ha",  mainSeason:"Kharif" },
+  "Kolhapur":   { rainfall:"1500 mm",   soil:"Sandy Clay Loam",  area:"3.0 lakh ha",  mainSeason:"Kharif" },
 };
 
-// ═══════════════════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════════════════
-let currentState    = '';
-let currentDistrict = '';
-let currentView     = 'grid';
-let currentLang     = localStorage.getItem('language') || 'en';
-let filteredCrops   = [];
+let currentState = '', currentDistrict = '', currentView = 'grid', currentLang = localStorage.getItem('language') || 'en';
 
-// ═══════════════════════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════════════════════
 (function init() {
   buildSidebar();
   document.getElementById('langSel').value = currentLang;
   applyLang(currentLang);
-
-  // Restore from localStorage
-  const savedState    = localStorage.getItem('cropState');
+  const savedState = localStorage.getItem('cropState');
   const savedDistrict = localStorage.getItem('cropDistrict');
-  if (savedState && savedDistrict) {
-    quickSelect(savedState, savedDistrict);
-  }
+  if (savedState && savedDistrict) quickSelect(savedState, savedDistrict);
 })();
 
-// ═══════════════════════════════════════════════════════════
-//  SIDEBAR
-// ═══════════════════════════════════════════════════════════
 function buildSidebar() {
   const tree = document.getElementById('sidebar-tree');
   tree.innerHTML = '';
   Object.keys(STATE_DISTRICTS).forEach(state => {
     const grp = document.createElement('div');
     grp.className = 'state-group';
-
     const btn = document.createElement('button');
     btn.className = 'state-btn';
     btn.innerHTML = `<span>🗺 ${state}</span><span class="arrow">▶</span>`;
-    btn.onclick = () => toggleState(state, btn, dl);
-
     const dl = document.createElement('div');
     dl.className = 'district-list';
-
+    btn.onclick = () => toggleState(state, btn, dl);
     STATE_DISTRICTS[state].forEach(d => {
       const db = document.createElement('button');
       db.className = 'dist-btn' + (d === currentDistrict ? ' active' : '');
       db.id = 'dist-' + slugify(d);
       db.innerHTML = `<span class="dot"></span>${d}`;
-      db.onclick = () => { selectDistrict(state, d); };
+      db.onclick = () => selectDistrict(state, d);
       dl.appendChild(db);
     });
-
     grp.appendChild(btn);
     grp.appendChild(dl);
     tree.appendChild(grp);
@@ -877,18 +1308,11 @@ function slugify(s) { return s.replace(/\s+/g,'_').toLowerCase(); }
 
 function toggleState(state, btn, dl) {
   const isOpen = dl.classList.contains('open');
-  // Close all
   document.querySelectorAll('.district-list').forEach(el => el.classList.remove('open'));
   document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('open'));
-  if (!isOpen) {
-    dl.classList.add('open');
-    btn.classList.add('open');
-  }
+  if (!isOpen) { dl.classList.add('open'); btn.classList.add('open'); }
 }
 
-// ═══════════════════════════════════════════════════════════
-//  CONTROLS
-// ═══════════════════════════════════════════════════════════
 function onStateChange() {
   const state = document.getElementById('stateSelect').value;
   const distSel = document.getElementById('districtSelect');
@@ -901,15 +1325,12 @@ function onStateChange() {
     distSel.appendChild(o);
   });
   currentState = state;
-
-  // Auto-open sidebar state
   document.querySelectorAll('.state-btn').forEach(btn => {
     if (btn.textContent.includes(state)) {
       const dl = btn.nextElementSibling;
       document.querySelectorAll('.district-list').forEach(el => el.classList.remove('open'));
       document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('open'));
-      dl.classList.add('open');
-      btn.classList.add('open');
+      dl.classList.add('open'); btn.classList.add('open');
     }
   });
 }
@@ -928,26 +1349,16 @@ function quickSelect(state, district) {
 }
 
 function selectDistrict(state, district) {
-  currentState    = state;
-  currentDistrict = district;
-
-  // Update sidebar active
+  currentState = state; currentDistrict = district;
   document.querySelectorAll('.dist-btn').forEach(b => b.classList.remove('active'));
   const db = document.getElementById('dist-' + slugify(district));
   if (db) { db.classList.add('active'); db.scrollIntoView({ block:'nearest' }); }
-
-  // Update dropdowns
   document.getElementById('stateSelect').value = state;
   if (document.getElementById('districtSelect').disabled) onStateChange();
   document.getElementById('districtSelect').value = district;
-
-  // Save
-  localStorage.setItem('cropState',    state);
+  localStorage.setItem('cropState', state);
   localStorage.setItem('cropDistrict', district);
-
-  // Get crops
-  filteredCrops = (DISTRICT_CROPS[district] || []).map(k => CROPS[k]).filter(Boolean);
-  document.getElementById('welcome-screen').style.display   = 'none';
+  document.getElementById('welcome-screen').style.display = 'none';
   document.getElementById('district-content').style.display = 'block';
   applyFilters();
 }
@@ -957,23 +1368,16 @@ function applyFilters() {
   const season = document.getElementById('seasonSelect').value;
   const type   = document.getElementById('typeSelect').value;
   const search = document.getElementById('searchInput').value.toLowerCase();
-
   let data = (DISTRICT_CROPS[currentDistrict] || []).map(k => CROPS[k]).filter(Boolean);
-
   if (season) data = data.filter(c => c.season === season || c.altSeason === season);
   if (type)   data = data.filter(c => c.type === type);
   if (search) data = data.filter(c => c.name.toLowerCase().includes(search) || (c.sci||'').toLowerCase().includes(search));
-
   renderDistrictContent(data);
 }
 
-// ═══════════════════════════════════════════════════════════
-//  RENDER
-// ═══════════════════════════════════════════════════════════
 function renderDistrictContent(crops) {
   const meta = DISTRICT_META[currentDistrict] || DISTRICT_META.default;
   const area = document.getElementById('district-content');
-
   let html = `
     <div class="district-hero">
       <div class="dh-left">
@@ -986,55 +1390,29 @@ function renderDistrictContent(crops) {
         <div class="dh-stat"><span class="val">${meta.rainfall}</span><span class="lbl">Rainfall</span></div>
       </div>
     </div>
-
     <div class="overview-grid">
-      <div class="ov-card">
-        <div class="ov-icon">🌾</div>
-        <div class="ov-val">${crops.filter(c=>c.type==='Cereal').length}</div>
-        <div class="ov-lbl">Cereals</div>
-      </div>
-      <div class="ov-card">
-        <div class="ov-icon">💰</div>
-        <div class="ov-val">${crops.filter(c=>c.type==='Cash Crop').length}</div>
-        <div class="ov-lbl">Cash Crops</div>
-      </div>
-      <div class="ov-card">
-        <div class="ov-icon">🥕</div>
-        <div class="ov-val">${crops.filter(c=>c.type==='Vegetable'||c.type==='Fruit').length}</div>
-        <div class="ov-lbl">Horticulture</div>
-      </div>
-      <div class="ov-card">
-        <div class="ov-icon">🫘</div>
-        <div class="ov-val">${crops.filter(c=>c.type==='Pulse'||c.type==='Oilseed').length}</div>
-        <div class="ov-lbl">Pulses & Oilseeds</div>
-      </div>
-      <div class="ov-card">
-        <div class="ov-icon">🏛️</div>
-        <div class="ov-val">${[...new Set(crops.flatMap(c=>c.schemes||[]))].length}</div>
-        <div class="ov-lbl">Govt. Schemes</div>
-      </div>
+      <div class="ov-card"><div class="ov-icon">🌾</div><div class="ov-val">${crops.filter(c=>c.type==='Cereal').length}</div><div class="ov-lbl">Cereals</div></div>
+      <div class="ov-card"><div class="ov-icon">💰</div><div class="ov-val">${crops.filter(c=>c.type==='Cash Crop').length}</div><div class="ov-lbl">Cash Crops</div></div>
+      <div class="ov-card"><div class="ov-icon">🥕</div><div class="ov-val">${crops.filter(c=>c.type==='Vegetable'||c.type==='Fruit').length}</div><div class="ov-lbl">Horticulture</div></div>
+      <div class="ov-card"><div class="ov-icon">🫘</div><div class="ov-val">${crops.filter(c=>c.type==='Pulse'||c.type==='Oilseed').length}</div><div class="ov-lbl">Pulses & Oilseeds</div></div>
+      <div class="ov-card"><div class="ov-icon">🌶️</div><div class="ov-val">${crops.filter(c=>c.type==='Spice'||c.type==='Fodder').length}</div><div class="ov-lbl">Spices & Fodder</div></div>
+      <div class="ov-card"><div class="ov-icon">🏛️</div><div class="ov-val">${[...new Set(crops.flatMap(c=>c.schemes||[]))].length}</div><div class="ov-lbl">Govt. Schemes</div></div>
     </div>`;
-
   if (crops.length === 0) {
     html += `<div class="empty"><span class="big">🔍</span>No crops match your current filter.</div>`;
   } else {
-    html += `<div class="sec-head"><span class="icon">🌱</span>Recommended Crops for ${currentDistrict}</div>`;
+    html += `<div class="sec-head"><span class="icon">🌱</span>Recommended Crops for ${currentDistrict} (${crops.length} crops)</div>`;
     html += `<div class="crop-grid ${currentView === 'list' ? 'list-view' : ''}" id="crop-grid">`;
-    crops.forEach((crop, i) => {
-      html += renderCropCard(crop, i);
-    });
+    crops.forEach((crop, i) => { html += renderCropCard(crop, i); });
     html += `</div>`;
   }
-
   area.innerHTML = html;
 }
 
 function renderCropCard(crop, idx) {
   const calHtml = buildCalendar(crop);
-  const delayStyle = `animation-delay:${idx * 0.06}s`;
-
   return `
-  <div class="crop-card" style="${delayStyle}">
+  <div class="crop-card" style="animation-delay:${idx * 0.04}s">
     <div class="card-emoji">${crop.emoji}</div>
     <div class="card-body">
       <div class="crop-name">${crop.name}</div>
@@ -1048,14 +1426,11 @@ function renderCropCard(crop, idx) {
         <span class="tag water">💧 ${crop.waterNeed}</span>
         <span class="tag msp">💰 ${crop.msp}</span>
       </div>
-
       <div class="detail-row"><span class="key">⏱ Duration</span><span class="val">${crop.duration}</span></div>
       <div class="detail-row"><span class="key">🌍 Best Soils</span><span class="val">${crop.soilBest.join(', ')}</span></div>
       <div class="detail-row"><span class="key">🏪 Market</span><span class="val">${crop.market}</span></div>
       <div class="detail-row"><span class="key">🧪 Fertilizer</span><span class="val">${crop.fertilizer.split('.')[0]}</span></div>
-
       <button class="expand-btn" onclick="toggleDetails(this)">▼ Full Details &amp; Calendar</button>
-
       <div class="extra-details">
         <div class="detail-row"><span class="key">💦 Irrigation</span><span class="val">${crop.irrigation}</span></div>
         <div style="margin-top:10px;">
@@ -1101,22 +1476,14 @@ function toggleDetails(btn) {
   btn.textContent = open ? '▲ Hide Details' : '▼ Full Details & Calendar';
 }
 
-// ═══════════════════════════════════════════════════════════
-//  VIEW TOGGLE
-// ═══════════════════════════════════════════════════════════
 function setView(v) {
   currentView = v;
   document.getElementById('vbtn-grid').classList.toggle('active', v === 'grid');
   document.getElementById('vbtn-list').classList.toggle('active', v === 'list');
   const grid = document.getElementById('crop-grid');
-  if (grid) {
-    grid.classList.toggle('list-view', v === 'list');
-  }
+  if (grid) grid.classList.toggle('list-view', v === 'list');
 }
 
-// ═══════════════════════════════════════════════════════════
-//  LANGUAGE
-// ═══════════════════════════════════════════════════════════
 function applyLang(lang) {
   currentLang = lang;
   localStorage.setItem('language', lang);
@@ -1128,6 +1495,5 @@ function applyLang(lang) {
   document.getElementById('hdr-sub').textContent = sub[lang] || sub.en;
 }
 </script>
-
 </body>
 </html>
