@@ -1,122 +1,710 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Auto Language Cards</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Market Prices – FAWP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gd:#1b5e20; --gm:#2e7d32; --g:#388e3c; --gl:#4caf50; --gp:#e8f5e9;
+      --amb:#f57f17; --ampp:#fff8e1;
+      --blu:#1565c0; --blup:#e3f2fd;
+      --red:#c62828; --redp:#ffebee;
+      --wh:#ffffff; --off:#f4f9f4; --brd:#c8e6c9;
+      --txt:#1a2e1a; --txts:#4a6349; --txth:#7a9b79;
+      --shd:0 4px 20px rgba(27,94,32,0.10); --r:12px;
     }
+    body { font-family:'Poppins',Arial,sans-serif; background:var(--off); color:var(--txt); min-height:100vh; }
 
-    .container {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
+    header {
+      background:linear-gradient(135deg,var(--gd) 0%,var(--g) 100%);
+      color:white; padding:20px 28px; text-align:center; position:relative; overflow:hidden;
     }
+    header::before {
+      content:''; position:absolute; inset:0;
+      background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(255,255,255,0.02) 10px,rgba(255,255,255,0.02) 20px);
+      pointer-events:none;
+    }
+    header h1 { font-size:1.65rem; font-weight:800; position:relative; }
+    header p  { font-size:0.83rem; opacity:0.85; margin-top:4px; position:relative; }
+    .live-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);
+      border-radius:20px; padding:4px 14px; font-size:12px; font-weight:700; margin-top:8px; position:relative;
+    }
+    .live-dot { width:8px; height:8px; border-radius:50%; background:#4caf50; animation:pulse 1.4s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
 
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      width: 260px;
-      overflow: hidden;
-      padding-bottom: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+    nav { background:var(--gd); padding:11px; text-align:center; }
+    nav a { color:white; margin:7px 10px; text-decoration:none; font-weight:600; font-size:13px; padding:6px 10px; border-radius:6px; transition:background .2s; }
+    nav a:hover { background:#43a047; }
 
-    .card:hover {
-      transform: translateY(-5px);
+    /* API KEY BANNER */
+    .api-banner {
+      background:var(--ampp); border-bottom:2px solid #ffe082;
+      padding:14px 28px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
     }
+    .ab-icon { font-size:1.4rem; flex-shrink:0; }
+    .ab-text { flex:1; min-width:160px; }
+    .ab-text strong { color:var(--amb); font-size:13px; display:block; }
+    .ab-text small  { font-size:11px; color:#795548; }
+    .ab-text a      { color:var(--amb); }
+    .api-banner input {
+      flex:2; min-width:200px; padding:9px 13px;
+      border:1.5px solid #ffe082; border-radius:8px;
+      font-size:13px; font-family:inherit; outline:none;
+      background:var(--wh); color:var(--txt); transition:border-color .2s;
+    }
+    .api-banner input:focus { border-color:var(--amb); }
+    .api-banner input.saved { border-color:var(--gl); background:#f1f8e9; }
+    .ab-btn {
+      padding:9px 18px; border:none; border-radius:8px;
+      font-size:13px; font-weight:700; font-family:inherit; cursor:pointer;
+      transition:background .2s; white-space:nowrap;
+    }
+    .ab-save { background:var(--amb); color:white; }
+    .ab-save:hover { background:#e65100; }
+    .ab-demo { background:#607d8b; color:white; }
+    .ab-demo:hover { background:#455a64; }
 
-    .card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
+    /* CONTROLS */
+    .controls {
+      background:var(--wh); border-bottom:1px solid var(--brd);
+      padding:12px 28px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      position:sticky; top:0; z-index:40; box-shadow:0 2px 8px rgba(0,0,0,.05);
     }
+    .controls select, .controls input[type=text] {
+      padding:8px 12px; border:1.5px solid var(--brd); border-radius:8px;
+      font-size:13px; font-family:inherit; color:var(--txt); background:var(--off); outline:none; transition:border-color .2s;
+    }
+    .controls select:focus, .controls input:focus { border-color:var(--g); }
+    .controls input[type=text] { flex:1; min-width:160px; }
+    .btn-fetch {
+      padding:8px 18px; background:var(--gm); color:white; border:none;
+      border-radius:8px; font-size:13px; font-weight:700; font-family:inherit;
+      cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:6px; white-space:nowrap;
+    }
+    .btn-fetch:hover:not(:disabled) { background:var(--gd); }
+    .btn-fetch:disabled { opacity:.6; pointer-events:none; }
+    .spin-icon { display:none; animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .last-upd { font-size:11px; color:var(--txth); margin-left:auto; white-space:nowrap; }
 
-    .title, .text {
-      display: none;
-      padding: 5px 10px;
+    /* TABS */
+    .tabs { display:flex; gap:0; background:var(--wh); border-bottom:2px solid var(--brd); padding:0 28px; overflow-x:auto; }
+    .tab {
+      padding:10px 18px; border:none; font-size:13px; font-weight:600;
+      cursor:pointer; font-family:inherit; color:var(--txts); background:none;
+      border-bottom:3px solid transparent; margin-bottom:-2px; white-space:nowrap; transition:all .2s;
     }
+    .tab:hover { color:var(--gd); background:var(--gp); }
+    .tab.active { color:var(--gd); border-bottom-color:var(--gm); }
 
-    .active {
-      display: block;
+    /* MAIN */
+    .main { padding:22px 28px 60px; }
+
+    /* STAT STRIP */
+    .stat-strip { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin-bottom:20px; display:none; }
+    .stat-card { background:var(--wh); border-radius:var(--r); box-shadow:var(--shd); padding:14px 16px; border-top:3px solid var(--gm); }
+    .stat-card .sv { font-size:1.35rem; font-weight:800; color:var(--gd); }
+    .stat-card .sl { font-size:11px; color:var(--txth); margin-top:2px; }
+
+    /* RESULT INFO */
+    .result-info {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:12px; flex-wrap:wrap; gap:8px;
     }
+    .ri-left  { font-size:13px; color:var(--txts); }
+    .ri-left strong { color:var(--gd); }
+    .sort-row { display:flex; gap:8px; align-items:center; font-size:12px; color:var(--txts); flex-wrap:wrap; }
+    .sort-row select { padding:5px 10px; font-size:12px; border:1px solid var(--brd); border-radius:6px; font-family:inherit; outline:none; background:var(--off); }
+    .dir-btn { padding:5px 10px; border:1px solid var(--brd); border-radius:6px; cursor:pointer; font-size:12px; background:var(--off); font-family:inherit; }
+
+    /* TABLE */
+    .tbl-wrap { overflow-x:auto; border-radius:var(--r); box-shadow:var(--shd); }
+    .price-table { width:100%; border-collapse:collapse; background:var(--wh); }
+    .price-table thead th {
+      background:var(--gm); color:white; padding:11px 13px;
+      font-size:12px; font-weight:700; text-align:left; white-space:nowrap; cursor:pointer; user-select:none;
+    }
+    .price-table thead th:hover { background:var(--gd); }
+    .price-table tbody tr { border-bottom:1px solid #f0f7f0; transition:background .15s; }
+    .price-table tbody tr:hover { background:#f8fdf8; }
+    .price-table tbody tr:last-child { border-bottom:none; }
+    .price-table td { padding:10px 13px; font-size:13px; vertical-align:top; }
+    .td-num  { font-size:11px; color:var(--txth); }
+    .td-com  { font-weight:700; }
+    .td-mkt  { color:var(--txts); font-size:12px; }
+    .td-dist { font-size:11px; color:var(--txth); }
+    .td-st   { font-size:11px; color:var(--txts); }
+    .td-mod  { font-weight:800; color:var(--gd); font-size:14px; }
+    .td-min  { color:var(--red); font-weight:600; }
+    .td-max  { color:var(--blu); font-weight:600; }
+    .td-sprd { font-size:12px; color:var(--txts); }
+    .td-date { font-size:11px; color:var(--txth); }
+
+    .cat-badge { font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; white-space:nowrap; display:inline-block; margin-top:3px; }
+    .cb-crop  { background:var(--gp); color:var(--gd); }
+    .cb-veg   { background:var(--blup); color:var(--blu); }
+    .cb-fruits{ background:#fff3e0; color:#e65100; }
+    .cb-spices{ background:#fce4ec; color:#c2185b; }
+    .cb-oil   { background:#f3e5f5; color:#6a1b9a; }
+
+    /* CARDS */
+    .price-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+    .price-card {
+      background:var(--wh); border-radius:var(--r); box-shadow:var(--shd);
+      padding:16px; border-left:4px solid var(--gm);
+      animation:fadeUp .3s ease both; transition:transform .2s,box-shadow .2s;
+    }
+    .price-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(27,94,32,.13); }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+    .pc-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+    .pc-name { font-size:.95rem; font-weight:800; }
+    .pc-mkt  { font-size:11px; color:var(--txth); margin-top:2px; }
+    .pc-modal{ font-size:1.35rem; font-weight:800; color:var(--gd); margin:6px 0 8px; }
+    .pc-modal small { font-size:11px; font-weight:400; color:var(--txts); }
+    .pc-row  { display:flex; justify-content:space-between; font-size:12px; padding:4px 0; border-top:1px dashed #eee; }
+    .pk { color:var(--txts); }
+
+    /* LOADER / ERROR / EMPTY */
+    .loader-wrap { text-align:center; padding:60px 20px; }
+    .big-spinner { width:48px; height:48px; border:4px solid var(--brd); border-top-color:var(--gm); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 16px; }
+    .loader-wrap p   { color:var(--txts); font-size:14px; }
+    .loader-wrap sub { font-size:12px; color:var(--txth); display:block; margin-top:6px; }
+    .error-box { background:var(--redp); border:1px solid #ef9a9a; border-radius:var(--r); padding:20px 24px; color:var(--red); font-size:13px; line-height:1.8; display:none; margin-bottom:16px; }
+    .empty-box { text-align:center; padding:60px 20px; color:var(--txth); }
+    .empty-box .big { font-size:52px; display:block; margin-bottom:12px; }
+    .empty-box a { color:var(--g); }
+
+    /* PAGINATION */
+    .pagination { display:flex; gap:5px; justify-content:center; margin-top:20px; flex-wrap:wrap; }
+    .pg-btn { padding:7px 13px; border:1.5px solid var(--brd); border-radius:7px; background:var(--wh); cursor:pointer; font-size:13px; font-family:inherit; transition:all .2s; color:var(--txts); }
+    .pg-btn:hover  { background:var(--gp); border-color:var(--gm); color:var(--gd); }
+    .pg-btn.active { background:var(--gm); border-color:var(--gm); color:white; font-weight:700; }
+    .pg-btn:disabled { opacity:.4; pointer-events:none; }
+
+    /* VIEW TOGGLE */
+    .vtog { display:flex; gap:4px; }
+    .vbtn { padding:7px 12px; border:1.5px solid var(--brd); border-radius:7px; background:var(--off); cursor:pointer; font-size:15px; font-family:inherit; transition:all .2s; }
+    .vbtn.active { background:var(--gm); border-color:var(--gm); color:white; }
+
+    footer { text-align:center; padding:16px; font-size:12px; color:var(--txth); border-top:1px solid var(--brd); background:var(--wh); margin-top:10px; }
+    footer a { color:var(--g); }
   </style>
 </head>
 <body>
 
-<h2>Market Prices 📈</h2>
+<header>
+  <h1>📊 Live Market Prices</h1>
+  <p>Real-time mandi prices from 4,300+ Indian markets · Powered by Agmarknet / data.gov.in</p>
+  <div class="live-badge"><div class="live-dot"></div><span id="live-text">Ready to fetch live data</span></div>
+</header>
 
-<div class="container">
+<nav>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="marketprices.html">Market Prices</a>
+  <a href="schemefinder.html">Scheme Finder</a>
+  <a href="contact.html">Contact</a>
+</nav>
 
-  <!-- Fruit -->
-  <div class="card" onclick="openPage('fruit.html')">
-    <img src="fruit.jpeg">
-
-    <h3 class="title en">🍎 Fruit</h3>
-    <h3 class="title hi">🍎 फल</h3>
-    <h3 class="title te">🍎 పండ్లు</h3>
-
-    <p class="text en">Fruits are healthy and rich in vitamins.</p>
-    <p class="text hi">फल स्वस्थ होते हैं और विटामिन से भरपूर होते हैं।</p>
-    <p class="text te">పండ్లు ఆరోగ్యానికి మంచివి మరియు విటమిన్లు అధికంగా ఉంటాయి.</p>
+<!-- API KEY BANNER -->
+<div class="api-banner" id="api-banner">
+  <span class="ab-icon">🔑</span>
+  <div class="ab-text">
+    <strong>Enter your free data.gov.in API Key for live prices</strong>
+    <small>Register at <a href="https://data.gov.in/user/register" target="_blank" rel="noreferrer">data.gov.in/user/register</a> (free) — or click "Demo Key" to try with limited data</small>
   </div>
-
-  <!-- Vegetable -->
-  <div class="card" onclick="openPage('vegetable.html')">
-    <img src="vegetable.jpeg">
-
-    <h3 class="title en">🥕 Vegetable</h3>
-    <h3 class="title hi">🥕 सब्ज़ी</h3>
-    <h3 class="title te">🥕 కూరగాయలు</h3>
-
-    <p class="text en">Vegetables are essential for a balanced diet.</p>
-    <p class="text hi">सब्जियाँ संतुलित आहार के लिए आवश्यक हैं।</p>
-    <p class="text te">కూరగాయలు సమతుల ఆహారానికి అవసరం.</p>
-  </div>
-
-  <!-- Crops -->
-  <div class="card" onclick="openPage('crops.html')">
-    <img src="crops.jpeg">
-
-    <h3 class="title en">🌾 Crops</h3>
-    <h3 class="title hi">🌾 फसलें</h3>
-    <h3 class="title te">🌾 పంటలు</h3>
-
-    <p class="text en">Crops are grown by farmers for food and other uses.</p>
-    <p class="text hi">फसलें किसानों द्वारा भोजन और अन्य उपयोगों के लिए उगाई जाती हैं।</p>
-    <p class="text te">పంటలు రైతులు ఆహారం మరియు ఇతర అవసరాల కోసం పెంచుతారు.</p>
-  </div>
-
+  <input type="text" id="apiKeyInput" placeholder="Paste your API key here…" autocomplete="off" spellcheck="false" />
+  <button class="ab-btn ab-save" onclick="saveKey()">💾 Save &amp; Load</button>
+  <button class="ab-btn ab-demo" onclick="useDemoKey()">🧪 Demo Key</button>
 </div>
 
+<!-- CONTROLS -->
+<div class="controls">
+  <select id="stateFilter" onchange="triggerFetch()">
+    <option value="">🗺 All States</option>
+    <option value="Telangana">Telangana</option>
+    <option value="Andhra Pradesh">Andhra Pradesh</option>
+    <option value="Karnataka">Karnataka</option>
+    <option value="Maharashtra">Maharashtra</option>
+    <option value="Punjab">Punjab</option>
+    <option value="Rajasthan">Rajasthan</option>
+    <option value="Bihar">Bihar</option>
+    <option value="Uttar Pradesh">Uttar Pradesh</option>
+    <option value="Chhattisgarh">Chhattisgarh</option>
+    <option value="Madhya Pradesh">Madhya Pradesh</option>
+    <option value="Gujarat">Gujarat</option>
+    <option value="Tamil Nadu">Tamil Nadu</option>
+    <option value="West Bengal">West Bengal</option>
+    <option value="Haryana">Haryana</option>
+    <option value="Odisha">Odisha</option>
+    <option value="Kerala">Kerala</option>
+    <option value="Jharkhand">Jharkhand</option>
+  </select>
+  <select id="commodityFilter" onchange="triggerFetch()">
+    <option value="">🌿 All Commodities</option>
+    <option value="Rice">Rice</option>
+    <option value="Wheat">Wheat</option>
+    <option value="Maize">Maize</option>
+    <option value="Cotton">Cotton</option>
+    <option value="Onion">Onion</option>
+    <option value="Tomato">Tomato</option>
+    <option value="Potato">Potato</option>
+    <option value="Soyabean">Soybean</option>
+    <option value="Groundnut">Groundnut</option>
+    <option value="Chilli">Chilli</option>
+    <option value="Turmeric">Turmeric</option>
+    <option value="Arhar (Tur)">Arhar / Tur</option>
+    <option value="Bajra">Bajra</option>
+    <option value="Mustard">Mustard</option>
+    <option value="Sugarcane">Sugarcane</option>
+    <option value="Mango">Mango</option>
+    <option value="Banana">Banana</option>
+    <option value="Grapes">Grapes</option>
+  </select>
+  <input type="text" id="searchInput" placeholder="🔍 Search commodity, market, district…" oninput="applyClientFilters()" />
+  <div class="vtog">
+    <button class="vbtn active" id="vbtn-tbl" onclick="setView('table')" title="Table view">☰</button>
+    <button class="vbtn"        id="vbtn-grd" onclick="setView('grid')"  title="Card view">⊞</button>
+  </div>
+  <button class="btn-fetch" id="fetchBtn" onclick="triggerFetch()">
+    <span class="spin-icon" id="spin">↻</span>
+    <span id="fetch-lbl">🔄 Refresh</span>
+  </button>
+  <span class="last-upd" id="last-upd"></span>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="setTab('all',this)">🌿 All</button>
+  <button class="tab"        onclick="setTab('crop',this)">🌾 Crops &amp; Cereals</button>
+  <button class="tab"        onclick="setTab('veg',this)">🥕 Vegetables</button>
+  <button class="tab"        onclick="setTab('fruits',this)">🍎 Fruits</button>
+  <button class="tab"        onclick="setTab('spices',this)">🌶️ Spices</button>
+  <button class="tab"        onclick="setTab('oil',this)">🫙 Oilseeds</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="stat-strip" id="stat-strip">
+    <div class="stat-card"><div class="sv" id="st-rec">—</div><div class="sl">Records Loaded</div></div>
+    <div class="stat-card"><div class="sv" id="st-mkt">—</div><div class="sl">Markets</div></div>
+    <div class="stat-card"><div class="sv" id="st-sta">—</div><div class="sl">States</div></div>
+    <div class="stat-card"><div class="sv" id="st-com">—</div><div class="sl">Commodities</div></div>
+    <div class="stat-card"><div class="sv" id="st-avg">—</div><div class="sl">Avg Modal ₹/qtl</div></div>
+  </div>
+
+  <div class="error-box" id="error-box"></div>
+
+  <div id="content-area">
+    <div class="empty-box">
+      <span class="big">📊</span>
+      <p style="font-size:15px;font-weight:700;color:var(--gd);">Enter your API key above to load live prices</p>
+      <p style="font-size:13px;margin-top:8px;">
+        Get a <strong>free API key</strong> from
+        <a href="https://data.gov.in/user/register" target="_blank" rel="noreferrer">data.gov.in/user/register</a>
+        — it gives access to daily wholesale prices from 4,300+ mandis across India.
+        <br><br>
+        Or click <strong>🧪 Demo Key</strong> to load a small sample instantly.
+      </p>
+    </div>
+  </div>
+
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<footer>
+  &copy; 2025 FAWP – Digital Farmer Assistance &amp; Welfare Platform &nbsp;|&nbsp;
+  Data: <a href="https://agmarknet.gov.in" target="_blank" rel="noreferrer">Agmarknet</a> via
+  <a href="https://data.gov.in" target="_blank" rel="noreferrer">data.gov.in</a> (Open Government Data)
+</footer>
+
 <script>
-  // Get saved language
-  let lang = localStorage.getItem("language") || "en";
+// ═══════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════
+const RESOURCE_ID = '9ef84268-d588-465a-a308-a864a43d0070';
+const API_BASE    = 'https://api.data.gov.in/resource/' + RESOURCE_ID;
+// CORS proxy — required because data.gov.in doesn't send Access-Control-Allow-Origin for browser requests
+const PROXY_A     = 'https://api.allorigins.win/get?url=';
+const PROXY_B     = 'https://corsproxy.io/?';
+const FETCH_LIMIT = 500;
+const PAGE_SIZE   = 50;
 
-  // Show titles
-  document.querySelectorAll(".title." + lang).forEach(el => {
-    el.classList.add("active");
-  });
+// ═══════════════════════════════════
+// STATE
+// ═══════════════════════════════════
+let apiKey      = localStorage.getItem('datagov_key') || '';
+let allRecords  = [];
+let filtered    = [];
+let currentPage = 1;
+let activeTab   = 'all';
+let currentView = 'table';
+let sortCol     = '_modal';
+let sortDir     = -1;
 
-  // Show text
-  document.querySelectorAll(".text." + lang).forEach(el => {
-    el.classList.add("active");
-  });
+// ═══════════════════════════════════
+// CATEGORY MAPPING
+// ═══════════════════════════════════
+const FRUIT_WORDS  = ['mango','banana','grapes','apple','orange','pomegranate','watermelon','papaya','coconut','guava','litchi','pineapple','jackfruit','sapota','lime','lemon','custard','jamun','fig','dates','apricot'];
+const VEG_WORDS    = ['tomato','onion','potato','brinjal','cabbage','cauliflower','carrot','lady finger','okra','bitter gourd','bottle gourd','pumpkin','radish','spinach','drumstick','beans','peas','capsicum','cucumber','ginger','garlic','beetroot','turnip'];
+const SPICE_WORDS  = ['chilli','turmeric','coriander','cumin','fenugreek','pepper','cardamom','clove','nutmeg','ajwain','sesame'];
+const OIL_WORDS    = ['groundnut','soyabean','mustard','sunflower','linseed','niger seed','castor','cottonseed','rape seed'];
 
-  // Open page on click
-  function openPage(page) {
-    window.location.href = page;
+function getCat(commodity) {
+  const c = (commodity || '').toLowerCase();
+  if (FRUIT_WORDS.some(w => c.includes(w)))  return 'fruits';
+  if (VEG_WORDS.some(w => c.includes(w)))    return 'veg';
+  if (SPICE_WORDS.some(w => c.includes(w)))  return 'spices';
+  if (OIL_WORDS.some(w => c.includes(w)))    return 'oil';
+  return 'crop';
+}
+
+const CAT_EMOJI  = { crop:'🌾', veg:'🥕', fruits:'🍎', spices:'🌶️', oil:'🫙' };
+const CAT_CLASS  = { crop:'cb-crop', veg:'cb-veg', fruits:'cb-fruits', spices:'cb-spices', oil:'cb-oil' };
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+(function init() {
+  if (apiKey) {
+    document.getElementById('apiKeyInput').value = apiKey;
+    document.getElementById('apiKeyInput').classList.add('saved');
+    fetchData();
   }
+})();
+
+// ═══════════════════════════════════
+// API KEY
+// ═══════════════════════════════════
+function saveKey() {
+  const val = document.getElementById('apiKeyInput').value.trim();
+  if (!val) { alert('Please paste your API key first.\n\nGet it free at: https://data.gov.in/user/register'); return; }
+  apiKey = val;
+  localStorage.setItem('datagov_key', apiKey);
+  document.getElementById('apiKeyInput').classList.add('saved');
+  fetchData();
+}
+
+function useDemoKey() {
+  // Public demo key — limited but works for testing
+  apiKey = '579b464db66ec23bdd000001cdd3946e44ce4aab7a3e80f0f6ecf430';
+  document.getElementById('apiKeyInput').value = apiKey;
+  document.getElementById('apiKeyInput').classList.add('saved');
+  localStorage.setItem('datagov_key', apiKey);
+  fetchData();
+}
+
+// ═══════════════════════════════════
+// FETCH
+// ═══════════════════════════════════
+async function triggerFetch() {
+  if (!apiKey) { alert('Please enter your API key first (or click Demo Key).'); return; }
+  currentPage = 1;
+  fetchData();
+}
+
+async function fetchData() {
+  if (!apiKey) return;
+  setLoading(true);
+  hideError();
+
+  const state     = document.getElementById('stateFilter').value;
+  const commodity = document.getElementById('commodityFilter').value;
+
+  const params = new URLSearchParams({ 'api-key': apiKey, format: 'json', limit: FETCH_LIMIT, offset: 0 });
+  if (state)     params.append('filters[state]',     state);
+  if (commodity) params.append('filters[commodity]', commodity);
+
+  const targetURL = `${API_BASE}?${params}`;
+  let data = null;
+
+  // Strategy 1: direct fetch
+  try {
+    const r = await fetch(targetURL, { headers: { Accept: 'application/json' } });
+    if (r.ok) data = await r.json();
+  } catch(e) {}
+
+  // Strategy 2: allorigins proxy
+  if (!data || !data.records) {
+    try {
+      const r = await fetch(PROXY_A + encodeURIComponent(targetURL));
+      if (r.ok) {
+        const wrapper = await r.json();
+        data = JSON.parse(wrapper.contents);
+      }
+    } catch(e) {}
+  }
+
+  // Strategy 3: corsproxy.io
+  if (!data || !data.records) {
+    try {
+      const r = await fetch(PROXY_B + encodeURIComponent(targetURL));
+      if (r.ok) data = await r.json();
+    } catch(e) {}
+  }
+
+  setLoading(false);
+
+  if (!data || !data.records) {
+    showError(
+      `<strong>❌ Could not fetch live data. Here's what to check:</strong><br>` +
+      `1. Your API key may be invalid — get a free one at <a href="https://data.gov.in/user/register" target="_blank">data.gov.in/user/register</a><br>` +
+      `2. The <strong>Demo Key</strong> only returns ~10 records. For full data, use your own registered key.<br>` +
+      `3. data.gov.in servers may be temporarily busy — wait a minute and click 🔄 Refresh.<br>` +
+      `4. If you selected a very specific state+commodity combination, try broadening the filters.`
+    );
+    document.getElementById('live-text').textContent = '⚠ Connection issue — check key or retry';
+    return;
+  }
+
+  // Enrich
+  allRecords = (data.records || []).map(r => ({
+    ...r,
+    _cat:   getCat(r.commodity),
+    _modal: parseFloat(r.modal_price) || 0,
+    _min:   parseFloat(r.min_price)   || 0,
+    _max:   parseFloat(r.max_price)   || 0,
+    _spread:parseFloat(r.max_price) - parseFloat(r.min_price) || 0,
+  }));
+
+  updateStats();
+  applyClientFilters();
+
+  const now = new Date();
+  document.getElementById('last-upd').textContent = `Updated ${now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}`;
+  document.getElementById('live-text').textContent = `Live — ${allRecords.length.toLocaleString()} records from Agmarknet`;
+}
+
+// ═══════════════════════════════════
+// CLIENT FILTER + SORT
+// ═══════════════════════════════════
+function applyClientFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const comFil = document.getElementById('commodityFilter').value.toLowerCase();
+
+  filtered = allRecords.filter(r => {
+    const tabOk    = activeTab === 'all' || r._cat === activeTab;
+    const srchOk   = !search  || (r.commodity||'').toLowerCase().includes(search) || (r.market||'').toLowerCase().includes(search) || (r.district||'').toLowerCase().includes(search);
+    const comOk    = !comFil  || (r.commodity||'').toLowerCase().includes(comFil);
+    return tabOk && srchOk && comOk;
+  });
+
+  filtered.sort((a,b) => {
+    const av = a[sortCol] ?? '', bv = b[sortCol] ?? '';
+    if (typeof av === 'number') return sortDir * (av - bv);
+    return sortDir * String(av).localeCompare(String(bv));
+  });
+
+  currentPage = 1;
+  renderContent();
+}
+
+// ═══════════════════════════════════
+// RENDER
+// ═══════════════════════════════════
+function renderContent() {
+  const area = document.getElementById('content-area');
+
+  if (filtered.length === 0) {
+    area.innerHTML = `<div class="empty-box"><span class="big">🔍</span><p>No records match your filters.</p></div>`;
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const start      = (currentPage - 1) * PAGE_SIZE;
+  const pageData   = filtered.slice(start, start + PAGE_SIZE);
+
+  const riHtml = `
+    <div class="result-info">
+      <div class="ri-left">Showing <strong>${start+1}–${Math.min(start+PAGE_SIZE,filtered.length)}</strong> of <strong>${filtered.length.toLocaleString()}</strong> records</div>
+      <div class="sort-row">
+        Sort:
+        <select onchange="changeSortCol(this.value)">
+          <option value="_modal"  ${sortCol==='_modal' ?'selected':''}>Modal Price</option>
+          <option value="_min"    ${sortCol==='_min'   ?'selected':''}>Min Price</option>
+          <option value="_max"    ${sortCol==='_max'   ?'selected':''}>Max Price</option>
+          <option value="commodity" ${sortCol==='commodity'?'selected':''}>Commodity A–Z</option>
+          <option value="market"    ${sortCol==='market'?'selected':''}>Market</option>
+          <option value="state"     ${sortCol==='state'?'selected':''}>State</option>
+          <option value="_spread"   ${sortCol==='_spread'?'selected':''}>Price Spread</option>
+        </select>
+        <button class="dir-btn" onclick="sortDir*=-1;applyClientFilters()">${sortDir===-1?'↓ High→Low':'↑ Low→High'}</button>
+      </div>
+    </div>`;
+
+  const bodyHtml = currentView === 'table' ? renderTable(pageData, start) : renderCards(pageData);
+  area.innerHTML = riHtml + bodyHtml;
+  renderPagination(totalPages);
+}
+
+function renderTable(rows, offset) {
+  const th = (col, label) => `<th onclick="changeSortCol('${col}')">${label}${sortCol===col?(sortDir===-1?' ↓':' ↑'):''}</th>`;
+  return `
+  <div class="tbl-wrap">
+  <table class="price-table">
+    <thead><tr>
+      <th>#</th>
+      ${th('commodity','Commodity')}
+      ${th('market','Market')}
+      ${th('state','State')}
+      ${th('_modal','Modal ₹/qtl')}
+      ${th('_min','Min')}
+      ${th('_max','Max')}
+      ${th('_spread','Spread')}
+      ${th('arrival_date','Date')}
+    </tr></thead>
+    <tbody>
+    ${rows.map((r,i) => {
+      const cat   = r._cat;
+      const badge = `<span class="cat-badge ${CAT_CLASS[cat]}">${CAT_EMOJI[cat]} ${cat}</span>`;
+      const spPct = r._modal > 0 ? ((r._spread/r._modal)*100).toFixed(0)+'%' : '—';
+      return `
+      <tr>
+        <td class="td-num">${offset+i+1}</td>
+        <td><div class="td-com">${r.commodity||'—'}</div>${badge}</td>
+        <td><div class="td-mkt">${r.market||'—'}</div><div class="td-dist">${r.district||''}</div></td>
+        <td class="td-st">${r.state||'—'}</td>
+        <td class="td-mod">₹${r._modal.toLocaleString('en-IN')}</td>
+        <td class="td-min">₹${r._min.toLocaleString('en-IN')}</td>
+        <td class="td-max">₹${r._max.toLocaleString('en-IN')}</td>
+        <td class="td-sprd">₹${r._spread.toLocaleString('en-IN')} <span style="color:var(--txth)">(${spPct})</span></td>
+        <td class="td-date">${r.arrival_date||r.date||'—'}</td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table>
+  </div>`;
+}
+
+function renderCards(rows) {
+  return `<div class="price-grid">${rows.map((r,i) => {
+    const cat   = r._cat;
+    const badge = `<span class="cat-badge ${CAT_CLASS[cat]}">${CAT_EMOJI[cat]} ${cat}</span>`;
+    return `
+    <div class="price-card" style="animation-delay:${(i%20)*0.03}s">
+      <div class="pc-head">
+        <div>
+          <div class="pc-name">${r.commodity||'—'}</div>
+          <div class="pc-mkt">📍 ${r.market||'—'}, ${r.state||''}</div>
+        </div>
+        ${badge}
+      </div>
+      <div class="pc-modal">₹${r._modal.toLocaleString('en-IN')} <small>/qtl</small></div>
+      <div class="pc-row"><span class="pk">Min Price</span><span class="td-min">₹${r._min.toLocaleString('en-IN')}</span></div>
+      <div class="pc-row"><span class="pk">Max Price</span><span class="td-max">₹${r._max.toLocaleString('en-IN')}</span></div>
+      <div class="pc-row"><span class="pk">Spread</span><span style="color:var(--txts)">₹${r._spread.toLocaleString('en-IN')}</span></div>
+      ${r.district ? `<div class="pc-row"><span class="pk">District</span><span style="color:var(--txts)">${r.district}</span></div>` : ''}
+      <div class="pc-row"><span class="pk">Date</span><span class="td-date">${r.arrival_date||r.date||'—'}</span></div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ═══════════════════════════════════
+// PAGINATION
+// ═══════════════════════════════════
+function renderPagination(total) {
+  const pg = document.getElementById('pagination');
+  if (total <= 1) { pg.innerHTML = ''; return; }
+
+  let h = `<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+  const pages = [];
+  if (total <= 7) { for(let i=1;i<=total;i++) pages.push(i); }
+  else {
+    pages.push(1);
+    if (currentPage > 3)          pages.push('…');
+    for(let i=Math.max(2,currentPage-1);i<=Math.min(total-1,currentPage+1);i++) pages.push(i);
+    if (currentPage < total-2)    pages.push('…');
+    pages.push(total);
+  }
+  pages.forEach(p => {
+    if (p==='…') { h+=`<button class="pg-btn" style="pointer-events:none">…</button>`; return; }
+    h+=`<button class="pg-btn${p===currentPage?' active':''}" onclick="goPage(${p})">${p}</button>`;
+  });
+  h += `<button class="pg-btn" onclick="goPage(${currentPage+1})" ${currentPage===total?'disabled':''}>›</button>`;
+  pg.innerHTML = h;
+}
+
+function goPage(p) {
+  const total = Math.ceil(filtered.length / PAGE_SIZE);
+  if (p<1||p>total) return;
+  currentPage = p;
+  renderContent();
+  window.scrollTo({ top:120, behavior:'smooth' });
+}
+
+// ═══════════════════════════════════
+// STATS
+// ═══════════════════════════════════
+function updateStats() {
+  const strip = document.getElementById('stat-strip');
+  strip.style.display = 'grid';
+  const markets = new Set(allRecords.map(r=>r.market)).size;
+  const states  = new Set(allRecords.map(r=>r.state)).size;
+  const comms   = new Set(allRecords.map(r=>r.commodity)).size;
+  const modals  = allRecords.map(r=>r._modal).filter(v=>v>0);
+  const avg     = modals.length ? Math.round(modals.reduce((a,b)=>a+b,0)/modals.length) : 0;
+  document.getElementById('st-rec').textContent = allRecords.length.toLocaleString('en-IN');
+  document.getElementById('st-mkt').textContent = markets.toLocaleString('en-IN');
+  document.getElementById('st-sta').textContent = states;
+  document.getElementById('st-com').textContent = comms;
+  document.getElementById('st-avg').textContent = '₹'+avg.toLocaleString('en-IN');
+}
+
+// ═══════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════
+function setLoading(on) {
+  const btn  = document.getElementById('fetchBtn');
+  const spin = document.getElementById('spin');
+  const lbl  = document.getElementById('fetch-lbl');
+  btn.disabled       = on;
+  spin.style.display = on ? 'inline-block' : 'none';
+  lbl.textContent    = on ? 'Loading…' : '🔄 Refresh';
+  if (on) {
+    document.getElementById('content-area').innerHTML = `
+      <div class="loader-wrap">
+        <div class="big-spinner"></div>
+        <p>Fetching live prices from Agmarknet…</p>
+        <sub>Connecting to data.gov.in — this may take a few seconds</sub>
+      </div>`;
+    document.getElementById('stat-strip').style.display = 'none';
+    document.getElementById('pagination').innerHTML = '';
+    document.getElementById('live-text').textContent = 'Fetching live data…';
+  }
+}
+
+function showError(html) { const b=document.getElementById('error-box'); b.innerHTML=html; b.style.display='block'; }
+function hideError()     { document.getElementById('error-box').style.display='none'; }
+
+function setTab(tab, btn) {
+  activeTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  currentPage = 1;
+  applyClientFilters();
+}
+
+function setView(v) {
+  currentView = v;
+  document.getElementById('vbtn-tbl').classList.toggle('active', v==='table');
+  document.getElementById('vbtn-grd').classList.toggle('active', v==='grid');
+  if (filtered.length) renderContent();
+}
+
+function changeSortCol(col) {
+  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = -1; }
+  applyClientFilters();
+}
+
+// Auto-refresh every 10 minutes
+setInterval(() => { if (apiKey && allRecords.length > 0) fetchData(); }, 10 * 60 * 1000);
 </script>
 
 </body>
