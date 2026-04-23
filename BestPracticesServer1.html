@@ -3,186 +3,338 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Market Prices – FAWP</title>
+  <title>District-Wise Crop Guide – FAWP</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --gd:#1b5e20; --gm:#2e7d32; --g:#388e3c; --gl:#4caf50; --gp:#e8f5e9;
-      --amb:#f57f17; --ampp:#fff8e1;
-      --blu:#1565c0; --blup:#e3f2fd;
-      --red:#c62828; --redp:#ffebee;
-      --pur:#6a1b9a; --purp:#f3e5f5;
-      --ora:#e65100; --orap:#fff3e0;
-      --wh:#ffffff; --off:#f4f9f4; --brd:#c8e6c9;
-      --txt:#1a2e1a; --txts:#4a6349; --txth:#7a9b79;
-      --shd:0 4px 20px rgba(27,94,32,0.10); --r:12px;
-    }
-    body { font-family:'Poppins',Arial,sans-serif; background:var(--off); color:var(--txt); min-height:100vh; }
 
-    header {
-      background:linear-gradient(135deg,var(--gd) 0%,var(--g) 100%);
-      color:white; padding:22px 28px; text-align:center; position:relative; overflow:hidden;
+    :root {
+      --g-dark:  #1b5e20;
+      --g-mid:   #2e7d32;
+      --g-main:  #388e3c;
+      --g-light: #4caf50;
+      --g-pale:  #e8f5e9;
+      --g-lime:  #8bc34a;
+      --amber:   #f57f17;
+      --amber-p: #fff8e1;
+      --blue:    #1565c0;
+      --blue-p:  #e3f2fd;
+      --red:     #c62828;
+      --red-p:   #ffebee;
+      --purple:  #6a1b9a;
+      --purple-p:#f3e5f5;
+      --teal:    #00695c;
+      --teal-p:  #e0f2f1;
+      --white:   #ffffff;
+      --offwhite:#f4f9f4;
+      --border:  #c8e6c9;
+      --txt:     #1a2e1a;
+      --txt-s:   #4a6349;
+      --txt-h:   #7a9b79;
+      --shadow:  0 4px 20px rgba(27,94,32,0.11);
+      --radius:  12px;
     }
-    header::after {
-      content:'🌾🌽🍅🥕🌶️🫘🥜🍎🧅🥔🌾🌽🍅🥕🌶️';
-      position:absolute; bottom:4px; left:0; right:0;
-      font-size:18px; opacity:0.10; letter-spacing:6px; pointer-events:none; white-space:nowrap;
+
+    body { font-family:'Poppins',Arial,sans-serif; background:var(--offwhite); color:var(--txt); min-height:100vh; }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, var(--g-dark) 0%, var(--g-main) 100%);
+      color: white; padding: 24px 28px 20px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    header::before {
+      content:'🌾🌽🍅🥕🌱🌾🌽🍅🥕🌱🌾🌽🍅🥕🌱';
+      position:absolute; top:6px; left:0; right:0;
+      font-size:22px; opacity:0.12; letter-spacing:8px;
+      white-space:nowrap; pointer-events:none;
     }
     header h1 { font-size:1.7rem; font-weight:800; position:relative; }
-    header p  { font-size:0.85rem; opacity:0.85; margin-top:4px; position:relative; }
-    .today-tag {
-      display:inline-block; background:rgba(255,255,255,0.2);
-      border:1px solid rgba(255,255,255,0.35); border-radius:20px;
-      padding:3px 14px; font-size:11px; font-weight:700; margin-top:8px;
-      position:relative;
-    }
+    header p  { font-size:0.85rem; opacity:0.85; margin-top:5px; position:relative; }
 
-    nav { background:var(--gd); padding:10px; text-align:center; }
-    nav a { color:white; margin:6px 10px; text-decoration:none; font-weight:600; font-size:13px; padding:6px 10px; border-radius:6px; transition:background .2s; }
+    nav { background:var(--g-dark); padding:11px; text-align:center; }
+    nav a {
+      color:white; margin:7px 10px; text-decoration:none;
+      font-weight:600; font-size:13px; padding:6px 10px;
+      border-radius:6px; transition:background 0.2s;
+    }
     nav a:hover { background:#43a047; }
+    nav a.active { background:var(--g-main); }
 
-    /* ── CONTROLS ── */
+    /* ── CONTROL BAR ── */
     .controls {
-      background:white; border-bottom:1px solid var(--brd);
-      padding:12px 28px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-      position:sticky; top:0; z-index:40; box-shadow:0 2px 6px rgba(0,0,0,.05);
+      background:white; border-bottom:1px solid var(--border);
+      padding:16px 28px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+      position:sticky; top:0; z-index:50; box-shadow:0 2px 8px rgba(0,0,0,0.06);
     }
-    .controls select {
-      padding:8px 12px; border:1.5px solid var(--brd); border-radius:8px;
-      font-size:13px; font-family:inherit; color:var(--txt); background:var(--off); outline:none;
+    .controls select, .controls input {
+      padding:9px 13px; border:1.5px solid var(--border);
+      border-radius:8px; font-size:13px; font-family:inherit;
+      color:var(--txt); background:var(--offwhite); outline:none;
+      transition:border-color 0.2s;
     }
-    .controls select:focus { border-color:var(--g); }
-    .controls input {
-      flex:1; min-width:160px; padding:8px 12px;
-      border:1.5px solid var(--brd); border-radius:8px;
-      font-size:13px; font-family:inherit; outline:none; background:var(--off);
-    }
-    .controls input:focus { border-color:var(--g); }
-    .view-btns { display:flex; gap:4px; margin-left:auto; }
-    .vbtn { padding:7px 12px; border:1.5px solid var(--brd); border-radius:7px; background:var(--off); cursor:pointer; font-size:14px; font-family:inherit; transition:all .2s; }
-    .vbtn.active { background:var(--gm); border-color:var(--gm); color:white; }
+    .controls select:focus, .controls input:focus { border-color:var(--g-main); }
+    .controls input { flex:1; min-width:180px; }
 
-    /* ── TABS ── */
-    .tabs { display:flex; background:white; border-bottom:2px solid var(--brd); padding:0 28px; overflow-x:auto; }
-    .tab {
-      padding:10px 15px; border:none; font-size:13px; font-weight:600; cursor:pointer;
-      font-family:inherit; color:var(--txts); background:none;
-      border-bottom:3px solid transparent; margin-bottom:-2px; white-space:nowrap; transition:all .2s;
+    .view-toggle { display:flex; gap:4px; margin-left:auto; }
+    .vbtn {
+      padding:8px 13px; border:1.5px solid var(--border);
+      border-radius:7px; background:var(--offwhite);
+      cursor:pointer; font-size:16px; transition:all 0.2s; font-family:inherit;
     }
-    .tab:hover  { color:var(--gd); background:var(--gp); }
-    .tab.active { color:var(--gd); border-bottom-color:var(--gm); }
+    .vbtn.active { background:var(--g-mid); border-color:var(--g-mid); color:white; }
 
-    .main { padding:20px 28px 60px; }
+    /* ── LAYOUT WRAPPER ── */
+    .page-wrap { display:flex; min-height:calc(100vh - 180px); }
+
+    /* ── SIDEBAR (state → district tree) ── */
+    .sidebar {
+      width:260px; flex-shrink:0;
+      background:white; border-right:1px solid var(--border);
+      overflow-y:auto; padding:12px 0;
+      max-height:calc(100vh - 150px);
+      position:sticky; top:57px;
+      align-self:flex-start;
+    }
+    .sidebar-title {
+      font-size:11px; font-weight:700; color:var(--txt-h);
+      text-transform:uppercase; letter-spacing:1.5px;
+      padding:8px 18px 4px;
+    }
+    .state-group { margin-bottom:2px; }
+    .state-btn {
+      width:100%; text-align:left; padding:9px 18px;
+      background:none; border:none; cursor:pointer;
+      font-size:13px; font-weight:700; color:var(--g-dark);
+      font-family:inherit; display:flex; justify-content:space-between;
+      align-items:center; transition:background 0.15s;
+    }
+    .state-btn:hover { background:var(--g-pale); }
+    .state-btn.open  { background:var(--g-pale); }
+    .state-btn .arrow { font-size:10px; transition:transform 0.2s; }
+    .state-btn.open .arrow { transform:rotate(90deg); }
+
+    .district-list { display:none; }
+    .district-list.open { display:block; }
+    .dist-btn {
+      width:100%; text-align:left; padding:7px 18px 7px 30px;
+      background:none; border:none; cursor:pointer;
+      font-size:12.5px; color:var(--txt-s); font-family:inherit;
+      transition:background 0.15s; display:flex; align-items:center; gap:6px;
+    }
+    .dist-btn:hover   { background:#f1f8f1; color:var(--g-dark); }
+    .dist-btn.active  { background:var(--g-pale); color:var(--g-dark); font-weight:700; border-right:3px solid var(--g-main); }
+    .dist-btn .dot { width:6px; height:6px; border-radius:50%; background:var(--g-light); flex-shrink:0; }
+
+    /* ── MAIN CONTENT ── */
+    .main { flex:1; padding:24px 28px 60px; min-width:0; }
 
     /* ── DISTRICT HERO ── */
-    .dist-hero {
-      background:linear-gradient(135deg,var(--gm) 0%,var(--g) 60%,#8bc34a 100%);
-      border-radius:var(--r); padding:20px 26px; color:white;
-      margin-bottom:20px; display:flex; justify-content:space-between;
-      align-items:center; flex-wrap:wrap; gap:14px;
-      box-shadow:0 6px 24px rgba(46,125,50,0.22);
+    .district-hero {
+      background: linear-gradient(135deg, var(--g-mid) 0%, var(--g-main) 60%, var(--g-lime) 100%);
+      border-radius:var(--radius); padding:22px 28px; color:white;
+      margin-bottom:24px; display:flex; justify-content:space-between;
+      align-items:flex-start; flex-wrap:wrap; gap:16px;
+      box-shadow:0 6px 24px rgba(46,125,50,0.25);
     }
-    .dh-left h2  { font-size:1.35rem; font-weight:800; }
-    .dh-left p   { font-size:12px; opacity:0.85; margin-top:3px; }
-    .dh-stats    { display:flex; gap:12px; flex-wrap:wrap; }
-    .dh-stat     { background:rgba(255,255,255,0.18); border-radius:8px; padding:8px 14px; text-align:center; min-width:80px; }
-    .dh-stat .dv { font-size:1.2rem; font-weight:800; display:block; }
-    .dh-stat .dl { font-size:10px; opacity:0.85; text-transform:uppercase; letter-spacing:.5px; }
-
-    /* ── RESULT INFO ── */
-    .result-info { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px; }
-    .ri-text { font-size:13px; color:var(--txts); }
-    .ri-text strong { color:var(--gd); }
-    .sort-row { display:flex; gap:8px; align-items:center; font-size:12px; color:var(--txts); }
-    .sort-row select { padding:5px 10px; font-size:12px; border:1px solid var(--brd); border-radius:6px; font-family:inherit; outline:none; background:var(--off); }
-    .dir-btn { padding:5px 10px; border:1px solid var(--brd); border-radius:6px; cursor:pointer; font-size:12px; background:var(--off); font-family:inherit; }
-
-    /* ── TABLE ── */
-    .tbl-wrap { overflow-x:auto; border-radius:var(--r); box-shadow:var(--shd); }
-    .price-table { width:100%; border-collapse:collapse; background:white; }
-    .price-table thead th {
-      background:var(--gm); color:white; padding:10px 12px;
-      font-size:12px; font-weight:700; text-align:left; white-space:nowrap; cursor:pointer;
+    .dh-left h2 { font-size:1.45rem; font-weight:800; margin-bottom:3px; }
+    .dh-left p  { font-size:13px; opacity:0.85; }
+    .dh-stats { display:flex; gap:16px; flex-wrap:wrap; }
+    .dh-stat {
+      background:rgba(255,255,255,0.18); border-radius:8px;
+      padding:10px 16px; text-align:center; min-width:90px;
     }
-    .price-table thead th:hover { background:var(--gd); }
-    .price-table tbody tr { border-bottom:1px solid #f0f7f0; transition:background .12s; }
-    .price-table tbody tr:hover { background:#f6fdf6; }
-    .price-table td { padding:10px 12px; font-size:13px; vertical-align:middle; }
-    .td-emoji { font-size:1.4rem; text-align:center; }
-    .td-name  { font-weight:700; color:var(--txt); }
-    .td-var   { font-size:11px; color:var(--txth); }
-    .td-cat   { }
-    .td-mod   { font-weight:800; color:var(--gd); font-size:14px; }
-    .td-min   { color:var(--red); font-weight:600; }
-    .td-max   { color:var(--blu); font-weight:600; }
-    .td-msp   { font-size:12px; color:var(--txts); }
-    .td-trend { font-weight:700; font-size:13px; }
-    .up   { color:#2e7d32; }
-    .down { color:var(--red); }
-    .flat { color:var(--txth); }
+    .dh-stat .val { font-size:1.25rem; font-weight:800; display:block; }
+    .dh-stat .lbl { font-size:10px; opacity:0.85; text-transform:uppercase; letter-spacing:0.8px; }
 
-    .cat-badge { font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; display:inline-block; white-space:nowrap; }
-    .cb-c { background:var(--gp);   color:var(--gd);  }
-    .cb-v { background:var(--blup); color:var(--blu); }
-    .cb-f { background:var(--orap); color:var(--ora); }
-    .cb-s { background:#fce4ec;     color:#c2185b;    }
-    .cb-o { background:var(--purp); color:var(--pur); }
-    .cb-p { background:#e8eaf6;     color:#283593;    }
-
-    /* ── CARD GRID ── */
-    .price-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:14px; }
-    .price-card {
-      background:white; border-radius:var(--r); box-shadow:var(--shd);
-      padding:15px; border-top:3px solid var(--gm);
-      animation:fadeUp .3s ease both; transition:transform .2s,box-shadow .2s;
+    /* ── SECTION HEADS ── */
+    .sec-head {
+      display:flex; align-items:center; gap:10px;
+      font-size:1rem; font-weight:700; color:var(--g-dark);
+      margin:28px 0 14px; padding-bottom:8px;
+      border-bottom:2px solid var(--border);
     }
-    .price-card:hover { transform:translateY(-4px); box-shadow:0 10px 28px rgba(27,94,32,.13); }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-    .pc-top   { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
-    .pc-emoji { font-size:2rem; line-height:1; }
-    .pc-name  { font-weight:800; font-size:.93rem; color:var(--txt); margin-top:4px; }
-    .pc-var   { font-size:11px; color:var(--txth); margin-top:1px; }
-    .pc-modal { font-size:1.4rem; font-weight:800; color:var(--gd); margin:8px 0 6px; }
-    .pc-modal small { font-size:11px; font-weight:400; color:var(--txts); }
-    .pc-row   { display:flex; justify-content:space-between; font-size:12px; padding:4px 0; border-top:1px dashed #eee; }
-    .pk { color:var(--txts); }
-    .pc-trend { display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; margin-top:6px; }
-    .trend-up   { background:var(--gp);   color:var(--gd); }
-    .trend-down { background:var(--redp); color:var(--red); }
-    .trend-flat { background:#f5f5f5;     color:#666; }
+    .sec-head .icon { font-size:1.3rem; }
 
-    /* ── EMPTY ── */
-    .empty-box { text-align:center; padding:60px 20px; color:var(--txth); }
-    .empty-box .big { font-size:52px; display:block; margin-bottom:12px; }
+    /* ── CROP CARDS GRID ── */
+    .crop-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(270px, 1fr));
+      gap:18px;
+    }
+    /* list view */
+    .crop-grid.list-view {
+      grid-template-columns:1fr;
+    }
+    .crop-grid.list-view .crop-card {
+      display:grid;
+      grid-template-columns:80px 1fr;
+      border-radius:10px;
+    }
+    .crop-grid.list-view .crop-card .card-emoji {
+      font-size:2.8rem; border-radius:10px 0 0 10px;
+      padding:0; display:flex; align-items:center; justify-content:center;
+    }
+    .crop-grid.list-view .crop-card .card-body { padding:14px 16px; }
 
-    /* ── STATS ── */
-    .stat-strip { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:12px; margin-bottom:20px; }
-    .stat-card  { background:white; border-radius:var(--r); box-shadow:var(--shd); padding:13px 15px; border-top:3px solid var(--gm); }
-    .sv { font-size:1.3rem; font-weight:800; color:var(--gd); }
-    .sl { font-size:11px; color:var(--txth); margin-top:2px; }
+    .crop-card {
+      background:white; border-radius:var(--radius);
+      box-shadow:var(--shadow); overflow:hidden;
+      transition:transform 0.2s, box-shadow 0.2s;
+      cursor:pointer; animation:popIn 0.3s ease both;
+    }
+    .crop-card:hover { transform:translateY(-4px); box-shadow:0 10px 32px rgba(27,94,32,0.14); }
 
-    footer { text-align:center; padding:16px; font-size:12px; color:var(--txth); border-top:1px solid var(--brd); background:white; margin-top:10px; }
+    @keyframes popIn {
+      from { opacity:0; transform:translateY(14px) scale(0.97); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    .card-emoji {
+      font-size:3.5rem; padding:22px 0 10px;
+      text-align:center; background:var(--g-pale);
+      line-height:1;
+    }
+    .card-body { padding:14px 16px 18px; }
+    .crop-name { font-size:1rem; font-weight:800; color:var(--txt); margin-bottom:2px; }
+    .crop-sci  { font-size:11px; color:var(--txt-h); font-style:italic; margin-bottom:10px; }
+
+    .tag-row { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }
+    .tag {
+      font-size:10px; font-weight:700; padding:3px 9px;
+      border-radius:20px; white-space:nowrap;
+    }
+    .tag.season  { background:var(--amber-p); color:var(--amber); }
+    .tag.soil    { background:var(--teal-p);  color:var(--teal); }
+    .tag.water   { background:var(--blue-p);  color:var(--blue); }
+    .tag.msp     { background:var(--g-pale);  color:var(--g-dark); }
+    .tag.type    { background:var(--purple-p);color:var(--purple); }
+    .tag.yield   { background:#fff3e0;        color:#e65100; }
+
+    .detail-row {
+      display:flex; justify-content:space-between;
+      font-size:12px; color:var(--txt-s);
+      padding:5px 0; border-bottom:1px dashed #eee;
+    }
+    .detail-row:last-child { border-bottom:none; }
+    .detail-row .key { font-weight:600; }
+    .detail-row .val { color:var(--txt); text-align:right; max-width:55%; }
+
+    .expand-btn {
+      width:100%; margin-top:12px; padding:8px;
+      background:var(--g-pale); border:1.5px solid var(--border);
+      border-radius:7px; font-size:12px; font-weight:700;
+      color:var(--g-dark); cursor:pointer; font-family:inherit;
+      transition:background 0.2s;
+    }
+    .expand-btn:hover { background:#c8e6c9; }
+
+    .extra-details { display:none; margin-top:10px; animation:fadeIn 0.25s ease; }
+    .extra-details.open { display:block; }
+
+    .advice-box {
+      background:linear-gradient(135deg, var(--g-pale), #f0faf0);
+      border-radius:8px; padding:12px 14px; margin-top:10px;
+      border-left:3px solid var(--g-main);
+      font-size:12px; color:var(--txt-s); line-height:1.65;
+    }
+    .advice-box strong { color:var(--g-dark); }
+
+    /* ── CALENDAR STRIP ── */
+    .cal-strip {
+      display:grid; grid-template-columns:repeat(12,1fr);
+      gap:3px; margin-top:10px; border-radius:6px; overflow:hidden;
+    }
+    .cal-cell {
+      padding:4px 2px; text-align:center; font-size:9px;
+      font-weight:700; background:#f5f5f5; color:#999;
+    }
+    .cal-cell.sow  { background:#fff8e1; color:var(--amber); }
+    .cal-cell.grow { background:#e8f5e9; color:var(--g-dark); }
+    .cal-cell.harv { background:#fce4ec; color:#c62828; }
+    .cal-legend {
+      display:flex; gap:12px; font-size:10px; margin-top:6px; flex-wrap:wrap;
+    }
+    .cal-legend span { display:flex; align-items:center; gap:4px; }
+    .cal-legend .dot { width:10px; height:10px; border-radius:2px; }
+
+    /* ── PEST / DISEASE PILLS ── */
+    .pest-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+    .pest-tag  {
+      background:var(--red-p); color:var(--red);
+      border-radius:6px; padding:3px 10px; font-size:11px; font-weight:600;
+    }
+    .scheme-tag {
+      background:var(--blue-p); color:var(--blue);
+      border-radius:6px; padding:3px 10px; font-size:11px; font-weight:600;
+    }
+
+    /* ── OVERVIEW CARDS ── */
+    .overview-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));
+      gap:14px; margin-bottom:24px;
+    }
+    .ov-card {
+      background:white; border-radius:var(--radius);
+      box-shadow:var(--shadow); padding:16px 18px;
+      border-top:3px solid var(--g-main);
+    }
+    .ov-card .ov-icon { font-size:1.6rem; margin-bottom:6px; }
+    .ov-card .ov-val  { font-size:1.3rem; font-weight:800; color:var(--g-dark); }
+    .ov-card .ov-lbl  { font-size:11px; color:var(--txt-h); margin-top:2px; }
+
+    /* ── NO RESULTS ── */
+    .empty { text-align:center; padding:60px 20px; color:var(--txt-h); font-size:15px; }
+    .empty .big { font-size:52px; display:block; margin-bottom:12px; }
+
+    /* ── WELCOME SCREEN ── */
+    .welcome {
+      text-align:center; padding:60px 20px; max-width:560px; margin:0 auto;
+    }
+    .welcome .big { font-size:64px; display:block; margin-bottom:16px; }
+    .welcome h2 { font-size:1.4rem; font-weight:800; color:var(--g-dark); margin-bottom:8px; }
+    .welcome p  { font-size:14px; color:var(--txt-s); line-height:1.7; }
+
+    .state-quick {
+      display:flex; flex-wrap:wrap; gap:10px;
+      justify-content:center; margin-top:24px;
+    }
+    .sq-btn {
+      padding:9px 18px; background:white; border:2px solid var(--border);
+      border-radius:20px; font-size:13px; font-weight:600; color:var(--g-dark);
+      cursor:pointer; font-family:inherit; transition:all 0.2s;
+    }
+    .sq-btn:hover { background:var(--g-pale); border-color:var(--g-main); }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    footer {
+      text-align:center; padding:18px; font-size:12px;
+      color:var(--txt-h); border-top:1px solid var(--border); background:white;
+    }
+
+    /* Responsive */
+    @media(max-width:700px) {
+      .sidebar { width:100%; position:static; max-height:200px; }
+      .page-wrap { flex-direction:column; }
+      .crop-grid { grid-template-columns:1fr; }
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>📊 Market Prices</h1>
-  <p>District-wise crop prices across India — 20 crops per district</p>
-  <div class="today-tag" id="today-tag">📅 Loading date…</div>
+  <h1>🌱 District-Wise Crop Guide</h1>
+  <p id="hdr-sub">Select your state and district to see detailed crop information</p>
 </header>
 
-<nav>
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="services.html">Services</a>
-  <a href="marketprices.html">Market Prices</a>
-  <a href="schemefinder.html">Scheme Finder</a>
-  <a href="contact.html">Contact</a>
-</nav>
 
-<!-- CONTROLS -->
+
+<!-- Controls -->
 <div class="controls">
   <select id="stateSelect" onchange="onStateChange()">
     <option value="">🗺 Select State</option>
@@ -199,500 +351,781 @@
   <select id="districtSelect" onchange="onDistrictChange()" disabled>
     <option value="">📍 Select District</option>
   </select>
-  <select id="catFilter" onchange="applyFilter()">
-    <option value="">All Categories</option>
+  <select id="seasonSelect" onchange="applyFilters()">
+    <option value="">All Seasons</option>
+    <option value="Kharif">🌧 Kharif (Jun–Oct)</option>
+    <option value="Rabi">❄️ Rabi (Oct–Mar)</option>
+    <option value="Zaid">☀️ Zaid (Mar–Jun)</option>
+    <option value="Perennial">🌿 Perennial</option>
+  </select>
+  <select id="typeSelect" onchange="applyFilters()">
+    <option value="">All Types</option>
     <option value="Cereal">🌾 Cereals</option>
+    <option value="Pulse">🫘 Pulses</option>
     <option value="Vegetable">🥕 Vegetables</option>
     <option value="Fruit">🍎 Fruits</option>
-    <option value="Pulse">🫘 Pulses</option>
+    <option value="Cash Crop">💰 Cash Crops</option>
     <option value="Oilseed">🫙 Oilseeds</option>
     <option value="Spice">🌶️ Spices</option>
-    <option value="Cash Crop">💰 Cash Crops</option>
   </select>
-  <input type="text" id="searchInput" placeholder="🔍 Search crop…" oninput="applyFilter()" />
-  <div class="view-btns">
-    <button class="vbtn active" id="vbtn-t" onclick="setView('table')" title="Table">☰</button>
-    <button class="vbtn"        id="vbtn-g" onclick="setView('grid')"  title="Cards">⊞</button>
+  <input type="text" id="searchInput" placeholder="🔍 Search crops..." oninput="applyFilters()" />
+  <select id="langSel" onchange="applyLang(this.value)">
+    <option value="en">English</option>
+    <option value="hi">हिंदी</option>
+    <option value="te">తెలుగు</option>
+  </select>
+  <div class="view-toggle">
+    <button class="vbtn active" id="vbtn-grid" onclick="setView('grid')" title="Grid view">⊞</button>
+    <button class="vbtn"        id="vbtn-list" onclick="setView('list')" title="List view">☰</button>
   </div>
 </div>
 
-<!-- CATEGORY TABS -->
-<div class="tabs">
-  <button class="tab active" onclick="setTab('',this)">🌿 All</button>
-  <button class="tab"        onclick="setTab('Cereal',this)">🌾 Cereals</button>
-  <button class="tab"        onclick="setTab('Vegetable',this)">🥕 Vegetables</button>
-  <button class="tab"        onclick="setTab('Fruit',this)">🍎 Fruits</button>
-  <button class="tab"        onclick="setTab('Pulse',this)">🫘 Pulses</button>
-  <button class="tab"        onclick="setTab('Oilseed',this)">🫙 Oilseeds</button>
-  <button class="tab"        onclick="setTab('Spice',this)">🌶️ Spices</button>
-  <button class="tab"        onclick="setTab('Cash Crop',this)">💰 Cash Crops</button>
-</div>
+<div class="page-wrap">
 
-<div class="main">
-  <!-- Welcome -->
-  <div id="welcome-screen">
-    <div class="empty-box">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">States & Districts</div>
+    <div id="sidebar-tree"></div>
+  </aside>
+
+  <!-- Main area -->
+  <div class="main" id="main-area">
+    <div class="welcome" id="welcome-screen">
       <span class="big">🌾</span>
-      <p style="font-size:15px;font-weight:700;color:var(--gd);">Select a State and District to see crop prices</p>
-      <p style="font-size:13px;margin-top:8px;color:var(--txts);">
-        Each district shows 20 crops with modal price, min/max range, MSP, trend and variety details.
-      </p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px;">
-        <button onclick="quickLoad('Telangana','Nalgonda')"    style="padding:8px 16px;background:white;border:2px solid var(--brd);border-radius:20px;font-size:13px;font-weight:600;color:var(--gd);cursor:pointer;font-family:inherit;">📍 Nalgonda</button>
-        <button onclick="quickLoad('Andhra Pradesh','Guntur')" style="padding:8px 16px;background:white;border:2px solid var(--brd);border-radius:20px;font-size:13px;font-weight:600;color:var(--gd);cursor:pointer;font-family:inherit;">📍 Guntur</button>
-        <button onclick="quickLoad('Punjab','Ludhiana')"       style="padding:8px 16px;background:white;border:2px solid var(--brd);border-radius:20px;font-size:13px;font-weight:600;color:var(--gd);cursor:pointer;font-family:inherit;">📍 Ludhiana</button>
-        <button onclick="quickLoad('Maharashtra','Nashik')"    style="padding:8px 16px;background:white;border:2px solid var(--brd);border-radius:20px;font-size:13px;font-weight:600;color:var(--gd);cursor:pointer;font-family:inherit;">📍 Nashik</button>
-        <button onclick="quickLoad('Karnataka','Dharwad')"     style="padding:8px 16px;background:white;border:2px solid var(--brd);border-radius:20px;font-size:13px;font-weight:600;color:var(--gd);cursor:pointer;font-family:inherit;">📍 Dharwad</button>
-        <button onclick="quickLoad('Rajasthan','Jaipur')"      style="padding:8px 16px;background:white;border:2px solid var(--brd);border-radius:20px;font-size:13px;font-weight:600;color:var(--gd);cursor:pointer;font-family:inherit;">📍 Jaipur</button>
+      <h2>Find Crops for Your District</h2>
+      <p>Select a state and district from the dropdown above or the sidebar to see detailed crop information — best crops to grow, sowing calendar, yield, MSP, water needs, pests, and government schemes.</p>
+      <div class="state-quick">
+        <button class="sq-btn" onclick="quickSelect('Telangana','Nalgonda')">📍 Nalgonda</button>
+        <button class="sq-btn" onclick="quickSelect('Andhra Pradesh','Guntur')">📍 Guntur</button>
+        <button class="sq-btn" onclick="quickSelect('Punjab','Ludhiana')">📍 Ludhiana</button>
+        <button class="sq-btn" onclick="quickSelect('Maharashtra','Nashik')">📍 Nashik</button>
+        <button class="sq-btn" onclick="quickSelect('Karnataka','Dharwad')">📍 Dharwad</button>
+        <button class="sq-btn" onclick="quickSelect('Rajasthan','Jaipur')">📍 Jaipur</button>
       </div>
     </div>
+    <div id="district-content" style="display:none;"></div>
   </div>
 
-  <!-- District content -->
-  <div id="district-area" style="display:none;">
-    <div id="dist-hero"></div>
-    <div class="stat-strip" id="stat-strip"></div>
-    <div class="result-info" id="result-info"></div>
-    <div id="price-content"></div>
-  </div>
 </div>
 
 <footer>&copy; 2025 FAWP – Digital Farmer Assistance &amp; Welfare Platform</footer>
 
 <script>
-// ══════════════════════════════════════════════════════════════
-//  DATE
-// ══════════════════════════════════════════════════════════════
-const TODAY = new Date();
-const DATE_STR = TODAY.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-document.getElementById('today-tag').textContent = '📅 ' + DATE_STR;
+// ═══════════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════════
 
-// ══════════════════════════════════════════════════════════════
-//  STATE → DISTRICTS
-// ══════════════════════════════════════════════════════════════
-const STATE_DIST = {
-  "Telangana":      ["Nalgonda","Karimnagar","Warangal","Nizamabad","Khammam","Mahbubnagar","Adilabad","Sangareddy","Siddipet","Hyderabad"],
-  "Andhra Pradesh": ["Guntur","Kurnool","Vijayawada","Vizag","Tirupati","Nellore","Kakinada","Ongole","Rajahmundry","Chittoor"],
-  "Karnataka":      ["Bangalore","Mysuru","Dharwad","Bidar","Tumkur","Bellary","Hassan","Mandya","Raichur","Shivamogga"],
-  "Maharashtra":    ["Pune","Nashik","Aurangabad","Nagpur","Solapur","Kolhapur","Amravati","Latur","Jalgaon","Ahmednagar"],
-  "Punjab":         ["Ludhiana","Amritsar","Jalandhar","Patiala","Bathinda","Ferozepur","Hoshiarpur","Gurdaspur","Sangrur","Moga"],
-  "Rajasthan":      ["Jaipur","Jodhpur","Udaipur","Kota","Ajmer","Bikaner","Sikar","Barmer","Nagaur","Chittorgarh"],
-  "Bihar":          ["Patna","Gaya","Muzaffarpur","Bhagalpur","Darbhanga","Sitamarhi","Vaishali","Nalanda","Saran","Champaran"],
-  "Uttar Pradesh":  ["Lucknow","Agra","Varanasi","Kanpur","Allahabad","Meerut","Jhansi","Mathura","Aligarh","Gorakhpur"],
-  "Chhattisgarh":   ["Raipur","Bilaspur","Durg","Jagdalpur","Raigarh","Rajnandgaon","Korba","Ambikapur","Dhamtari","Mahasamund"],
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+// States → Districts
+const STATE_DISTRICTS = {
+  "Telangana":       ["Hyderabad","Nalgonda","Karimnagar","Warangal","Nizamabad","Khammam","Mahbubnagar","Adilabad","Sangareddy","Siddipet"],
+  "Andhra Pradesh":  ["Guntur","Kurnool","Vijayawada","Vizag","Tirupati","Nellore","Kakinada","Ongole","Rajahmundry","Chittoor"],
+  "Karnataka":       ["Bangalore","Mysuru","Dharwad","Bidar","Tumkur","Bellary","Hassan","Mandya","Raichur","Shivamogga"],
+  "Maharashtra":     ["Pune","Nashik","Aurangabad","Nagpur","Solapur","Kolhapur","Amravati","Latur","Jalgaon","Ahmednagar"],
+  "Punjab":          ["Ludhiana","Amritsar","Jalandhar","Patiala","Bathinda","Ferozepur","Hoshiarpur","Gurdaspur","Sangrur","Moga"],
+  "Rajasthan":       ["Jaipur","Jodhpur","Udaipur","Kota","Ajmer","Bikaner","Sikar","Barmer","Nagaur","Chittorgarh"],
+  "Bihar":           ["Patna","Gaya","Muzaffarpur","Bhagalpur","Darbhanga","Sitamarhi","Vaishali","Nalanda","Saran","Champaran"],
+  "Uttar Pradesh":   ["Lucknow","Agra","Varanasi","Kanpur","Allahabad","Meerut","Jhansi","Mathura","Aligarh","Gorakhpur"],
+  "Chhattisgarh":    ["Raipur","Bilaspur","Durg","Jagdalpur","Raigarh","Rajnandgaon","Korba","Ambikapur","Dhamtari","Mahasamund"],
 };
 
-// ══════════════════════════════════════════════════════════════
-//  20 CROP MASTER LIST (used for all districts with price variation)
-// ══════════════════════════════════════════════════════════════
-// Each crop: name, emoji, category, unit, base modal price, msp, variety
-const CROP_MASTER = [
-  { id:'rice',      name:'Rice (Paddy)',     emoji:'🍚', cat:'Cereal',    unit:'qtl', baseModal:2150, msp:2183, variety:'Swarna / BPT-5204',   mktName:'Agmarknet' },
-  { id:'wheat',     name:'Wheat',            emoji:'🌾', cat:'Cereal',    unit:'qtl', baseModal:2320, msp:2275, variety:'HD-3086 / PBW-343',    mktName:'Agmarknet' },
-  { id:'maize',     name:'Maize (Corn)',     emoji:'🌽', cat:'Cereal',    unit:'qtl', baseModal:1820, msp:2090, variety:'DHM-117 / NK-6240',    mktName:'Agmarknet' },
-  { id:'bajra',     name:'Bajra',            emoji:'🌾', cat:'Cereal',    unit:'qtl', baseModal:2100, msp:2625, variety:'HHB-67 / Pusa-322',    mktName:'Agmarknet' },
-  { id:'jowar',     name:'Jowar (Sorghum)',  emoji:'🌾', cat:'Cereal',    unit:'qtl', baseModal:2450, msp:3180, variety:'CSV-15 / M-35-1',      mktName:'Agmarknet' },
-  { id:'tomato',    name:'Tomato',           emoji:'🍅', cat:'Vegetable', unit:'qtl', baseModal:1200, msp:null, variety:'Hybrid / Desi Red',    mktName:'APMC' },
-  { id:'onion',     name:'Onion',            emoji:'🧅', cat:'Vegetable', unit:'qtl', baseModal:1400, msp:null, variety:'Agri Found Dark Red',  mktName:'APMC' },
-  { id:'potato',    name:'Potato',           emoji:'🥔', cat:'Vegetable', unit:'qtl', baseModal:900,  msp:null, variety:'Kufri Jyoti / Pukhraj',mktName:'APMC' },
-  { id:'brinjal',   name:'Brinjal',          emoji:'🍆', cat:'Vegetable', unit:'qtl', baseModal:650,  msp:null, variety:'Pusa Purple Long',     mktName:'APMC' },
-  { id:'chilli',    name:'Green Chilli',     emoji:'🌶️', cat:'Vegetable', unit:'qtl', baseModal:1800, msp:null, variety:'LCA-306 / G-4',        mktName:'APMC' },
-  { id:'mango',     name:'Mango',            emoji:'🥭', cat:'Fruit',     unit:'qtl', baseModal:3800, msp:null, variety:'Alphonso / Banganapalli',mktName:'APMC' },
-  { id:'banana',    name:'Banana',           emoji:'🍌', cat:'Fruit',     unit:'qtl', baseModal:1300, msp:null, variety:'Cavendish / Robusta',  mktName:'APMC' },
-  { id:'grapes',    name:'Grapes',           emoji:'🍇', cat:'Fruit',     unit:'qtl', baseModal:5500, msp:null, variety:'Thompson Seedless',    mktName:'APMC' },
-  { id:'arhar',     name:'Arhar (Tur Dal)',  emoji:'🫘', cat:'Pulse',     unit:'qtl', baseModal:7200, msp:7550, variety:'ICPL-87119 (Asha)',    mktName:'Agmarknet' },
-  { id:'moong',     name:'Green Gram (Moong)',emoji:'🫘',cat:'Pulse',     unit:'qtl', baseModal:7800, msp:8682, variety:'Pusa Vishal / K-851',  mktName:'Agmarknet' },
-  { id:'groundnut', name:'Groundnut',        emoji:'🥜', cat:'Oilseed',   unit:'qtl', baseModal:5800, msp:6783, variety:'TAG-24 / K-6',         mktName:'Agmarknet' },
-  { id:'mustard',   name:'Mustard (Sarson)', emoji:'🌿', cat:'Oilseed',   unit:'qtl', baseModal:5200, msp:5650, variety:'Pusa Bold / Kranti',   mktName:'Agmarknet' },
-  { id:'turmeric',  name:'Turmeric',         emoji:'🟡', cat:'Spice',     unit:'qtl', baseModal:9500, msp:null, variety:'Nizamabad Bulb',       mktName:'APMC' },
-  { id:'cotton',    name:'Cotton (Kapas)',   emoji:'🌸', cat:'Cash Crop', unit:'qtl', baseModal:6800, msp:7121, variety:'Bt NK-6240 / RCH-2',   mktName:'CCI' },
-  { id:'sugarcane', name:'Sugarcane',        emoji:'🎋', cat:'Cash Crop', unit:'qtl', baseModal:315,  msp:340,  variety:'Co-86032 / CoM-265',   mktName:'Sugar Mill' },
-];
+// ── CROP MASTER DATABASE ──────────────────────────────────
+// Each crop: full metadata for rendering
+const CROPS = {
+  // ── TELANGANA CROPS ──
+  rice: {
+    name:"Rice (Paddy)", sci:"Oryza sativa", emoji:"🍚", type:"Cereal",
+    season:"Kharif", altSeason:"Rabi",
+    soilBest:["Clay","Black","Alluvial"], waterNeed:"High (1200–2000 mm)",
+    msp:"₹2,183/qtl (2024–25)", avgYield:"25–35 qtl/acre",
+    duration:"120–150 days",
+    sow:[6,7,8], grow:[7,8,9,10], harv:[10,11,12],
+    varieties:["MTU-7029 (Swarna)","BPT-5204 (Sona Masuri)","RNR-15048 (Telangana Sona)","IR-64"],
+    fertilizer:"N:P:K = 60:30:30 kg/acre. Apply DAP at sowing, urea in splits.",
+    irrigation:"Transplanted paddy needs continuous flooding. 4–5 cm standing water.",
+    pests:["Stem Borer","Brown Plant Hopper","Leaf Folder","Blast","Sheath Blight"],
+    schemes:["PM-KISAN","PMFBY","Rythu Bandhu","Rythu Bandhu Plus"],
+    tips:"Use SRI method to save 30% water. Transplant 21-day-old seedlings at 25×25 cm spacing.",
+    market:"Hyderabad, Nalgonda, Karimnagar, Khammam APMCs",
+    districts:["Telangana","Andhra Pradesh","Chhattisgarh","Bihar","Punjab"],
+  },
+  cotton: {
+    name:"Cotton (Kapas)", sci:"Gossypium hirsutum", emoji:"🌸", type:"Cash Crop",
+    season:"Kharif",
+    soilBest:["Black","Deep Alluvial"], waterNeed:"Medium (700–1000 mm)",
+    msp:"₹7,121/qtl (2024–25)", avgYield:"8–15 qtl/acre",
+    duration:"150–180 days",
+    sow:[5,6,7], grow:[7,8,9,10], harv:[10,11,12],
+    varieties:["Bt Cotton NK 6240","RCH-2 BG II","Bunny BG II","NCS 9004"],
+    fertilizer:"120:60:60 NPK kg/acre. Farmyard manure 4 tonnes/acre before sowing.",
+    irrigation:"3–5 irrigations. Critical at squaring and boll development stages.",
+    pests:["Bollworm","Aphid","Whitefly","Pink Bollworm","Sucking pests","Leaf Curl Virus"],
+    schemes:["PMFBY","PM-KISAN","PKVY (organic)","SMAM"],
+    tips:"Maintain 100×45 cm spacing. Pick at 45–50% boll opening. Avoid late sowing after July 15.",
+    market:"Karimnagar, Adilabad, Warangal, Hinganghat",
+    districts:["Telangana","Andhra Pradesh","Maharashtra","Karnataka"],
+  },
+  maize: {
+    name:"Maize (Corn)", sci:"Zea mays", emoji:"🌽", type:"Cereal",
+    season:"Kharif", altSeason:"Rabi",
+    soilBest:["Alluvial","Red","Black"], waterNeed:"Medium (600–900 mm)",
+    msp:"₹2,090/qtl (2024–25)", avgYield:"20–35 qtl/acre",
+    duration:"90–120 days",
+    sow:[6,7], grow:[7,8,9], harv:[9,10],
+    varieties:["DHM-117","HQPM-1","NK-6240","Pro-311","Pioneer 3396"],
+    fertilizer:"120:60:40 NPK. Apply 50% N + full P+K at sowing, 25% N at knee-high.",
+    irrigation:"5–6 irrigations. Critical at silking and grain-fill stages.",
+    pests:["Fall Armyworm","Stem Borer","Aphid","Turcicum Blight","FAW (new pest)"],
+    schemes:["NFSM","PM-KISAN","PMFBY","RKVY"],
+    tips:"FAW spray: Emamectin Benzoate 5% SG @0.4 g/L. Plant at 60×25 cm spacing.",
+    market:"Nizamabad, Karimnagar, Warangal, Hindupur",
+    districts:["Telangana","Andhra Pradesh","Karnataka","Maharashtra","Bihar"],
+  },
+  chilli: {
+    name:"Red Chilli", sci:"Capsicum annuum", emoji:"🌶️", type:"Spice",
+    season:"Kharif", altSeason:"Rabi",
+    soilBest:["Sandy Loam","Red","Black"], waterNeed:"Medium (600–1200 mm)",
+    msp:"No MSP (₹100–200/kg market)", avgYield:"4–8 qtl/acre (dry)",
+    duration:"150–180 days",
+    sow:[6,7,8], grow:[8,9,10,11], harv:[11,12,1,2],
+    varieties:["LCA-306 (Bullet)","334 (Hybrid)","Byadgi Kaddi","G-4","Pusa Jwala"],
+    fertilizer:"75:50:50 NPK kg/acre. Foliar spray of 0.5% ZnSO4 improves fruit set.",
+    irrigation:"8–10 irrigations. Drip irrigation saves 40% water and boosts yield.",
+    pests:["Thrips","Mites","Aphids","Fruit Borer","Anthracnose","Viral diseases"],
+    schemes:["MIDH","PMFBY","PM-KISAN","PKVY"],
+    tips:"Guntur Red Chilli is GI-tagged. Use raised beds. Mulching reduces moisture stress.",
+    market:"Guntur (Asia's largest chilli market), Khammam, Warangal",
+    districts:["Andhra Pradesh","Telangana","Karnataka","Maharashtra"],
+  },
+  turmeric: {
+    name:"Turmeric", sci:"Curcuma longa", emoji:"🟡", type:"Spice",
+    season:"Kharif",
+    soilBest:["Sandy Loam","Alluvial","Red"], waterNeed:"Medium (1000–1500 mm)",
+    msp:"No MSP (₹7,000–12,000/qtl market)", avgYield:"25–35 qtl/acre (dry)",
+    duration:"240–270 days",
+    sow:[4,5,6], grow:[6,7,8,9,10,11], harv:[12,1,2],
+    varieties:["Erode Local","Salem Local","Nizamabad Bulb","Alleppey"],
+    fertilizer:"60:50:80 NPK kg/acre. Rich in organic matter requirement.",
+    irrigation:"7–8 irrigations. Mulch with green leaves after planting.",
+    pests:["Rhizome Rot","Leaf Spot","Scale Insect","Shoot Borer"],
+    schemes:["MIDH","PM-KISAN","PKVY","RKVY"],
+    tips:"Nizamabad Bulb variety famous for high curcumin. Boil and dry rhizomes for 3 days.",
+    market:"Nizamabad, Erode, Salem, Duggirala",
+    districts:["Telangana","Andhra Pradesh","Karnataka","Maharashtra"],
+  },
+  // ── ANDHRA PRADESH ──
+  groundnut: {
+    name:"Groundnut", sci:"Arachis hypogaea", emoji:"🥜", type:"Oilseed",
+    season:"Kharif", altSeason:"Rabi",
+    soilBest:["Sandy Loam","Red","Alluvial"], waterNeed:"Low–Medium (450–600 mm)",
+    msp:"₹6,783/qtl (2024–25)", avgYield:"8–12 qtl/acre",
+    duration:"100–130 days",
+    sow:[6,7,1,2], grow:[7,8,9,2,3], harv:[9,10,4,5],
+    varieties:["TAG-24","K-6","ICGS-76","Kadiri 5","JL-24"],
+    fertilizer:"10:40:20 NPK. Gypsum @200 kg/acre at pegging stage for pod filling.",
+    irrigation:"4–5 irrigations. Critical at pegging and pod development.",
+    pests:["Leaf Miner","Tikka Disease","Collar Rot","Aphid","White Grub"],
+    schemes:["PM-KISAN","PMFBY","NFSM","YSR Rythu Bharosa"],
+    tips:"Inoculate seeds with Rhizobium culture. Avoid waterlogging. Harvest at 90% maturity.",
+    market:"Guntur, Kurnool, Nellore, Rajkot",
+    districts:["Andhra Pradesh","Telangana","Rajasthan","Gujarat"],
+  },
+  // ── KARNATAKA ──
+  sugarcane: {
+    name:"Sugarcane", sci:"Saccharum officinarum", emoji:"🎋", type:"Cash Crop",
+    season:"Perennial",
+    soilBest:["Deep Black","Alluvial","Sandy Loam"], waterNeed:"Very High (1500–2500 mm)",
+    msp:"₹340/qtl (FRP 2024–25)", avgYield:"400–600 qtl/acre",
+    duration:"12–18 months",
+    sow:[10,11,12,1,2], grow:[1,2,3,4,5,6,7,8,9], harv:[10,11,12,1,2,3],
+    varieties:["Co-86032","CoM-265","Co-0238","SNK-0354","Co-94012"],
+    fertilizer:"250:100:100 NPK kg/acre. Trash mulching reduces water requirement by 30%.",
+    irrigation:"Drip irrigation highly recommended. 25–30 irrigations if flood irrigated.",
+    pests:["Early Shoot Borer","Top Shoot Borer","Pyrilla","Red Rot","Smut"],
+    schemes:["PM-KISAN","PMFBY","RKVY","SMAM"],
+    tips:"Plant cane in furrows 90 cm apart. Ratoon crop takes 10–12 months.",
+    market:"Dharwad, Mandya, Belgaum, Kolhapur",
+    districts:["Karnataka","Maharashtra","Uttar Pradesh","Tamil Nadu"],
+  },
+  soybean: {
+    name:"Soybean", sci:"Glycine max", emoji:"🫘", type:"Oilseed",
+    season:"Kharif",
+    soilBest:["Black","Red","Alluvial"], waterNeed:"Medium (600–800 mm)",
+    msp:"₹4,892/qtl (2024–25)", avgYield:"6–10 qtl/acre",
+    duration:"95–110 days",
+    sow:[6,7], grow:[7,8,9], harv:[9,10],
+    varieties:["JS-335","JS-9305","MAUS-81","NRC-37","Pusa-16"],
+    fertilizer:"20:60:40 NPK. Rhizobium + PSB seed treatment doubles nitrogen fixation.",
+    irrigation:"3–4 irrigations. Drought tolerant but critical at flowering and pod fill.",
+    pests:["Stem Fly","Girdle Beetle","Spodoptera","Yellow Mosaic Virus","Pod Borer"],
+    schemes:["NFSM","PMFBY","PM-KISAN","RKVY"],
+    tips:"Inoculate with Rhizobium bradyrhizobii. Harvest when 85% pods are brown.",
+    market:"Indore, Latur, Bidar, Akola",
+    districts:["Karnataka","Maharashtra","Madhya Pradesh","Rajasthan"],
+  },
+  ragi: {
+    name:"Ragi (Finger Millet)", sci:"Eleusine coracana", emoji:"🌾", type:"Cereal",
+    season:"Kharif",
+    soilBest:["Red","Sandy Loam","Laterite"], waterNeed:"Low (350–500 mm)",
+    msp:"₹4,290/qtl (2024–25)", avgYield:"8–12 qtl/acre",
+    duration:"120–130 days",
+    sow:[6,7], grow:[7,8,9], harv:[10,11],
+    varieties:["GPU-28","MR-6","VL-149","Indaf-5","Dapoli-1"],
+    fertilizer:"40:20:20 NPK. Responds well to organic manure.",
+    irrigation:"3–4 irrigations. Highly drought tolerant.",
+    pests:["Blast","Downy Mildew","Head Caterpillar","Aphids"],
+    schemes:["NFSM","PM-KISAN","PKVY","RKVY"],
+    tips:"High calcium and iron — 'nutri-cereal'. Good for dry, degraded soils. Intercrop with groundnut.",
+    market:"Mysuru, Hassan, Davangere, Chitradurga",
+    districts:["Karnataka","Tamil Nadu","Andhra Pradesh","Chhattisgarh"],
+  },
+  // ── MAHARASHTRA ──
+  onion: {
+    name:"Onion", sci:"Allium cepa", emoji:"🧅", type:"Vegetable",
+    season:"Kharif", altSeason:"Rabi",
+    soilBest:["Sandy Loam","Alluvial","Red"], waterNeed:"Medium (350–550 mm)",
+    msp:"No MSP (₹600–2,200/qtl market)", avgYield:"80–120 qtl/acre",
+    duration:"90–120 days",
+    sow:[10,11,12,5,6], grow:[12,1,2,7,8], harv:[2,3,4,9,10],
+    varieties:["Agri Found Dark Red","N-2-4-1","Bhima Red","Pusa Red","NHRDF Red"],
+    fertilizer:"60:40:40 NPK. Sulphur @30 kg/acre improves storage and pungency.",
+    irrigation:"8–10 irrigations. Stop irrigation 10 days before harvest.",
+    pests:["Thrips","Purple Blotch","Stemphylium Blight","Basal Rot","Colletotrichum"],
+    schemes:["MIDH","PM-KISAN","PMFBY","RKVY"],
+    tips:"Nashik is India's onion capital. Cold storage at 0–2°C extends shelf life to 6 months.",
+    market:"Nashik (Lasalgaon), Pune, Solapur, Indore",
+    districts:["Maharashtra","Karnataka","Rajasthan","Andhra Pradesh"],
+  },
+  grapes: {
+    name:"Grapes", sci:"Vitis vinifera", emoji:"🍇", type:"Fruit",
+    season:"Perennial",
+    soilBest:["Sandy Loam","Black","Alluvial"], waterNeed:"Medium (700–900 mm drip)",
+    msp:"No MSP (₹30–80/kg market)", avgYield:"60–100 qtl/acre",
+    duration:"Perennial (2–3 years to first harvest)",
+    sow:[10,11], grow:[11,12,1,2,3], harv:[3,4,5],
+    varieties:["Thompson Seedless","Sharad Seedless","Sonaka","Flame Seedless","Manjri Medika"],
+    fertilizer:"100:80:100 NPK per year. Foliar nutrition critical during berry development.",
+    irrigation:"Drip irrigation mandatory. Furrow/flood irrigation not suitable.",
+    pests:["Downy Mildew","Powdery Mildew","Anthracnose","Mealybug","Thrips"],
+    schemes:["MIDH","PM-KISAN","RKVY","PMFBY"],
+    tips:"Nashik grapes exported to 40+ countries. Pruning technique critical — Oct & Apr pruning.",
+    market:"Nashik, Pune, Sangli, Mumbai",
+    districts:["Maharashtra","Karnataka","Andhra Pradesh","Tamil Nadu"],
+  },
+  // ── PUNJAB ──
+  wheat: {
+    name:"Wheat", sci:"Triticum aestivum", emoji:"🌾", type:"Cereal",
+    season:"Rabi",
+    soilBest:["Alluvial","Clay Loam","Black"], waterNeed:"Medium (450–650 mm)",
+    msp:"₹2,275/qtl (2024–25)", avgYield:"18–25 qtl/acre",
+    duration:"120–150 days",
+    sow:[10,11], grow:[11,12,1,2], harv:[3,4],
+    varieties:["HD-3086","PBW-343","PBW-550","DBW-187","WH-1105","HD-2967"],
+    fertilizer:"120:60:40 NPK. Apply 50% N before sowing, 50% N at first irrigation.",
+    irrigation:"5–6 critical irrigations: CRI, Tillering, Jointing, Flowering, Milking, Dough stage.",
+    pests:["Yellow Rust","Brown Rust","Loose Smut","Karnal Bunt","Aphids","Termite"],
+    schemes:["PM-KISAN","PMFBY","KCC","NFSM","MSP Procurement"],
+    tips:"Sow before Nov 15 for best yield. Zero-till sowing saves fuel and improves germination.",
+    market:"Ludhiana, Amritsar, Jalandhar, Bathinda mandis",
+    districts:["Punjab","Haryana","Uttar Pradesh","Rajasthan","Bihar"],
+  },
+  // ── RAJASTHAN ──
+  bajra: {
+    name:"Bajra (Pearl Millet)", sci:"Pennisetum glaucum", emoji:"🌾", type:"Cereal",
+    season:"Kharif",
+    soilBest:["Sandy","Sandy Loam","Red"], waterNeed:"Very Low (200–350 mm)",
+    msp:"₹2,625/qtl (2024–25)", avgYield:"8–14 qtl/acre",
+    duration:"80–90 days",
+    sow:[6,7], grow:[7,8], harv:[9,10],
+    varieties:["HHB-67","Pusa-322","GHB-538","MH-169","Rajshree"],
+    fertilizer:"40:20:0 NPK. Very low input requirement. Well adapted to poor soils.",
+    irrigation:"1–2 irrigations if rain is poor. Highly drought tolerant.",
+    pests:["Downy Mildew","Ergot","Stem Borer","Shoot Fly"],
+    schemes:["PM-KISAN","NFSM","RKVY","PMFBY"],
+    tips:"Staple food of Rajasthan. Intercrop with moth bean or cowpea. Residues used as fodder.",
+    market:"Sikar, Bikaner, Jodhpur, Barmer",
+    districts:["Rajasthan","Haryana","Uttar Pradesh","Maharashtra"],
+  },
+  mustard: {
+    name:"Mustard (Sarson)", sci:"Brassica juncea", emoji:"🌿", type:"Oilseed",
+    season:"Rabi",
+    soilBest:["Sandy Loam","Alluvial","Black"], waterNeed:"Low (250–400 mm)",
+    msp:"₹5,650/qtl (2024–25)", avgYield:"5–8 qtl/acre",
+    duration:"110–140 days",
+    sow:[9,10], grow:[10,11,12], harv:[1,2,3],
+    varieties:["Pusa Bold","Kranti","Rohini","NRCHB-101","Seeta","Maya"],
+    fertilizer:"60:30:20 NPK. Sulphur @20 kg/acre is critical for oil content and yield.",
+    irrigation:"2–3 irrigations: one at rosette and one at flowering stage.",
+    pests:["Aphid","Painted Bug","Alternaria Blight","White Rust","Stem Rot"],
+    schemes:["NFSM","PM-KISAN","PMFBY","KCC"],
+    tips:"Rajasthan produces 45% of India's mustard. Timely aphid control saves 20–25% yield.",
+    market:"Jaipur, Bharatpur, Kota, Alwar",
+    districts:["Rajasthan","Haryana","Uttar Pradesh","Madhya Pradesh","Bihar"],
+  },
+  // ── BIHAR / UP ──
+  potato: {
+    name:"Potato", sci:"Solanum tuberosum", emoji:"🥔", type:"Vegetable",
+    season:"Rabi",
+    soilBest:["Sandy Loam","Alluvial","Loamy"], waterNeed:"Medium (400–600 mm)",
+    msp:"No MSP (₹500–1,200/qtl market)", avgYield:"80–120 qtl/acre",
+    duration:"75–100 days",
+    sow:[9,10,11], grow:[11,12,1], harv:[1,2,3],
+    varieties:["Kufri Jyoti","Kufri Pukhraj","Kufri Chipsona","Kufri Sindhuri","Kufri Bahar"],
+    fertilizer:"120:60:100 NPK. Apply 50% N+K and full P at planting. Rest N at earthing up.",
+    irrigation:"7–8 irrigations. Critical at tuber initiation and bulking stages. Avoid waterlogging.",
+    pests:["Late Blight","Early Blight","Aphid","White Grub","Cutworm","Virus diseases"],
+    schemes:["PM-KISAN","PMFBY","MIDH","RKVY"],
+    tips:"Agra, Aligarh, Patna are major potato belts. Cold storage chain critical for price stability.",
+    market:"Agra, Aligarh, Patna, Farrukhabad",
+    districts:["Uttar Pradesh","Bihar","Punjab","West Bengal","Madhya Pradesh"],
+  },
+  // ── CHHATTISGARH ──
+  arhar: {
+    name:"Arhar (Pigeon Pea / Tur)", sci:"Cajanus cajan", emoji:"🫘", type:"Pulse",
+    season:"Kharif",
+    soilBest:["Red","Sandy Loam","Alluvial"], waterNeed:"Low (600–700 mm)",
+    msp:"₹7,550/qtl (2024–25)", avgYield:"4–7 qtl/acre",
+    duration:"150–180 days",
+    sow:[6,7], grow:[7,8,9,10,11], harv:[12,1,2],
+    varieties:["ICPL-87119 (Asha)","GT-100","BDN-2","ICPL-151","CO-6"],
+    fertilizer:"20:40:20 NPK. Rhizobium inoculation gives 30% extra yield.",
+    irrigation:"2–3 irrigations at critical stages. Drought tolerant.",
+    pests:["Pod Borer (H. armigera)","Wilt","Sterility Mosaic Virus","Pod Fly"],
+    schemes:["NFSM","PM-KISAN","PMFBY","RKVY"],
+    tips:"Intercrop with sorghum or cotton. Rich protein source — 22–25% protein content.",
+    market:"Latur, Gulbarga, Jabalpur, Raipur",
+    districts:["Chhattisgarh","Maharashtra","Karnataka","Andhra Pradesh","Telangana"],
+  },
+};
 
-// ══════════════════════════════════════════════════════════════
-//  DISTRICT PRICE MULTIPLIERS
-//  Each district has a price factor (0.75–1.30) per crop-id
-//  This creates realistic variation across districts
-// ══════════════════════════════════════════════════════════════
-const DIST_FACTORS = {
+// District → recommended crops mapping
+const DISTRICT_CROPS = {
   // TELANGANA
-  "Nalgonda":    { rice:1.02, wheat:0.90, maize:1.05, bajra:0.80, jowar:0.88, tomato:1.15, onion:0.95, potato:0.90, brinjal:1.10, chilli:1.25, mango:1.10, banana:1.05, grapes:0.85, arhar:1.05, moong:1.00, groundnut:1.08, mustard:0.88, turmeric:1.20, cotton:1.10, sugarcane:1.02 },
-  "Karimnagar":  { rice:1.05, wheat:0.88, maize:1.08, bajra:0.78, jowar:0.85, tomato:1.20, onion:0.98, potato:0.88, brinjal:1.05, chilli:1.30, mango:1.15, banana:1.00, grapes:0.80, arhar:1.08, moong:1.02, groundnut:1.10, mustard:0.85, turmeric:1.30, cotton:1.12, sugarcane:1.00 },
-  "Warangal":    { rice:1.00, wheat:0.92, maize:1.03, bajra:0.82, jowar:0.90, tomato:1.10, onion:1.00, potato:0.92, brinjal:1.08, chilli:1.22, mango:1.05, banana:1.08, grapes:0.88, arhar:1.02, moong:0.98, groundnut:1.05, mustard:0.90, turmeric:1.15, cotton:1.08, sugarcane:1.03 },
-  "Nizamabad":   { rice:1.03, wheat:0.91, maize:1.06, bajra:0.79, jowar:0.87, tomato:1.08, onion:0.96, potato:0.91, brinjal:1.02, chilli:1.18, mango:1.08, banana:1.03, grapes:0.82, arhar:1.04, moong:1.01, groundnut:1.06, mustard:0.87, turmeric:1.35, cotton:1.09, sugarcane:1.04 },
-  "Khammam":     { rice:1.04, wheat:0.89, maize:1.04, bajra:0.81, jowar:0.86, tomato:1.12, onion:0.97, potato:0.89, brinjal:1.06, chilli:1.20, mango:1.12, banana:1.06, grapes:0.84, arhar:1.06, moong:0.99, groundnut:1.07, mustard:0.86, turmeric:1.22, cotton:1.11, sugarcane:1.01 },
-  "Mahbubnagar": { rice:0.98, wheat:0.88, maize:1.02, bajra:0.85, jowar:0.92, tomato:1.05, onion:0.93, potato:0.87, brinjal:1.00, chilli:1.15, mango:1.02, banana:1.02, grapes:0.82, arhar:1.00, moong:0.97, groundnut:1.10, mustard:0.90, turmeric:1.10, cotton:1.07, sugarcane:0.99 },
-  "Adilabad":    { rice:0.97, wheat:0.90, maize:1.05, bajra:0.83, jowar:0.91, tomato:1.08, onion:0.94, potato:0.88, brinjal:1.03, chilli:1.14, mango:1.00, banana:1.01, grapes:0.80, arhar:1.03, moong:0.98, groundnut:1.04, mustard:0.88, turmeric:1.12, cotton:1.13, sugarcane:0.98 },
-  "Sangareddy":  { rice:1.01, wheat:0.91, maize:1.04, bajra:0.80, jowar:0.89, tomato:1.14, onion:0.99, potato:0.91, brinjal:1.07, chilli:1.16, mango:1.06, banana:1.04, grapes:0.83, arhar:1.01, moong:0.99, groundnut:1.09, mustard:0.89, turmeric:1.18, cotton:1.08, sugarcane:1.02 },
-  "Siddipet":    { rice:1.03, wheat:0.89, maize:1.06, bajra:0.81, jowar:0.88, tomato:1.10, onion:0.95, potato:0.90, brinjal:1.04, chilli:1.19, mango:1.07, banana:1.02, grapes:0.81, arhar:1.05, moong:1.00, groundnut:1.06, mustard:0.87, turmeric:1.25, cotton:1.10, sugarcane:1.01 },
-  "Hyderabad":   { rice:1.08, wheat:1.00, maize:1.10, bajra:0.88, jowar:0.95, tomato:1.30, onion:1.10, potato:1.05, brinjal:1.20, chilli:1.35, mango:1.25, banana:1.15, grapes:1.00, arhar:1.10, moong:1.08, groundnut:1.12, mustard:0.95, turmeric:1.30, cotton:1.15, sugarcane:1.05 },
+  "Nalgonda":    ["rice","cotton","maize","groundnut","arhar"],
+  "Karimnagar":  ["rice","cotton","maize","turmeric","chilli"],
+  "Warangal":    ["rice","cotton","maize","arhar","chilli"],
+  "Nizamabad":   ["rice","maize","turmeric","sugarcane","cotton"],
+  "Khammam":     ["rice","cotton","maize","arhar","groundnut"],
+  "Mahbubnagar": ["cotton","groundnut","maize","arhar","bajra"],
+  "Adilabad":    ["cotton","maize","rice","arhar","soybean"],
+  "Sangareddy":  ["cotton","maize","rice","groundnut","turmeric"],
+  "Siddipet":    ["rice","maize","cotton","turmeric","arhar"],
+  "Hyderabad":   ["rice","maize","cotton","chilli","turmeric"],
   // ANDHRA PRADESH
-  "Guntur":      { rice:1.05, wheat:0.88, maize:1.08, bajra:0.80, jowar:0.87, tomato:1.18, onion:1.02, potato:0.90, brinjal:1.10, chilli:1.45, mango:1.20, banana:1.08, grapes:0.88, arhar:1.06, moong:1.02, groundnut:1.12, mustard:0.85, turmeric:1.20, cotton:1.14, sugarcane:1.03 },
-  "Kurnool":     { rice:1.00, wheat:0.90, maize:1.04, bajra:0.85, jowar:0.92, tomato:1.10, onion:0.96, potato:0.88, brinjal:1.05, chilli:1.30, mango:1.10, banana:1.03, grapes:0.82, arhar:1.04, moong:0.99, groundnut:1.15, mustard:0.88, turmeric:1.15, cotton:1.10, sugarcane:1.00 },
-  "Vijayawada":  { rice:1.06, wheat:0.92, maize:1.06, bajra:0.82, jowar:0.90, tomato:1.22, onion:1.05, potato:0.95, brinjal:1.14, chilli:1.28, mango:1.18, banana:1.10, grapes:0.90, arhar:1.07, moong:1.04, groundnut:1.10, mustard:0.90, turmeric:1.18, cotton:1.12, sugarcane:1.04 },
-  "Vizag":       { rice:1.04, wheat:0.95, maize:1.05, bajra:0.84, jowar:0.92, tomato:1.20, onion:1.04, potato:0.98, brinjal:1.12, chilli:1.22, mango:1.15, banana:1.12, grapes:0.92, arhar:1.05, moong:1.02, groundnut:1.08, mustard:0.91, turmeric:1.14, cotton:1.10, sugarcane:1.02 },
-  "Tirupati":    { rice:1.02, wheat:0.93, maize:1.04, bajra:0.83, jowar:0.91, tomato:1.16, onion:1.01, potato:0.94, brinjal:1.08, chilli:1.20, mango:1.12, banana:1.08, grapes:0.88, arhar:1.04, moong:1.01, groundnut:1.14, mustard:0.89, turmeric:1.10, cotton:1.08, sugarcane:1.01 },
-  "Nellore":     { rice:1.07, wheat:0.90, maize:1.06, bajra:0.81, jowar:0.88, tomato:1.14, onion:0.99, potato:0.92, brinjal:1.10, chilli:1.25, mango:1.14, banana:1.06, grapes:0.84, arhar:1.06, moong:1.00, groundnut:1.11, mustard:0.87, turmeric:1.16, cotton:1.11, sugarcane:1.03 },
-  "Kakinada":    { rice:1.08, wheat:0.91, maize:1.07, bajra:0.80, jowar:0.89, tomato:1.15, onion:1.00, potato:0.91, brinjal:1.09, chilli:1.24, mango:1.16, banana:1.10, grapes:0.85, arhar:1.07, moong:1.01, groundnut:1.09, mustard:0.88, turmeric:1.17, cotton:1.12, sugarcane:1.04 },
-  "Ongole":      { rice:1.03, wheat:0.89, maize:1.03, bajra:0.84, jowar:0.91, tomato:1.11, onion:0.97, potato:0.89, brinjal:1.06, chilli:1.26, mango:1.11, banana:1.04, grapes:0.83, arhar:1.05, moong:0.99, groundnut:1.13, mustard:0.87, turmeric:1.12, cotton:1.09, sugarcane:1.02 },
-  "Rajahmundry": { rice:1.06, wheat:0.92, maize:1.06, bajra:0.81, jowar:0.90, tomato:1.18, onion:1.02, potato:0.93, brinjal:1.11, chilli:1.22, mango:1.16, banana:1.09, grapes:0.86, arhar:1.06, moong:1.02, groundnut:1.08, mustard:0.89, turmeric:1.16, cotton:1.11, sugarcane:1.03 },
-  "Chittoor":    { rice:1.01, wheat:0.91, maize:1.02, bajra:0.85, jowar:0.92, tomato:1.12, onion:0.98, potato:0.93, brinjal:1.07, chilli:1.18, mango:1.10, banana:1.06, grapes:0.87, arhar:1.03, moong:1.00, groundnut:1.16, mustard:0.90, turmeric:1.08, cotton:1.06, sugarcane:1.00 },
+  "Guntur":      ["chilli","cotton","rice","groundnut","arhar"],
+  "Kurnool":     ["cotton","groundnut","arhar","maize","rice"],
+  "Vijayawada":  ["rice","maize","cotton","chilli","sugarcane"],
+  "Vizag":       ["rice","arhar","maize","groundnut","sugarcane"],
+  "Tirupati":    ["groundnut","arhar","rice","maize","cotton"],
+  "Nellore":     ["rice","aquaculture crops","chilli","cotton","maize"],
+  "Kakinada":    ["rice","coconut","arhar","sugarcane","maize"],
+  "Ongole":      ["groundnut","arhar","cotton","maize","rice"],
+  "Rajahmundry": ["rice","sugarcane","arhar","chilli","maize"],
+  "Chittoor":    ["groundnut","arhar","maize","rice","chilli"],
   // KARNATAKA
-  "Bangalore":   { rice:1.05, wheat:0.96, maize:1.08, bajra:0.88, jowar:0.96, tomato:1.25, onion:1.08, potato:1.02, brinjal:1.18, chilli:1.20, mango:1.22, banana:1.14, grapes:0.95, arhar:1.10, moong:1.06, groundnut:1.10, mustard:0.93, turmeric:1.15, cotton:1.08, sugarcane:1.05 },
-  "Mysuru":      { rice:1.04, wheat:0.94, maize:1.07, bajra:0.86, jowar:0.95, tomato:1.18, onion:1.04, potato:0.98, brinjal:1.14, chilli:1.18, mango:1.20, banana:1.12, grapes:0.92, arhar:1.08, moong:1.04, groundnut:1.08, mustard:0.92, turmeric:1.20, cotton:1.06, sugarcane:1.10 },
-  "Dharwad":     { rice:0.98, wheat:0.95, maize:1.10, bajra:0.90, jowar:1.00, tomato:1.10, onion:1.00, potato:0.95, brinjal:1.08, chilli:1.15, mango:1.05, banana:1.05, grapes:0.90, arhar:1.05, moong:1.02, groundnut:1.12, mustard:0.95, turmeric:1.10, cotton:1.15, sugarcane:1.12 },
-  "Bidar":       { rice:0.96, wheat:0.94, maize:1.08, bajra:0.89, jowar:0.98, tomato:1.05, onion:0.98, potato:0.93, brinjal:1.05, chilli:1.12, mango:1.02, banana:1.02, grapes:0.88, arhar:1.04, moong:1.00, groundnut:1.10, mustard:0.93, turmeric:1.08, cotton:1.12, sugarcane:1.08 },
-  "Tumkur":      { rice:1.02, wheat:0.93, maize:1.06, bajra:0.87, jowar:0.94, tomato:1.14, onion:1.02, potato:0.96, brinjal:1.10, chilli:1.16, mango:1.12, banana:1.08, grapes:0.91, arhar:1.06, moong:1.02, groundnut:1.09, mustard:0.92, turmeric:1.12, cotton:1.10, sugarcane:1.06 },
-  "Bellary":     { rice:0.97, wheat:0.94, maize:1.05, bajra:0.92, jowar:0.98, tomato:1.08, onion:0.97, potato:0.92, brinjal:1.04, chilli:1.14, mango:1.05, banana:1.04, grapes:0.89, arhar:1.03, moong:0.99, groundnut:1.14, mustard:0.94, turmeric:1.06, cotton:1.13, sugarcane:1.04 },
-  "Hassan":      { rice:1.03, wheat:0.93, maize:1.07, bajra:0.86, jowar:0.95, tomato:1.16, onion:1.03, potato:1.00, brinjal:1.12, chilli:1.16, mango:1.14, banana:1.10, grapes:0.92, arhar:1.07, moong:1.03, groundnut:1.07, mustard:0.91, turmeric:1.14, cotton:1.07, sugarcane:1.08 },
-  "Mandya":      { rice:1.05, wheat:0.93, maize:1.08, bajra:0.87, jowar:0.96, tomato:1.15, onion:1.02, potato:0.97, brinjal:1.12, chilli:1.17, mango:1.16, banana:1.11, grapes:0.92, arhar:1.07, moong:1.03, groundnut:1.08, mustard:0.92, turmeric:1.15, cotton:1.08, sugarcane:1.14 },
-  "Raichur":     { rice:1.00, wheat:0.93, maize:1.06, bajra:0.91, jowar:0.99, tomato:1.07, onion:0.97, potato:0.92, brinjal:1.05, chilli:1.14, mango:1.05, banana:1.04, grapes:0.88, arhar:1.04, moong:1.00, groundnut:1.11, mustard:0.93, turmeric:1.08, cotton:1.12, sugarcane:1.06 },
-  "Shivamogga":  { rice:1.06, wheat:0.94, maize:1.09, bajra:0.87, jowar:0.96, tomato:1.16, onion:1.04, potato:0.99, brinjal:1.13, chilli:1.18, mango:1.18, banana:1.14, grapes:0.93, arhar:1.08, moong:1.04, groundnut:1.08, mustard:0.92, turmeric:1.16, cotton:1.08, sugarcane:1.10 },
+  "Dharwad":     ["sugarcane","soybean","maize","ragi","cotton"],
+  "Bidar":       ["soybean","arhar","maize","cotton","ragi"],
+  "Mysuru":      ["ragi","sugarcane","rice","maize","arhar"],
+  "Mandya":      ["sugarcane","ragi","rice","maize","arhar"],
+  "Tumkur":      ["ragi","groundnut","arhar","maize","cotton"],
+  "Bellary":     ["cotton","groundnut","soybean","ragi","bajra"],
+  "Bangalore":   ["ragi","maize","arhar","groundnut","vegetables"],
+  "Hassan":      ["ragi","maize","potato","arhar","coffee"],
+  "Raichur":     ["cotton","rice","arhar","maize","sunflower"],
+  "Shivamogga":  ["rice","areca nut","maize","ragi","sugarcane"],
   // MAHARASHTRA
-  "Pune":        { rice:1.04, wheat:1.00, maize:1.06, bajra:0.95, jowar:1.02, tomato:1.20, onion:1.10, potato:1.05, brinjal:1.15, chilli:1.18, mango:1.18, banana:1.10, grapes:1.05, arhar:1.08, moong:1.05, groundnut:1.06, mustard:0.98, turmeric:1.10, cotton:1.08, sugarcane:1.12 },
-  "Nashik":      { rice:1.02, wheat:0.98, maize:1.08, bajra:0.94, jowar:1.00, tomato:1.22, onion:1.20, potato:1.02, brinjal:1.12, chilli:1.16, mango:1.14, banana:1.08, grapes:1.20, arhar:1.06, moong:1.04, groundnut:1.05, mustard:0.96, turmeric:1.08, cotton:1.06, sugarcane:1.10 },
-  "Aurangabad":  { rice:0.98, wheat:0.96, maize:1.05, bajra:0.96, jowar:1.02, tomato:1.12, onion:1.05, potato:0.98, brinjal:1.08, chilli:1.14, mango:1.08, banana:1.05, grapes:1.00, arhar:1.05, moong:1.02, groundnut:1.04, mustard:0.95, turmeric:1.05, cotton:1.10, sugarcane:1.08 },
-  "Nagpur":      { rice:1.00, wheat:0.98, maize:1.06, bajra:0.95, jowar:1.01, tomato:1.18, onion:1.08, potato:1.02, brinjal:1.12, chilli:1.16, mango:1.16, banana:1.08, grapes:0.98, arhar:1.07, moong:1.04, groundnut:1.05, mustard:0.96, turmeric:1.08, cotton:1.11, sugarcane:1.06 },
-  "Solapur":     { rice:0.99, wheat:0.97, maize:1.05, bajra:0.96, jowar:1.03, tomato:1.14, onion:1.08, potato:0.99, brinjal:1.10, chilli:1.15, mango:1.10, banana:1.06, grapes:1.02, arhar:1.06, moong:1.03, groundnut:1.05, mustard:0.95, turmeric:1.06, cotton:1.09, sugarcane:1.11 },
-  "Kolhapur":    { rice:1.03, wheat:0.98, maize:1.07, bajra:0.94, jowar:1.02, tomato:1.16, onion:1.06, potato:1.02, brinjal:1.12, chilli:1.16, mango:1.14, banana:1.08, grapes:1.02, arhar:1.06, moong:1.04, groundnut:1.04, mustard:0.97, turmeric:1.08, cotton:1.08, sugarcane:1.14 },
-  "Amravati":    { rice:0.97, wheat:0.96, maize:1.04, bajra:0.95, jowar:1.01, tomato:1.10, onion:1.04, potato:0.98, brinjal:1.07, chilli:1.12, mango:1.06, banana:1.04, grapes:0.96, arhar:1.05, moong:1.01, groundnut:1.04, mustard:0.95, turmeric:1.04, cotton:1.12, sugarcane:1.06 },
-  "Latur":       { rice:0.98, wheat:0.96, maize:1.04, bajra:0.96, jowar:1.02, tomato:1.12, onion:1.05, potato:0.98, brinjal:1.08, chilli:1.13, mango:1.08, banana:1.05, grapes:0.98, arhar:1.08, moong:1.05, groundnut:1.05, mustard:0.94, turmeric:1.05, cotton:1.10, sugarcane:1.08 },
-  "Jalgaon":     { rice:0.99, wheat:0.97, maize:1.06, bajra:0.95, jowar:1.01, tomato:1.14, onion:1.06, potato:1.00, brinjal:1.10, chilli:1.14, mango:1.10, banana:1.10, grapes:0.98, arhar:1.06, moong:1.02, groundnut:1.04, mustard:0.95, turmeric:1.06, cotton:1.13, sugarcane:1.06 },
-  "Ahmednagar":  { rice:1.01, wheat:0.98, maize:1.06, bajra:0.95, jowar:1.02, tomato:1.16, onion:1.12, potato:1.01, brinjal:1.12, chilli:1.15, mango:1.12, banana:1.07, grapes:1.04, arhar:1.07, moong:1.04, groundnut:1.05, mustard:0.96, turmeric:1.07, cotton:1.09, sugarcane:1.12 },
+  "Nashik":      ["grapes","onion","maize","wheat","cotton"],
+  "Pune":        ["onion","grapes","sugarcane","wheat","soybean"],
+  "Aurangabad":  ["sugarcane","cotton","soybean","onion","maize"],
+  "Nagpur":      ["orange","cotton","soybean","arhar","wheat"],
+  "Solapur":     ["sugarcane","cotton","soybean","arhar","grapes"],
+  "Kolhapur":    ["sugarcane","rice","soybean","maize","arhar"],
+  "Amravati":    ["cotton","soybean","arhar","maize","wheat"],
+  "Latur":       ["arhar","soybean","sugarcane","cotton","wheat"],
+  "Jalgaon":     ["cotton","banana","maize","wheat","soybean"],
+  "Ahmednagar":  ["sugarcane","onion","soybean","maize","wheat"],
   // PUNJAB
-  "Ludhiana":    { rice:1.06, wheat:1.10, maize:1.05, bajra:0.95, jowar:0.90, tomato:1.10, onion:0.98, potato:1.08, brinjal:0.96, chilli:0.94, mango:1.00, banana:0.96, grapes:0.90, arhar:0.96, moong:0.98, groundnut:0.96, mustard:1.05, turmeric:0.95, cotton:1.06, sugarcane:1.05 },
-  "Amritsar":    { rice:1.05, wheat:1.08, maize:1.04, bajra:0.94, jowar:0.89, tomato:1.08, onion:0.96, potato:1.05, brinjal:0.95, chilli:0.92, mango:0.98, banana:0.94, grapes:0.88, arhar:0.95, moong:0.97, groundnut:0.95, mustard:1.04, turmeric:0.93, cotton:1.04, sugarcane:1.04 },
-  "Jalandhar":   { rice:1.04, wheat:1.08, maize:1.04, bajra:0.94, jowar:0.90, tomato:1.09, onion:0.97, potato:1.06, brinjal:0.95, chilli:0.93, mango:0.99, banana:0.95, grapes:0.89, arhar:0.96, moong:0.98, groundnut:0.96, mustard:1.04, turmeric:0.94, cotton:1.05, sugarcane:1.05 },
-  "Patiala":     { rice:1.05, wheat:1.09, maize:1.05, bajra:0.95, jowar:0.90, tomato:1.10, onion:0.97, potato:1.07, brinjal:0.96, chilli:0.93, mango:1.00, banana:0.95, grapes:0.90, arhar:0.96, moong:0.98, groundnut:0.96, mustard:1.05, turmeric:0.94, cotton:1.06, sugarcane:1.05 },
-  "Bathinda":    { rice:1.04, wheat:1.07, maize:1.03, bajra:0.96, jowar:0.91, tomato:1.06, onion:0.95, potato:1.04, brinjal:0.94, chilli:0.95, mango:0.98, banana:0.93, grapes:0.88, arhar:0.95, moong:0.97, groundnut:0.95, mustard:1.06, turmeric:0.92, cotton:1.08, sugarcane:1.04 },
-  "Ferozepur":   { rice:1.03, wheat:1.07, maize:1.02, bajra:0.95, jowar:0.90, tomato:1.07, onion:0.96, potato:1.04, brinjal:0.95, chilli:0.93, mango:0.97, banana:0.94, grapes:0.88, arhar:0.95, moong:0.97, groundnut:0.95, mustard:1.05, turmeric:0.93, cotton:1.07, sugarcane:1.03 },
-  "Hoshiarpur":  { rice:1.04, wheat:1.06, maize:1.05, bajra:0.94, jowar:0.91, tomato:1.09, onion:0.97, potato:1.06, brinjal:0.96, chilli:0.93, mango:1.00, banana:0.95, grapes:0.89, arhar:0.96, moong:0.98, groundnut:0.96, mustard:1.04, turmeric:0.93, cotton:1.05, sugarcane:1.04 },
-  "Gurdaspur":   { rice:1.05, wheat:1.07, maize:1.04, bajra:0.94, jowar:0.90, tomato:1.08, onion:0.96, potato:1.05, brinjal:0.95, chilli:0.92, mango:0.99, banana:0.95, grapes:0.88, arhar:0.95, moong:0.97, groundnut:0.96, mustard:1.04, turmeric:0.93, cotton:1.05, sugarcane:1.05 },
-  "Sangrur":     { rice:1.04, wheat:1.08, maize:1.03, bajra:0.95, jowar:0.90, tomato:1.08, onion:0.96, potato:1.06, brinjal:0.95, chilli:0.94, mango:0.99, banana:0.94, grapes:0.89, arhar:0.95, moong:0.97, groundnut:0.96, mustard:1.05, turmeric:0.93, cotton:1.06, sugarcane:1.04 },
-  "Moga":        { rice:1.03, wheat:1.07, maize:1.03, bajra:0.95, jowar:0.90, tomato:1.07, onion:0.96, potato:1.05, brinjal:0.95, chilli:0.93, mango:0.98, banana:0.94, grapes:0.89, arhar:0.95, moong:0.97, groundnut:0.95, mustard:1.05, turmeric:0.93, cotton:1.05, sugarcane:1.03 },
+  "Ludhiana":    ["wheat","rice","maize","potato","mustard"],
+  "Amritsar":    ["wheat","rice","maize","potato","arhar"],
+  "Jalandhar":   ["wheat","rice","potato","maize","sugarcane"],
+  "Patiala":     ["wheat","rice","maize","potato","mustard"],
+  "Bathinda":    ["wheat","mustard","cotton","maize","arhar"],
+  "Ferozepur":   ["wheat","rice","cotton","maize","potato"],
+  "Hoshiarpur":  ["wheat","maize","rice","arhar","potato"],
+  "Gurdaspur":   ["wheat","rice","maize","sugarcane","potato"],
+  "Sangrur":     ["wheat","rice","cotton","maize","arhar"],
+  "Moga":        ["wheat","rice","maize","potato","arhar"],
   // RAJASTHAN
-  "Jaipur":      { rice:0.92, wheat:1.05, maize:0.98, bajra:1.05, jowar:1.00, tomato:1.08, onion:1.02, potato:1.00, brinjal:0.96, chilli:1.02, mango:0.98, banana:0.94, grapes:0.88, arhar:1.00, moong:1.02, groundnut:1.05, mustard:1.10, turmeric:0.96, cotton:0.98, sugarcane:0.96 },
-  "Jodhpur":     { rice:0.88, wheat:1.03, maize:0.95, bajra:1.08, jowar:1.02, tomato:1.05, onion:1.00, potato:0.98, brinjal:0.94, chilli:1.00, mango:0.96, banana:0.92, grapes:0.86, arhar:0.98, moong:1.04, groundnut:1.06, mustard:1.08, turmeric:0.94, cotton:0.96, sugarcane:0.94 },
-  "Udaipur":     { rice:0.93, wheat:1.04, maize:1.00, bajra:1.04, jowar:1.00, tomato:1.06, onion:1.00, potato:1.00, brinjal:0.97, chilli:1.02, mango:1.00, banana:0.96, grapes:0.90, arhar:1.01, moong:1.03, groundnut:1.04, mustard:1.09, turmeric:0.96, cotton:0.97, sugarcane:0.96 },
-  "Kota":        { rice:0.95, wheat:1.05, maize:1.00, bajra:1.02, jowar:1.00, tomato:1.10, onion:1.02, potato:1.02, brinjal:0.98, chilli:1.04, mango:1.02, banana:0.96, grapes:0.90, arhar:1.02, moong:1.04, groundnut:1.04, mustard:1.10, turmeric:0.98, cotton:1.00, sugarcane:0.98 },
-  "Ajmer":       { rice:0.92, wheat:1.04, maize:0.98, bajra:1.06, jowar:1.00, tomato:1.07, onion:1.01, potato:0.99, brinjal:0.96, chilli:1.01, mango:0.98, banana:0.93, grapes:0.87, arhar:0.99, moong:1.03, groundnut:1.05, mustard:1.09, turmeric:0.95, cotton:0.97, sugarcane:0.95 },
-  "Bikaner":     { rice:0.88, wheat:1.03, maize:0.94, bajra:1.10, jowar:1.02, tomato:1.03, onion:0.98, potato:0.96, brinjal:0.92, chilli:0.98, mango:0.94, banana:0.90, grapes:0.84, arhar:0.96, moong:1.04, groundnut:1.06, mustard:1.08, turmeric:0.92, cotton:0.95, sugarcane:0.92 },
-  "Sikar":       { rice:0.90, wheat:1.04, maize:0.96, bajra:1.08, jowar:1.01, tomato:1.05, onion:1.00, potato:0.97, brinjal:0.93, chilli:0.99, mango:0.96, banana:0.92, grapes:0.86, arhar:0.97, moong:1.03, groundnut:1.05, mustard:1.09, turmeric:0.93, cotton:0.96, sugarcane:0.93 },
-  "Barmer":      { rice:0.87, wheat:1.02, maize:0.93, bajra:1.12, jowar:1.03, tomato:1.02, onion:0.97, potato:0.95, brinjal:0.91, chilli:0.97, mango:0.93, banana:0.89, grapes:0.83, arhar:0.95, moong:1.04, groundnut:1.05, mustard:1.07, turmeric:0.91, cotton:0.94, sugarcane:0.91 },
-  "Nagaur":      { rice:0.91, wheat:1.04, maize:0.96, bajra:1.07, jowar:1.01, tomato:1.05, onion:1.00, potato:0.97, brinjal:0.93, chilli:0.99, mango:0.96, banana:0.92, grapes:0.86, arhar:0.97, moong:1.03, groundnut:1.05, mustard:1.09, turmeric:0.93, cotton:0.96, sugarcane:0.93 },
-  "Chittorgarh": { rice:0.94, wheat:1.04, maize:1.00, bajra:1.03, jowar:1.00, tomato:1.07, onion:1.01, potato:1.00, brinjal:0.97, chilli:1.02, mango:1.00, banana:0.95, grapes:0.89, arhar:1.01, moong:1.03, groundnut:1.04, mustard:1.09, turmeric:0.96, cotton:0.98, sugarcane:0.96 },
+  "Jaipur":      ["mustard","wheat","bajra","maize","arhar"],
+  "Jodhpur":     ["bajra","mustard","wheat","arhar","groundnut"],
+  "Udaipur":     ["maize","wheat","soybean","arhar","bajra"],
+  "Kota":        ["mustard","wheat","soybean","maize","arhar"],
+  "Ajmer":       ["mustard","wheat","bajra","maize","arhar"],
+  "Bikaner":     ["bajra","mustard","wheat","groundnut","arhar"],
+  "Sikar":       ["bajra","mustard","wheat","groundnut","maize"],
+  "Barmer":      ["bajra","mustard","wheat","groundnut","sesame"],
+  "Nagaur":      ["bajra","mustard","wheat","maize","arhar"],
+  "Chittorgarh": ["maize","wheat","soybean","bajra","mustard"],
   // BIHAR
-  "Patna":       { rice:1.02, wheat:1.05, maize:1.02, bajra:0.96, jowar:0.94, tomato:1.14, onion:0.98, potato:1.05, brinjal:1.04, chilli:1.00, mango:1.08, banana:1.04, grapes:0.88, arhar:1.02, moong:1.00, groundnut:0.98, mustard:1.05, turmeric:1.00, cotton:0.96, sugarcane:1.06 },
-  "Gaya":        { rice:1.00, wheat:1.04, maize:1.01, bajra:0.96, jowar:0.93, tomato:1.10, onion:0.96, potato:1.02, brinjal:1.02, chilli:0.98, mango:1.06, banana:1.02, grapes:0.86, arhar:1.01, moong:0.99, groundnut:0.97, mustard:1.04, turmeric:0.98, cotton:0.95, sugarcane:1.04 },
-  "Muzaffarpur": { rice:1.03, wheat:1.05, maize:1.03, bajra:0.96, jowar:0.94, tomato:1.12, onion:0.97, potato:1.04, brinjal:1.04, chilli:0.99, mango:1.09, banana:1.06, grapes:0.87, arhar:1.02, moong:1.00, groundnut:0.97, mustard:1.05, turmeric:1.00, cotton:0.95, sugarcane:1.07 },
-  "Bhagalpur":   { rice:1.02, wheat:1.04, maize:1.02, bajra:0.95, jowar:0.93, tomato:1.11, onion:0.96, potato:1.03, brinjal:1.03, chilli:0.99, mango:1.08, banana:1.05, grapes:0.87, arhar:1.01, moong:1.00, groundnut:0.97, mustard:1.04, turmeric:0.99, cotton:0.95, sugarcane:1.05 },
-  "Darbhanga":   { rice:1.03, wheat:1.05, maize:1.02, bajra:0.95, jowar:0.94, tomato:1.12, onion:0.97, potato:1.04, brinjal:1.04, chilli:0.99, mango:1.08, banana:1.05, grapes:0.87, arhar:1.02, moong:1.00, groundnut:0.97, mustard:1.05, turmeric:1.00, cotton:0.95, sugarcane:1.06 },
-  "Sitamarhi":   { rice:1.02, wheat:1.04, maize:1.02, bajra:0.95, jowar:0.93, tomato:1.11, onion:0.96, potato:1.03, brinjal:1.03, chilli:0.98, mango:1.07, banana:1.04, grapes:0.87, arhar:1.01, moong:0.99, groundnut:0.97, mustard:1.04, turmeric:0.99, cotton:0.95, sugarcane:1.06 },
-  "Vaishali":    { rice:1.02, wheat:1.05, maize:1.02, bajra:0.96, jowar:0.94, tomato:1.12, onion:0.97, potato:1.04, brinjal:1.04, chilli:0.99, mango:1.08, banana:1.05, grapes:0.87, arhar:1.02, moong:1.00, groundnut:0.97, mustard:1.05, turmeric:1.00, cotton:0.95, sugarcane:1.06 },
-  "Nalanda":     { rice:1.02, wheat:1.04, maize:1.02, bajra:0.95, jowar:0.93, tomato:1.11, onion:0.97, potato:1.04, brinjal:1.03, chilli:0.98, mango:1.07, banana:1.04, grapes:0.87, arhar:1.01, moong:0.99, groundnut:0.96, mustard:1.04, turmeric:0.99, cotton:0.95, sugarcane:1.05 },
-  "Saran":       { rice:1.01, wheat:1.04, maize:1.01, bajra:0.95, jowar:0.93, tomato:1.11, onion:0.96, potato:1.03, brinjal:1.02, chilli:0.98, mango:1.07, banana:1.04, grapes:0.86, arhar:1.01, moong:0.99, groundnut:0.96, mustard:1.04, turmeric:0.98, cotton:0.95, sugarcane:1.05 },
-  "Champaran":   { rice:1.03, wheat:1.05, maize:1.03, bajra:0.96, jowar:0.94, tomato:1.12, onion:0.97, potato:1.04, brinjal:1.04, chilli:0.99, mango:1.08, banana:1.05, grapes:0.87, arhar:1.02, moong:1.00, groundnut:0.97, mustard:1.05, turmeric:1.00, cotton:0.95, sugarcane:1.07 },
+  "Patna":       ["wheat","rice","maize","potato","mustard"],
+  "Gaya":        ["wheat","rice","arhar","maize","potato"],
+  "Muzaffarpur": ["wheat","rice","maize","sugarcane","arhar"],
+  "Bhagalpur":   ["wheat","rice","maize","arhar","mustard"],
+  "Darbhanga":   ["wheat","rice","maize","jute","potato"],
+  "Sitamarhi":   ["wheat","rice","maize","sugarcane","potato"],
+  "Vaishali":    ["wheat","rice","maize","potato","arhar"],
+  "Nalanda":     ["wheat","rice","maize","arhar","potato"],
+  "Saran":       ["wheat","rice","arhar","maize","potato"],
+  "Champaran":   ["wheat","rice","sugarcane","arhar","maize"],
   // UTTAR PRADESH
-  "Lucknow":     { rice:1.00, wheat:1.06, maize:1.00, bajra:1.00, jowar:0.98, tomato:1.15, onion:1.02, potato:1.08, brinjal:1.06, chilli:1.02, mango:1.12, banana:1.04, grapes:0.90, arhar:1.04, moong:1.02, groundnut:0.98, mustard:1.08, turmeric:1.02, cotton:0.98, sugarcane:1.08 },
-  "Agra":        { rice:0.97, wheat:1.05, maize:0.98, bajra:1.02, jowar:0.98, tomato:1.10, onion:1.00, potato:1.10, brinjal:1.02, chilli:1.00, mango:1.10, banana:1.02, grapes:0.90, arhar:1.02, moong:1.02, groundnut:0.98, mustard:1.10, turmeric:1.00, cotton:0.97, sugarcane:1.06 },
-  "Varanasi":    { rice:1.01, wheat:1.05, maize:1.00, bajra:0.99, jowar:0.97, tomato:1.14, onion:1.01, potato:1.06, brinjal:1.05, chilli:1.02, mango:1.12, banana:1.04, grapes:0.89, arhar:1.04, moong:1.02, groundnut:0.98, mustard:1.07, turmeric:1.02, cotton:0.97, sugarcane:1.06 },
-  "Kanpur":      { rice:0.99, wheat:1.05, maize:0.99, bajra:1.01, jowar:0.98, tomato:1.12, onion:1.01, potato:1.07, brinjal:1.04, chilli:1.01, mango:1.10, banana:1.02, grapes:0.90, arhar:1.03, moong:1.02, groundnut:0.98, mustard:1.08, turmeric:1.01, cotton:0.97, sugarcane:1.07 },
-  "Allahabad":   { rice:1.00, wheat:1.05, maize:1.00, bajra:1.00, jowar:0.97, tomato:1.12, onion:1.01, potato:1.06, brinjal:1.04, chilli:1.01, mango:1.11, banana:1.03, grapes:0.89, arhar:1.03, moong:1.02, groundnut:0.97, mustard:1.07, turmeric:1.01, cotton:0.97, sugarcane:1.06 },
-  "Meerut":      { rice:0.98, wheat:1.06, maize:0.99, bajra:1.01, jowar:0.98, tomato:1.14, onion:1.02, potato:1.09, brinjal:1.05, chilli:1.02, mango:1.10, banana:1.02, grapes:0.90, arhar:1.02, moong:1.02, groundnut:0.97, mustard:1.08, turmeric:1.00, cotton:0.97, sugarcane:1.10 },
-  "Jhansi":      { rice:0.97, wheat:1.04, maize:0.98, bajra:1.04, jowar:1.00, tomato:1.08, onion:0.99, potato:1.04, brinjal:1.02, chilli:1.00, mango:1.08, banana:1.00, grapes:0.88, arhar:1.01, moong:1.01, groundnut:0.97, mustard:1.09, turmeric:0.99, cotton:0.97, sugarcane:1.04 },
-  "Mathura":     { rice:0.97, wheat:1.05, maize:0.98, bajra:1.02, jowar:0.98, tomato:1.10, onion:1.00, potato:1.09, brinjal:1.03, chilli:1.00, mango:1.09, banana:1.02, grapes:0.90, arhar:1.02, moong:1.02, groundnut:0.97, mustard:1.09, turmeric:1.00, cotton:0.97, sugarcane:1.06 },
-  "Aligarh":     { rice:0.97, wheat:1.05, maize:0.98, bajra:1.01, jowar:0.98, tomato:1.11, onion:1.00, potato:1.10, brinjal:1.03, chilli:1.00, mango:1.09, banana:1.01, grapes:0.89, arhar:1.02, moong:1.02, groundnut:0.97, mustard:1.09, turmeric:1.00, cotton:0.97, sugarcane:1.06 },
-  "Gorakhpur":   { rice:1.02, wheat:1.05, maize:1.01, bajra:0.99, jowar:0.97, tomato:1.12, onion:1.00, potato:1.05, brinjal:1.04, chilli:1.01, mango:1.11, banana:1.04, grapes:0.88, arhar:1.03, moong:1.01, groundnut:0.97, mustard:1.06, turmeric:1.01, cotton:0.97, sugarcane:1.09 },
+  "Lucknow":     ["wheat","rice","sugarcane","potato","arhar"],
+  "Agra":        ["wheat","mustard","arhar","potato","maize"],
+  "Varanasi":    ["wheat","rice","arhar","maize","mustard"],
+  "Kanpur":      ["wheat","arhar","mustard","potato","maize"],
+  "Allahabad":   ["wheat","rice","arhar","maize","mustard"],
+  "Meerut":      ["wheat","sugarcane","maize","potato","rice"],
+  "Jhansi":      ["wheat","mustard","arhar","bajra","maize"],
+  "Mathura":     ["wheat","mustard","potato","maize","arhar"],
+  "Aligarh":     ["wheat","potato","mustard","arhar","maize"],
+  "Gorakhpur":   ["wheat","rice","arhar","sugarcane","maize"],
   // CHHATTISGARH
-  "Raipur":      { rice:1.05, wheat:0.97, maize:1.04, bajra:0.90, jowar:0.96, tomato:1.10, onion:0.96, potato:0.98, brinjal:1.06, chilli:1.10, mango:1.08, banana:1.05, grapes:0.86, arhar:1.08, moong:1.04, groundnut:1.02, mustard:0.96, turmeric:1.05, cotton:1.04, sugarcane:1.02 },
-  "Bilaspur":    { rice:1.04, wheat:0.96, maize:1.03, bajra:0.90, jowar:0.95, tomato:1.08, onion:0.95, potato:0.97, brinjal:1.04, chilli:1.08, mango:1.06, banana:1.04, grapes:0.85, arhar:1.06, moong:1.03, groundnut:1.01, mustard:0.95, turmeric:1.04, cotton:1.03, sugarcane:1.01 },
-  "Durg":        { rice:1.04, wheat:0.97, maize:1.03, bajra:0.90, jowar:0.96, tomato:1.09, onion:0.95, potato:0.98, brinjal:1.05, chilli:1.09, mango:1.07, banana:1.04, grapes:0.85, arhar:1.07, moong:1.03, groundnut:1.02, mustard:0.96, turmeric:1.04, cotton:1.03, sugarcane:1.01 },
-  "Jagdalpur":   { rice:1.03, wheat:0.95, maize:1.02, bajra:0.89, jowar:0.95, tomato:1.06, onion:0.94, potato:0.96, brinjal:1.03, chilli:1.06, mango:1.05, banana:1.03, grapes:0.84, arhar:1.05, moong:1.02, groundnut:1.00, mustard:0.94, turmeric:1.02, cotton:1.02, sugarcane:1.00 },
-  "Raigarh":     { rice:1.04, wheat:0.96, maize:1.03, bajra:0.90, jowar:0.95, tomato:1.08, onion:0.95, potato:0.97, brinjal:1.04, chilli:1.08, mango:1.06, banana:1.04, grapes:0.85, arhar:1.06, moong:1.03, groundnut:1.01, mustard:0.95, turmeric:1.04, cotton:1.04, sugarcane:1.01 },
-  "Rajnandgaon": { rice:1.03, wheat:0.96, maize:1.03, bajra:0.90, jowar:0.96, tomato:1.08, onion:0.95, potato:0.97, brinjal:1.04, chilli:1.08, mango:1.06, banana:1.04, grapes:0.85, arhar:1.06, moong:1.02, groundnut:1.01, mustard:0.95, turmeric:1.03, cotton:1.05, sugarcane:1.01 },
-  "Korba":       { rice:1.03, wheat:0.96, maize:1.02, bajra:0.89, jowar:0.95, tomato:1.07, onion:0.94, potato:0.96, brinjal:1.03, chilli:1.07, mango:1.05, banana:1.03, grapes:0.84, arhar:1.05, moong:1.02, groundnut:1.00, mustard:0.94, turmeric:1.03, cotton:1.02, sugarcane:1.00 },
-  "Ambikapur":   { rice:1.02, wheat:0.96, maize:1.01, bajra:0.89, jowar:0.95, tomato:1.06, onion:0.94, potato:0.96, brinjal:1.02, chilli:1.06, mango:1.04, banana:1.03, grapes:0.84, arhar:1.04, moong:1.02, groundnut:1.00, mustard:0.94, turmeric:1.02, cotton:1.02, sugarcane:0.99 },
-  "Dhamtari":    { rice:1.05, wheat:0.97, maize:1.04, bajra:0.90, jowar:0.96, tomato:1.09, onion:0.95, potato:0.97, brinjal:1.05, chilli:1.09, mango:1.07, banana:1.05, grapes:0.85, arhar:1.07, moong:1.03, groundnut:1.02, mustard:0.95, turmeric:1.04, cotton:1.04, sugarcane:1.02 },
-  "Mahasamund":  { rice:1.04, wheat:0.96, maize:1.03, bajra:0.90, jowar:0.96, tomato:1.08, onion:0.95, potato:0.97, brinjal:1.04, chilli:1.08, mango:1.06, banana:1.04, grapes:0.85, arhar:1.06, moong:1.02, groundnut:1.01, mustard:0.95, turmeric:1.03, cotton:1.03, sugarcane:1.01 },
+  "Raipur":      ["rice","arhar","maize","wheat","soybean"],
+  "Bilaspur":    ["rice","arhar","maize","wheat","mustard"],
+  "Durg":        ["rice","arhar","maize","wheat","groundnut"],
+  "Jagdalpur":   ["rice","arhar","maize","soybean","mustard"],
+  "Raigarh":     ["rice","arhar","maize","wheat","cotton"],
+  "Rajnandgaon": ["rice","cotton","arhar","maize","wheat"],
+  "Korba":       ["rice","arhar","maize","wheat","groundnut"],
+  "Ambikapur":   ["rice","wheat","arhar","maize","soybean"],
+  "Dhamtari":    ["rice","arhar","maize","wheat","soybean"],
+  "Mahasamund":  ["rice","arhar","maize","wheat","groundnut"],
 };
 
-// ══════════════════════════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════════════════════════
-let currentDistrict = '';
-let currentState    = '';
-let activeTab       = '';
-let viewMode        = 'table';
-let sortCol         = 'modal';
-let sortDir         = -1;
-let allCrops        = [];
-let filtered        = [];
+// district metadata
+const DISTRICT_META = {
+  default: { rainfall:"600–1200 mm", soil:"Mixed (alluvial/red)", area:"3–6 lakh ha", mainSeason:"Kharif & Rabi" },
+  "Nalgonda":   { rainfall:"750 mm",    soil:"Black & Red",      area:"4.2 lakh ha",  mainSeason:"Kharif" },
+  "Guntur":     { rainfall:"900 mm",    soil:"Sandy Loam & Red", area:"5.8 lakh ha",  mainSeason:"Kharif" },
+  "Ludhiana":   { rainfall:"730 mm",    soil:"Alluvial",         area:"3.1 lakh ha",  mainSeason:"Rabi" },
+  "Nashik":     { rainfall:"700 mm",    soil:"Sandy Loam",       area:"6.2 lakh ha",  mainSeason:"Kharif" },
+  "Dharwad":    { rainfall:"780 mm",    soil:"Black Cotton",     area:"3.5 lakh ha",  mainSeason:"Kharif" },
+  "Jaipur":     { rainfall:"550 mm",    soil:"Sandy Loam",       area:"5.8 lakh ha",  mainSeason:"Rabi" },
+  "Patna":      { rainfall:"1000 mm",   soil:"Alluvial",         area:"2.8 lakh ha",  mainSeason:"Kharif" },
+  "Raipur":     { rainfall:"1300 mm",   soil:"Red Loam",         area:"3.5 lakh ha",  mainSeason:"Kharif" },
+};
 
-// ══════════════════════════════════════════════════════════════
-//  CONTROLS
-// ══════════════════════════════════════════════════════════════
-function onStateChange() {
-  const s = document.getElementById('stateSelect').value;
-  const dd = document.getElementById('districtSelect');
-  dd.innerHTML = '<option value="">📍 Select District</option>';
-  dd.disabled = !s;
-  if (s) {
-    STATE_DIST[s].forEach(d => {
-      const o = document.createElement('option');
-      o.value = o.textContent = d;
-      dd.appendChild(o);
-    });
-    currentState = s;
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+let currentState    = '';
+let currentDistrict = '';
+let currentView     = 'grid';
+let currentLang     = localStorage.getItem('language') || 'en';
+let filteredCrops   = [];
+
+// ═══════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════
+(function init() {
+  buildSidebar();
+  document.getElementById('langSel').value = currentLang;
+  applyLang(currentLang);
+
+  // Restore from localStorage
+  const savedState    = localStorage.getItem('cropState');
+  const savedDistrict = localStorage.getItem('cropDistrict');
+  if (savedState && savedDistrict) {
+    quickSelect(savedState, savedDistrict);
   }
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  SIDEBAR
+// ═══════════════════════════════════════════════════════════
+function buildSidebar() {
+  const tree = document.getElementById('sidebar-tree');
+  tree.innerHTML = '';
+  Object.keys(STATE_DISTRICTS).forEach(state => {
+    const grp = document.createElement('div');
+    grp.className = 'state-group';
+
+    const btn = document.createElement('button');
+    btn.className = 'state-btn';
+    btn.innerHTML = `<span>🗺 ${state}</span><span class="arrow">▶</span>`;
+    btn.onclick = () => toggleState(state, btn, dl);
+
+    const dl = document.createElement('div');
+    dl.className = 'district-list';
+
+    STATE_DISTRICTS[state].forEach(d => {
+      const db = document.createElement('button');
+      db.className = 'dist-btn' + (d === currentDistrict ? ' active' : '');
+      db.id = 'dist-' + slugify(d);
+      db.innerHTML = `<span class="dot"></span>${d}`;
+      db.onclick = () => { selectDistrict(state, d); };
+      dl.appendChild(db);
+    });
+
+    grp.appendChild(btn);
+    grp.appendChild(dl);
+    tree.appendChild(grp);
+  });
+}
+
+function slugify(s) { return s.replace(/\s+/g,'_').toLowerCase(); }
+
+function toggleState(state, btn, dl) {
+  const isOpen = dl.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.district-list').forEach(el => el.classList.remove('open'));
+  document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('open'));
+  if (!isOpen) {
+    dl.classList.add('open');
+    btn.classList.add('open');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CONTROLS
+// ═══════════════════════════════════════════════════════════
+function onStateChange() {
+  const state = document.getElementById('stateSelect').value;
+  const distSel = document.getElementById('districtSelect');
+  distSel.innerHTML = '<option value="">📍 Select District</option>';
+  if (!state) { distSel.disabled = true; return; }
+  distSel.disabled = false;
+  (STATE_DISTRICTS[state] || []).forEach(d => {
+    const o = document.createElement('option');
+    o.value = d; o.textContent = d;
+    distSel.appendChild(o);
+  });
+  currentState = state;
+
+  // Auto-open sidebar state
+  document.querySelectorAll('.state-btn').forEach(btn => {
+    if (btn.textContent.includes(state)) {
+      const dl = btn.nextElementSibling;
+      document.querySelectorAll('.district-list').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('open'));
+      dl.classList.add('open');
+      btn.classList.add('open');
+    }
+  });
 }
 
 function onDistrictChange() {
   const d = document.getElementById('districtSelect').value;
-  if (d) loadDistrict(currentState, d);
+  if (d) selectDistrict(currentState, d);
 }
 
-function quickLoad(state, district) {
+function quickSelect(state, district) {
   currentState = state;
   document.getElementById('stateSelect').value = state;
   onStateChange();
   document.getElementById('districtSelect').value = district;
-  loadDistrict(state, district);
+  selectDistrict(state, district);
 }
 
-// ══════════════════════════════════════════════════════════════
-//  BUILD PRICES FOR A DISTRICT
-// ══════════════════════════════════════════════════════════════
-function loadDistrict(state, district) {
+function selectDistrict(state, district) {
   currentState    = state;
   currentDistrict = district;
 
-  const factors = DIST_FACTORS[district] || {};
+  // Update sidebar active
+  document.querySelectorAll('.dist-btn').forEach(b => b.classList.remove('active'));
+  const db = document.getElementById('dist-' + slugify(district));
+  if (db) { db.classList.add('active'); db.scrollIntoView({ block:'nearest' }); }
 
-  // Use a seed based on district name for consistent "random" variation
-  const seed = [...district].reduce((a,c) => a + c.charCodeAt(0), 0);
-  const rng = (i) => {
-    const x = Math.sin(seed * 9301 + i * 49297 + 233) * 10000;
-    return x - Math.floor(x); // 0–1
-  };
+  // Update dropdowns
+  document.getElementById('stateSelect').value = state;
+  if (document.getElementById('districtSelect').disabled) onStateChange();
+  document.getElementById('districtSelect').value = district;
 
-  allCrops = CROP_MASTER.map((crop, i) => {
-    const factor = factors[crop.id] || 1.0;
-    const modal  = Math.round(crop.baseModal * factor);
-    // Spread: 8–18% of modal
-    const spreadPct = 0.08 + rng(i) * 0.10;
-    const half   = Math.round(modal * spreadPct / 2);
-    const min    = Math.max(modal - half - Math.round(rng(i+50)*half*0.4), Math.round(modal * 0.78));
-    const max    = modal + half + Math.round(rng(i+100)*half*0.4);
-    // Trend: based on rng
-    const t      = rng(i + 200);
-    const trend  = t > 0.6 ? 'up' : t > 0.3 ? 'flat' : 'down';
-    const trendPct = (1 + Math.round(rng(i+300) * 8)).toFixed(1);
+  // Save
+  localStorage.setItem('cropState',    state);
+  localStorage.setItem('cropDistrict', district);
 
-    return { ...crop, modal, min, max, trend, trendPct };
-  });
-
-  document.getElementById('welcome-screen').style.display  = 'none';
-  document.getElementById('district-area').style.display   = 'block';
-
-  renderHero(state, district);
-  renderStats();
-  applyFilter();
+  // Get crops
+  filteredCrops = (DISTRICT_CROPS[district] || []).map(k => CROPS[k]).filter(Boolean);
+  document.getElementById('welcome-screen').style.display   = 'none';
+  document.getElementById('district-content').style.display = 'block';
+  applyFilters();
 }
 
-// ══════════════════════════════════════════════════════════════
-//  FILTER + SORT
-// ══════════════════════════════════════════════════════════════
-function applyFilter() {
+function applyFilters() {
+  if (!currentDistrict) return;
+  const season = document.getElementById('seasonSelect').value;
+  const type   = document.getElementById('typeSelect').value;
   const search = document.getElementById('searchInput').value.toLowerCase();
-  const catSel = document.getElementById('catFilter').value;
-  const tabCat = activeTab;
 
-  filtered = allCrops.filter(c => {
-    const catMatch = (!tabCat || c.cat === tabCat) && (!catSel || c.cat === catSel);
-    const sMatch   = !search || c.name.toLowerCase().includes(search);
-    return catMatch && sMatch;
-  });
+  let data = (DISTRICT_CROPS[currentDistrict] || []).map(k => CROPS[k]).filter(Boolean);
 
-  filtered.sort((a,b) => {
-    if (sortCol === 'name')  return sortDir * a.name.localeCompare(b.name);
-    if (sortCol === 'modal') return sortDir * (a.modal - b.modal);
-    if (sortCol === 'min')   return sortDir * (a.min   - b.min);
-    if (sortCol === 'max')   return sortDir * (a.max   - b.max);
-    if (sortCol === 'msp')   return sortDir * ((a.msp||0) - (b.msp||0));
-    return 0;
-  });
+  if (season) data = data.filter(c => c.season === season || c.altSeason === season);
+  if (type)   data = data.filter(c => c.type === type);
+  if (search) data = data.filter(c => c.name.toLowerCase().includes(search) || (c.sci||'').toLowerCase().includes(search));
 
-  renderPriceContent();
+  renderDistrictContent(data);
 }
 
-function setTab(cat, btn) {
-  activeTab = cat;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('catFilter').value = cat;
-  applyFilter();
-}
+// ═══════════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════════
+function renderDistrictContent(crops) {
+  const meta = DISTRICT_META[currentDistrict] || DISTRICT_META.default;
+  const area = document.getElementById('district-content');
 
-function setView(v) {
-  viewMode = v;
-  document.getElementById('vbtn-t').classList.toggle('active', v === 'table');
-  document.getElementById('vbtn-g').classList.toggle('active', v === 'grid');
-  if (currentDistrict) renderPriceContent();
-}
-
-function changeSort(col) {
-  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = -1; }
-  applyFilter();
-}
-
-// ══════════════════════════════════════════════════════════════
-//  RENDER HERO
-// ══════════════════════════════════════════════════════════════
-function renderHero(state, district) {
-  const totalCrops   = allCrops.length;
-  const avgModal     = Math.round(allCrops.reduce((s,c) => s + c.modal, 0) / totalCrops);
-  const highestCrop  = allCrops.reduce((a,b) => b.modal > a.modal ? b : a);
-  const lowestCrop   = allCrops.reduce((a,b) => b.modal < a.modal ? b : a);
-
-  document.getElementById('dist-hero').innerHTML = `
-    <div class="dist-hero">
+  let html = `
+    <div class="district-hero">
       <div class="dh-left">
-        <h2>📍 ${district}, ${state}</h2>
-        <p>Crop market prices · ${DATE_STR}</p>
+        <h2>📍 ${currentDistrict}, ${currentState}</h2>
+        <p>Avg Rainfall: ${meta.rainfall} &nbsp;·&nbsp; Main Soil: ${meta.soil} &nbsp;·&nbsp; Season: ${meta.mainSeason}</p>
       </div>
       <div class="dh-stats">
-        <div class="dh-stat"><span class="dv">${totalCrops}</span><span class="dl">Crops</span></div>
-        <div class="dh-stat"><span class="dv">₹${avgModal.toLocaleString('en-IN')}</span><span class="dl">Avg Modal</span></div>
-        <div class="dh-stat"><span class="dv">${highestCrop.emoji}</span><span class="dl">${highestCrop.name.split(' ')[0]}<br>Highest</span></div>
-        <div class="dh-stat"><span class="dv">${lowestCrop.emoji}</span><span class="dl">${lowestCrop.name.split(' ')[0]}<br>Lowest</span></div>
+        <div class="dh-stat"><span class="val">${crops.length}</span><span class="lbl">Crops Listed</span></div>
+        <div class="dh-stat"><span class="val">${meta.area}</span><span class="lbl">Agri Area</span></div>
+        <div class="dh-stat"><span class="val">${meta.rainfall}</span><span class="lbl">Rainfall</span></div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <div class="ov-card">
+        <div class="ov-icon">🌾</div>
+        <div class="ov-val">${crops.filter(c=>c.type==='Cereal').length}</div>
+        <div class="ov-lbl">Cereals</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-icon">💰</div>
+        <div class="ov-val">${crops.filter(c=>c.type==='Cash Crop').length}</div>
+        <div class="ov-lbl">Cash Crops</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-icon">🥕</div>
+        <div class="ov-val">${crops.filter(c=>c.type==='Vegetable'||c.type==='Fruit').length}</div>
+        <div class="ov-lbl">Horticulture</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-icon">🫘</div>
+        <div class="ov-val">${crops.filter(c=>c.type==='Pulse'||c.type==='Oilseed').length}</div>
+        <div class="ov-lbl">Pulses & Oilseeds</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-icon">🏛️</div>
+        <div class="ov-val">${[...new Set(crops.flatMap(c=>c.schemes||[]))].length}</div>
+        <div class="ov-lbl">Govt. Schemes</div>
       </div>
     </div>`;
-}
 
-// ══════════════════════════════════════════════════════════════
-//  RENDER STATS
-// ══════════════════════════════════════════════════════════════
-function renderStats() {
-  const cats = [...new Set(allCrops.map(c => c.cat))].length;
-  const upCount   = allCrops.filter(c => c.trend === 'up').length;
-  const downCount = allCrops.filter(c => c.trend === 'down').length;
-  const withMSP   = allCrops.filter(c => c.msp).length;
-
-  document.getElementById('stat-strip').innerHTML = `
-    <div class="stat-card"><div class="sv">${allCrops.length}</div><div class="sl">Total Crops</div></div>
-    <div class="stat-card"><div class="sv">${cats}</div><div class="sl">Categories</div></div>
-    <div class="stat-card"><div class="sv" style="color:var(--gl)">▲ ${upCount}</div><div class="sl">Price Rising</div></div>
-    <div class="stat-card"><div class="sv" style="color:var(--red)">▼ ${downCount}</div><div class="sl">Price Falling</div></div>
-    <div class="stat-card"><div class="sv">${withMSP}</div><div class="sl">Have MSP</div></div>`;
-}
-
-// ══════════════════════════════════════════════════════════════
-//  RENDER PRICE CONTENT
-// ══════════════════════════════════════════════════════════════
-function renderPriceContent() {
-  const ri = document.getElementById('result-info');
-  ri.innerHTML = `
-    <div class="ri-text">Showing <strong>${filtered.length}</strong> of <strong>${allCrops.length}</strong> crops</div>
-    <div class="sort-row">
-      Sort:
-      <select onchange="changeSort(this.value)">
-        <option value="modal" ${sortCol==='modal'?'selected':''}>Modal Price</option>
-        <option value="min"   ${sortCol==='min'  ?'selected':''}>Min Price</option>
-        <option value="max"   ${sortCol==='max'  ?'selected':''}>Max Price</option>
-        <option value="name"  ${sortCol==='name' ?'selected':''}>Name A–Z</option>
-        <option value="msp"   ${sortCol==='msp'  ?'selected':''}>MSP</option>
-      </select>
-      <button class="dir-btn" onclick="sortDir*=-1;applyFilter()">${sortDir===-1?'↓ High→Low':'↑ Low→High'}</button>
-    </div>`;
-
-  const pc = document.getElementById('price-content');
-  if (filtered.length === 0) {
-    pc.innerHTML = `<div class="empty-box"><span class="big">🔍</span><p>No crops match your filter.</p></div>`;
-    return;
+  if (crops.length === 0) {
+    html += `<div class="empty"><span class="big">🔍</span>No crops match your current filter.</div>`;
+  } else {
+    html += `<div class="sec-head"><span class="icon">🌱</span>Recommended Crops for ${currentDistrict}</div>`;
+    html += `<div class="crop-grid ${currentView === 'list' ? 'list-view' : ''}" id="crop-grid">`;
+    crops.forEach((crop, i) => {
+      html += renderCropCard(crop, i);
+    });
+    html += `</div>`;
   }
-  pc.innerHTML = viewMode === 'table' ? renderTable() : renderCards();
+
+  area.innerHTML = html;
 }
 
-// ══════════════════════════════════════════════════════════════
-//  TABLE
-// ══════════════════════════════════════════════════════════════
-const CAT_CLASS = { Cereal:'cb-c', Vegetable:'cb-v', Fruit:'cb-f', Pulse:'cb-p', Oilseed:'cb-o', Spice:'cb-s', 'Cash Crop':'cb-c' };
-const CAT_EMOJI = { Cereal:'🌾', Vegetable:'🥕', Fruit:'🍎', Pulse:'🫘', Oilseed:'🫙', Spice:'🌶️', 'Cash Crop':'💰' };
+function renderCropCard(crop, idx) {
+  const calHtml = buildCalendar(crop);
+  const delayStyle = `animation-delay:${idx * 0.06}s`;
 
-function th(col, lbl) {
-  return `<th onclick="changeSort('${col}')" style="cursor:pointer">${lbl}${sortCol===col?(sortDir===-1?' ↓':' ↑'):''}</th>`;
-}
-
-function renderTable() {
-  return `<div class="tbl-wrap"><table class="price-table">
-    <thead><tr>
-      <th>#</th><th>Crop</th>
-      ${th('modal','Modal ₹/qtl')}
-      ${th('min','Min ₹')}
-      ${th('max','Max ₹')}
-      ${th('msp','MSP ₹')}
-      <th>Trend</th>
-      <th>Category</th>
-      <th>Variety</th>
-      <th>Market</th>
-    </tr></thead>
-    <tbody>
-    ${filtered.map((c,i) => {
-      const mspTxt = c.msp ? `₹${c.msp.toLocaleString('en-IN')}` : '—';
-      const mspCls = c.msp && c.modal < c.msp ? 'style="color:var(--red)"' : '';
-      const trendIcon = c.trend==='up'?'▲':c.trend==='down'?'▼':'—';
-      const trendCls  = c.trend==='up'?'up':c.trend==='down'?'down':'flat';
-      return `<tr>
-        <td style="font-size:11px;color:var(--txth)">${i+1}</td>
-        <td>
-          <span style="font-size:1.3rem;">${c.emoji}</span>
-          <span class="td-name" style="margin-left:6px;">${c.name}</span>
-        </td>
-        <td class="td-mod">₹${c.modal.toLocaleString('en-IN')}</td>
-        <td class="td-min">₹${c.min.toLocaleString('en-IN')}</td>
-        <td class="td-max">₹${c.max.toLocaleString('en-IN')}</td>
-        <td class="td-msp" ${mspCls}>
-          ${mspTxt}
-          ${c.msp && c.modal < c.msp ? '<br><span style="font-size:10px;color:var(--red);">Below MSP</span>' : ''}
-        </td>
-        <td class="td-trend ${trendCls}">${trendIcon} ${c.trendPct}%</td>
-        <td><span class="cat-badge ${CAT_CLASS[c.cat]||'cb-c'}">${CAT_EMOJI[c.cat]||'🌿'} ${c.cat}</span></td>
-        <td style="font-size:11px;color:var(--txth)">${c.variety}</td>
-        <td style="font-size:11px;color:var(--txts)">${c.mktName}</td>
-      </tr>`;
-    }).join('')}
-    </tbody>
-  </table></div>`;
-}
-
-// ══════════════════════════════════════════════════════════════
-//  CARDS
-// ══════════════════════════════════════════════════════════════
-function renderCards() {
-  return `<div class="price-grid">${filtered.map((c,i) => {
-    const trendCls  = 'trend-'+c.trend;
-    const trendIcon = c.trend==='up'?'▲':c.trend==='down'?'▼':'—';
-    const belowMSP  = c.msp && c.modal < c.msp;
-    return `
-    <div class="price-card" style="animation-delay:${i*0.04}s">
-      <div class="pc-top">
-        <div class="pc-emoji">${c.emoji}</div>
-        <span class="cat-badge ${CAT_CLASS[c.cat]||'cb-c'}">${CAT_EMOJI[c.cat]||'🌿'} ${c.cat}</span>
+  return `
+  <div class="crop-card" style="${delayStyle}">
+    <div class="card-emoji">${crop.emoji}</div>
+    <div class="card-body">
+      <div class="crop-name">${crop.name}</div>
+      <div class="crop-sci">${crop.sci}</div>
+      <div class="tag-row">
+        <span class="tag season">📅 ${crop.season}${crop.altSeason ? ' / '+crop.altSeason : ''}</span>
+        <span class="tag type">🏷 ${crop.type}</span>
+        <span class="tag yield">📦 ${crop.avgYield}</span>
       </div>
-      <div class="pc-name">${c.name}</div>
-      <div class="pc-var">${c.variety}</div>
-      <div class="pc-modal">₹${c.modal.toLocaleString('en-IN')} <small>/qtl</small></div>
-      <div class="pc-row"><span class="pk">Min Price</span><span class="td-min">₹${c.min.toLocaleString('en-IN')}</span></div>
-      <div class="pc-row"><span class="pk">Max Price</span><span class="td-max">₹${c.max.toLocaleString('en-IN')}</span></div>
-      <div class="pc-row">
-        <span class="pk">MSP</span>
-        <span style="${belowMSP?'color:var(--red);font-weight:700':''}">${c.msp?'₹'+c.msp.toLocaleString('en-IN'):'—'}</span>
+      <div class="tag-row">
+        <span class="tag water">💧 ${crop.waterNeed}</span>
+        <span class="tag msp">💰 ${crop.msp}</span>
       </div>
-      <div class="pc-row"><span class="pk">Market</span><span style="font-size:11px;color:var(--txts)">${c.mktName}</span></div>
-      ${belowMSP?'<div style="font-size:10px;color:var(--red);margin-top:4px;font-weight:700;">⚠ Trading below MSP</div>':''}
-      <span class="pc-trend ${trendCls}">${trendIcon} ${c.trendPct}%</span>
+
+      <div class="detail-row"><span class="key">⏱ Duration</span><span class="val">${crop.duration}</span></div>
+      <div class="detail-row"><span class="key">🌍 Best Soils</span><span class="val">${crop.soilBest.join(', ')}</span></div>
+      <div class="detail-row"><span class="key">🏪 Market</span><span class="val">${crop.market}</span></div>
+      <div class="detail-row"><span class="key">🧪 Fertilizer</span><span class="val">${crop.fertilizer.split('.')[0]}</span></div>
+
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Full Details &amp; Calendar</button>
+
+      <div class="extra-details">
+        <div class="detail-row"><span class="key">💦 Irrigation</span><span class="val">${crop.irrigation}</span></div>
+        <div style="margin-top:10px;">
+          <div class="detail-row" style="border:none;"><span class="key">🌡 Sowing Calendar</span></div>
+          ${calHtml}
+        </div>
+        <div style="margin-top:10px;">
+          <div class="detail-row" style="border:none;padding-bottom:4px;"><span class="key">🐛 Pests &amp; Diseases</span></div>
+          <div class="pest-list">${crop.pests.map(p=>`<span class="pest-tag">${p}</span>`).join('')}</div>
+        </div>
+        <div style="margin-top:10px;">
+          <div class="detail-row" style="border:none;padding-bottom:4px;"><span class="key">🏛 Applicable Schemes</span></div>
+          <div class="pest-list">${crop.schemes.map(s=>`<span class="scheme-tag">${s}</span>`).join('')}</div>
+        </div>
+        <div class="advice-box">
+          <strong>💡 Farmer Tips:</strong> ${crop.tips}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildCalendar(crop) {
+  const cells = MONTHS.map((m, i) => {
+    let cls = '';
+    if (crop.sow  && crop.sow.includes(i+1))  cls = 'sow';
+    if (crop.grow && crop.grow.includes(i+1))  cls = 'grow';
+    if (crop.harv && crop.harv.includes(i+1))  cls = 'harv';
+    return `<div class="cal-cell ${cls}">${m}</div>`;
+  });
+  return `
+    <div class="cal-strip">${cells.join('')}</div>
+    <div class="cal-legend">
+      <span><div class="dot" style="background:#fff8e1;border:1px solid #f57f17;"></div> Sowing</span>
+      <span><div class="dot" style="background:#e8f5e9;border:1px solid #4caf50;"></div> Growing</span>
+      <span><div class="dot" style="background:#fce4ec;border:1px solid #c62828;"></div> Harvest</span>
     </div>`;
-  }).join('')}</div>`;
+}
+
+function toggleDetails(btn) {
+  const box = btn.nextElementSibling;
+  const open = box.classList.toggle('open');
+  btn.textContent = open ? '▲ Hide Details' : '▼ Full Details & Calendar';
+}
+
+// ═══════════════════════════════════════════════════════════
+//  VIEW TOGGLE
+// ═══════════════════════════════════════════════════════════
+function setView(v) {
+  currentView = v;
+  document.getElementById('vbtn-grid').classList.toggle('active', v === 'grid');
+  document.getElementById('vbtn-list').classList.toggle('active', v === 'list');
+  const grid = document.getElementById('crop-grid');
+  if (grid) {
+    grid.classList.toggle('list-view', v === 'list');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  LANGUAGE
+// ═══════════════════════════════════════════════════════════
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('language', lang);
+  const sub = {
+    en:"Select your state and district to see detailed crop information",
+    hi:"विस्तृत फसल जानकारी के लिए अपना राज्य और जिला चुनें",
+    te:"వివరమైన పంట సమాచారం కోసం మీ రాష్ట్రం మరియు జిల్లాను ఎంచుకోండి"
+  };
+  document.getElementById('hdr-sub').textContent = sub[lang] || sub.en;
 }
 </script>
 
