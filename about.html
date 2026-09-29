@@ -6,21 +6,257 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* SAME CSS FROM YOUR ORIGINAL FILE */
 body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     background-color: #f4f9f4;
     color: #333;
 }
-header { background-color: #2e7d32; color: white; padding: 20px; text-align: center; }
-nav { background-color: #1b5e20; padding: 10px; text-align: center; }
-nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
-.container { padding: 30px; }
-.lang { display: none; }
-.lang.active { display: block; }
-.lang-select { margin: 15px; padding: 8px; font-size: 16px; }
-section { padding: 80px 20px; border-radius: 10px; background-color: #e8f5e9; }
+
+header {
+    background-color: #2e7d32;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    background-color: #1b5e20;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container {
+    padding: 30px;
+}
+
+.lang {
+    display: none;
+}
+
+.lang.active {
+    display: block;
+}
+
+.lang-select {
+    margin: 15px;
+    padding: 8px;
+    font-size: 16px;
+}
+
+section {
+    padding: 80px 20px;
+    border-radius: 10px;
+    background-color: #e8f5e9;
+}
+
+
+/* =================================================
+   AI FARMER ASSISTANT
+   ================================================= */
+
+/* Floating button */
+.ai-button {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+
+    width: 65px;
+    height: 65px;
+
+    border-radius: 50%;
+    border: none;
+
+    background-color: #2e7d32;
+    color: white;
+
+    font-size: 30px;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
+    z-index: 9999;
+
+    transition: transform 0.2s;
+}
+
+.ai-button:hover {
+    transform: scale(1.08);
+}
+
+
+/* Chat window */
+.ai-chat {
+    position: fixed;
+
+    right: 25px;
+    bottom: 100px;
+
+    width: 350px;
+    max-width: calc(100vw - 40px);
+
+    height: 470px;
+
+    background: white;
+
+    border-radius: 15px;
+
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+
+    display: none;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    z-index: 9998;
+}
+
+
+/* Chat header */
+.ai-header {
+    background-color: #2e7d32;
+    color: white;
+
+    padding: 15px;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    font-weight: bold;
+}
+
+.ai-header-title {
+    font-size: 17px;
+}
+
+.ai-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+
+/* Messages */
+.ai-messages {
+    flex: 1;
+
+    padding: 15px;
+
+    overflow-y: auto;
+
+    background-color: #f5f5f5;
+}
+
+
+/* Individual messages */
+.ai-message {
+    padding: 10px 12px;
+
+    margin-bottom: 10px;
+
+    border-radius: 10px;
+
+    max-width: 85%;
+
+    line-height: 1.4;
+
+    font-size: 14px;
+}
+
+.ai-bot {
+    background-color: #e8f5e9;
+
+    margin-right: auto;
+}
+
+.ai-user {
+    background-color: #2e7d32;
+
+    color: white;
+
+    margin-left: auto;
+}
+
+
+/* Input area */
+.ai-input-area {
+    display: flex;
+
+    padding: 10px;
+
+    border-top: 1px solid #ddd;
+
+    background-color: white;
+}
+
+.ai-input {
+    flex: 1;
+
+    padding: 10px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 14px;
+}
+
+.ai-send {
+    margin-left: 8px;
+
+    padding: 10px 14px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: #2e7d32;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.ai-send:hover {
+    background-color: #1b5e20;
+}
+
+
+/* Mobile */
+@media (max-width: 500px) {
+
+    .ai-chat {
+        right: 10px;
+        bottom: 90px;
+
+        width: calc(100vw - 20px);
+
+        height: 450px;
+    }
+
+    .ai-button {
+        right: 15px;
+        bottom: 15px;
+    }
+}
+
 </style>
 </head>
 
@@ -39,64 +275,354 @@ section { padding: 80px 20px; border-radius: 10px; background-color: #e8f5e9; }
 </nav>
 
 <div class="container">
+
 <select class="lang-select" onchange="switchLanguage(this.value)">
 <option value="en">English</option>
 <option value="hi">Hindi</option>
 <option value="te">Telugu</option>
 </select>
 
-<div class="lang en active">
-<section>
-<h2>About FAWP</h2>
-<p>The Digital Farmer Assistance & Welfare Platform (FAWP) is a web-based system designed to empower farmers by providing digital access to agricultural information and government welfare services. The platform delivers real-time weather updates, crop advisory services, market price information, and best farming practices to help farmers improve productivity and profitability.</p>
 
-<p>Additionally, FAWP ensures transparent and efficient distribution of government subsidies, insurance schemes, and welfare benefits through a centralized digital portal. By minimizing manual processes and reducing intermediaries, the system enhances transparency, ensures timely support, and promotes sustainable agricultural development. The platform aims to improve the socio-economic conditions of farmers through digital inclusion and smart agricultural decision-making.</p>
+<!-- =================================================
+     ENGLISH
+     ================================================= -->
+
+<div class="lang en active">
+
+<section>
+
+<h2>About FAWP</h2>
+
+<p>
+The Digital Farmer Assistance & Welfare Platform (FAWP) is a web-based system designed to empower farmers by providing digital access to agricultural information and government welfare services. The platform delivers real-time weather updates, crop advisory services, market price information, and best farming practices to help farmers improve productivity and profitability.
+</p>
+
+<p>
+Additionally, FAWP ensures transparent and efficient distribution of government subsidies, insurance schemes, and welfare benefits through a centralized digital portal. By minimizing manual processes and reducing intermediaries, the system enhances transparency, ensures timely support, and promotes sustainable agricultural development. The platform aims to improve the socio-economic conditions of farmers through digital inclusion and smart agricultural decision-making.
+</p>
+
 </section>
+
 </div>
+
+
+<!-- =================================================
+     HINDI
+     ================================================= -->
 
 <div class="lang hi">
-<section>
-<h2>FAWP के बारे में</h2>
-<p>डिजिटल फार्मर असिस्टेंस एंड वेलफेयर प्लेटफॉर्म (FAWP) एक वेब-आधारित प्रणाली है, जिसे किसानों को सशक्त बनाने के लिए कृषि जानकारी और सरकारी कल्याण सेवाओं तक डिजिटल पहुंच प्रदान करने हेतु विकसित किया गया है। यह प्लेटफॉर्म रियल-टाइम मौसम अपडेट, फसल सलाह सेवाएं, बाजार मूल्य जानकारी और सर्वोत्तम कृषि प्रथाएं प्रदान करता है, जिससे किसान अपनी उत्पादकता और लाभप्रदता बढ़ा सकते हैं।</p>
 
-<p>इसके अतिरिक्त, FAWP सरकारी सब्सिडी, बीमा योजनाओं और कल्याणकारी लाभों के पारदर्शी और कुशल वितरण को एक केंद्रीकृत डिजिटल पोर्टल के माध्यम से सुनिश्चित करता है। मैनुअल प्रक्रियाओं को कम करके और बिचौलियों को घटाकर, यह प्रणाली पारदर्शिता बढ़ाती है, समय पर सहायता सुनिश्चित करती है और सतत कृषि विकास को बढ़ावा देती है। यह प्लेटफॉर्म डिजिटल समावेशन और स्मार्ट कृषि निर्णय लेने के माध्यम से किसानों की सामाजिक-आर्थिक स्थिति में सुधार करने का लक्ष्य रखता है।</p>
+<section>
+
+<h2>FAWP के बारे में</h2>
+
+<p>
+डिजिटल फार्मर असिस्टेंस एंड वेलफेयर प्लेटफॉर्म (FAWP) एक वेब-आधारित प्रणाली है, जिसे किसानों को सशक्त बनाने के लिए कृषि जानकारी और सरकारी कल्याण सेवाओं तक डिजिटल पहुंच प्रदान करने हेतु विकसित किया गया है। यह प्लेटफॉर्म रियल-टाइम मौसम अपडेट, फसल सलाह सेवाएं, बाजार मूल्य जानकारी और सर्वोत्तम कृषि प्रथाएं प्रदान करता है, जिससे किसान अपनी उत्पादकता और लाभप्रदता बढ़ा सकते हैं।
+</p>
+
+<p>
+इसके अतिरिक्त, FAWP सरकारी सब्सिडी, बीमा योजनाओं और कल्याणकारी लाभों के पारदर्शी और कुशल वितरण को एक केंद्रीकृत डिजिटल पोर्टल के माध्यम से सुनिश्चित करता है। मैनुअल प्रक्रियाओं को कम करके और बिचौलियों को घटाकर, यह प्रणाली पारदर्शिता बढ़ाती है, समय पर सहायता सुनिश्चित करती है और सतत कृषि विकास को बढ़ावा देती है। यह प्लेटफॉर्म डिजिटल समावेशन और स्मार्ट कृषि निर्णय लेने के माध्यम से किसानों की सामाजिक-आर्थिक स्थिति में सुधार करने का लक्ष्य रखता है।
+</p>
+
 </section>
+
 </div>
+
+
+<!-- =================================================
+     TELUGU
+     ================================================= -->
 
 <div class="lang te">
+
 <section>
+
 <h2>FAWP గురించి</h2>
-<p>డిజిటల్ ఫార్మర్ అసిస్టెన్స్ & వెల్ఫేర్ ప్లాట్‌ఫారం (FAWP) అనేది రైతులకు వ్యవసాయ సమాచారం మరియు ప్రభుత్వ సంక్షేమ సేవలను డిజిటల్ రూపంలో అందించడానికి రూపొందించబడిన వెబ్ ఆధారిత వ్యవస్థ. ఈ ప్లాట్‌ఫారం రియల్-టైమ్ వాతావరణ సమాచారం, పంట సలహాలు, మార్కెట్ ధరలు మరియు ఉత్తమ వ్యవసాయ పద్ధతులను అందిస్తుంది, తద్వారా రైతులు తమ ఉత్పాదకతను మరియు లాభదాయకతను మెరుగుపరుచుకోవచ్చు.</p>
 
-<p>అదనంగా, FAWP ప్రభుత్వం అందించే సబ్సిడీలు, బీమా పథకాలు మరియు సంక్షేమ ప్రయోజనాలను పారదర్శకంగా మరియు సమర్థవంతంగా పంపిణీ చేయడానికి సహాయపడుతుంది. మాన్యువల్ ప్రక్రియలను తగ్గించడం మరియు మధ్యవర్తులను తగ్గించడం ద్వారా, ఈ వ్యవస్థ పారదర్శకతను పెంచి, సమయానికి సహాయం అందించడంలో సహకరిస్తుంది మరియు స్థిరమైన వ్యవసాయ అభివృద్ధిని ప్రోత్సహిస్తుంది. ఈ ప్లాట్‌ఫారం డిజిటల్ చేరిక మరియు స్మార్ట్ వ్యవసాయ నిర్ణయాల ద్వారా రైతుల సామాజిక-ఆర్థిక స్థితిని మెరుగుపరచడం లక్ష్యంగా పెట్టుకుంది.</p>
+<p>
+డిజిటల్ ఫార్మర్ అసిస్టెన్స్ & వెల్ఫేర్ ప్లాట్‌ఫారం (FAWP) అనేది రైతులకు వ్యవసాయ సమాచారం మరియు ప్రభుత్వ సంక్షేమ సేవలను డిజిటల్ రూపంలో అందించడానికి రూపొందించబడిన వెబ్ ఆధారిత వ్యవస్థ. ఈ ప్లాట్‌ఫారం రియల్-టైమ్ వాతావరణ సమాచారం, పంట సలహాలు, మార్కెట్ ధరలు మరియు ఉత్తమ వ్యవసాయ పద్ధతులను అందిస్తుంది, తద్వారా రైతులు తమ ఉత్పాదకతను మరియు లాభదాయకతను మెరుగుపరుచుకోవచ్చు.
+</p>
+
+<p>
+అదనంగా, FAWP ప్రభుత్వం అందించే సబ్సిడీలు, బీమా పథకాలు మరియు సంక్షేమ ప్రయోజనాలను పారదర్శకంగా మరియు సమర్థవంతంగా పంపిణీ చేయడానికి సహాయపడుతుంది. మాన్యువల్ ప్రక్రియలను తగ్గించడం మరియు మధ్యవర్తులను తగ్గించడం ద్వారా, ఈ వ్యవస్థ పారదర్శకతను పెంచి, సమయానికి సహాయం అందించడంలో సహకరిస్తుంది మరియు స్థిరమైన వ్యవసాయ అభివృద్ధిని ప్రోత్సహిస్తుంది. ఈ ప్లాట్‌ఫారం డిజిటల్ చేరిక మరియు స్మార్ట్ వ్యవసాయ నిర్ణయాల ద్వారా రైతుల సామాజిక-ఆర్థిక స్థితిని మెరుగుపరచడం లక్ష్యంగా పెట్టుకుంది.
+</p>
+
 </section>
+
 </div>
 
 </div>
+
+
+<!-- =================================================
+     AI CHAT BUTTON
+     ================================================= -->
+
+<button
+    class="ai-button"
+    onclick="toggleAI()"
+    title="Farmer AI Assistant">
+    🤖
+</button>
+
+
+<!-- =================================================
+     AI CHAT WINDOW
+     ================================================= -->
+
+<div class="ai-chat" id="aiChat">
+
+    <div class="ai-header">
+
+        <span class="ai-header-title">
+            🤖 Farmer AI Assistant
+        </span>
+
+        <button
+            class="ai-close"
+            onclick="toggleAI()">
+            ×
+        </button>
+
+    </div>
+
+
+    <div
+        class="ai-messages"
+        id="aiMessages">
+
+        <div class="ai-message ai-bot">
+            👋 Hello! I am your Farmer AI Assistant.
+            <br><br>
+            You can ask me about crops, fertilizers,
+            irrigation, farming practices, government
+            schemes, pests and diseases.
+        </div>
+
+    </div>
+
+
+    <div class="ai-input-area">
+
+        <input
+            type="text"
+            id="aiInput"
+            class="ai-input"
+            placeholder="Ask your farming question..."
+            onkeydown="handleAIKey(event)"
+        >
+
+        <button
+            class="ai-send"
+            onclick="sendAIMessage()">
+            Send
+        </button>
+
+    </div>
+
+</div>
+
 
 <script>
-// Get saved language or default to English
-const savedLang = localStorage.getItem('language') || 'en';
 
-// Set dropdown value on load
-document.querySelector('.lang-select').value = savedLang;
+/* =================================================
+   LANGUAGE SWITCHER
+   ================================================= */
 
-// Apply language on page load
+const savedLang =
+    localStorage.getItem('language') || 'en';
+
+document.querySelector('.lang-select').value =
+    savedLang;
+
 switchLanguage(savedLang);
 
-function switchLanguage(lang){
-    // Hide all
+
+function switchLanguage(lang) {
+
     document.querySelectorAll('.lang').forEach(d => {
         d.classList.remove('active');
     });
 
-    // Show selected
-    const activeDiv = document.querySelector('.' + lang);
-    if(activeDiv) activeDiv.classList.add('active');
+    const activeDiv =
+        document.querySelector('.' + lang);
 
-    // Save selection
+    if (activeDiv) {
+        activeDiv.classList.add('active');
+    }
+
     localStorage.setItem('language', lang);
 }
+
+
+/* =================================================
+   OPEN / CLOSE AI CHAT
+   ================================================= */
+
+function toggleAI() {
+
+    const chat =
+        document.getElementById('aiChat');
+
+    if (chat.style.display === 'flex') {
+
+        chat.style.display = 'none';
+
+    } else {
+
+        chat.style.display = 'flex';
+
+        document.getElementById('aiInput').focus();
+    }
+}
+
+
+/* =================================================
+   ENTER KEY
+   ================================================= */
+
+function handleAIKey(event) {
+
+    if (event.key === 'Enter') {
+
+        sendAIMessage();
+
+    }
+}
+
+
+/* =================================================
+   SEND MESSAGE TO FLASK BACKEND
+   ================================================= */
+
+async function sendAIMessage() {
+
+    const input =
+        document.getElementById('aiInput');
+
+    const messages =
+        document.getElementById('aiMessages');
+
+    const message =
+        input.value.trim();
+
+    if (!message) {
+        return;
+    }
+
+
+    /* Show user's message */
+
+    const userMessage =
+        document.createElement('div');
+
+    userMessage.className =
+        'ai-message ai-user';
+
+    userMessage.textContent =
+        message;
+
+    messages.appendChild(userMessage);
+
+
+    input.value = '';
+
+    messages.scrollTop =
+        messages.scrollHeight;
+
+
+    /* Loading message */
+
+    const loading =
+        document.createElement('div');
+
+    loading.className =
+        'ai-message ai-bot';
+
+    loading.textContent =
+        'Thinking...';
+
+    messages.appendChild(loading);
+
+    messages.scrollTop =
+        messages.scrollHeight;
+
+
+    try {
+
+        const response =
+            await fetch(
+                'https://fawp.onrender.com/api/ai-assistant',
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    body: JSON.stringify({
+                        message: message
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        loading.remove();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                'Something went wrong.'
+            );
+
+        }
+
+
+        /* Show AI response */
+
+        const botMessage =
+            document.createElement('div');
+
+        botMessage.className =
+            'ai-message ai-bot';
+
+        botMessage.textContent =
+            data.answer;
+
+        messages.appendChild(botMessage);
+
+
+    } catch (error) {
+
+        loading.remove();
+
+
+        const errorMessage =
+            document.createElement('div');
+
+        errorMessage.className =
+            'ai-message ai-bot';
+
+        errorMessage.textContent =
+            'Sorry, I could not connect to the AI assistant. Please try again.';
+
+        messages.appendChild(errorMessage);
+
+        console.error(error);
+    }
+
+
+    messages.scrollTop =
+        messages.scrollHeight;
+}
+
 </script>
 
 </body>
