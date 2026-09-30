@@ -1,613 +1,494 @@
-/* FAWP Global AI Farmer Assistant
-   Add this line to every HTML page before </body>:
-   <script src="ai-assistant.js"></script>
-*/
-
 (() => {
-  const API_URL = "https://fawp.onrender.com/api/ai-assistant";
-  const STORAGE_KEY = "fawp_ai_chat_history";
+    const API_URL = "https://fawp.onrender.com/api/ai-assistant";
+    const STORAGE_KEY = "fawp_ai_chat_history";
 
-  // Prevent duplicate assistant if the script is loaded twice
-  if (document.getElementById("fawp-ai-assistant")) return;
-
-  // =========================
-  // CSS
-  // =========================
-
-  const style = document.createElement("style");
-
-  style.textContent = `
-    #fawp-ai-assistant {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 99999;
-      font-family: Arial, Helvetica, sans-serif;
+    function loadHistory() {
+        try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        } catch {
+            return [];
+        }
     }
 
-    #fawp-ai-button {
-      width: 58px;
-      height: 58px;
-      border: none;
-      border-radius: 50%;
-      background: #2e7d32;
-      color: white;
-      font-size: 27px;
-      cursor: pointer;
-      box-shadow: 0 5px 18px rgba(0,0,0,.25);
-      transition: transform 0.2s;
+    function saveHistory(history) {
+        try {
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(history.slice(-50))
+            );
+        } catch {
+            // Ignore localStorage errors.
+        }
     }
 
-    #fawp-ai-button:hover {
-      background: #256628;
-      transform: scale(1.04);
-    }
-
-    #fawp-ai-panel {
-      display: none;
-      position: absolute;
-      right: 0;
-      bottom: 72px;
-      width: 350px;
-      max-width: calc(100vw - 30px);
-      height: 500px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,.25);
-      overflow: hidden;
-      border: 1px solid #ddd;
-    }
-
-    #fawp-ai-panel.open {
-      display: flex;
-      flex-direction: column;
-    }
-
-    #fawp-ai-header {
-      background: #2e7d32;
-      color: white;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    #fawp-ai-header-title {
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    #fawp-ai-close {
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 22px;
-      cursor: pointer;
-      line-height: 1;
-    }
-
-    #fawp-ai-clear {
-      background: transparent;
-      border: none;
-      color: #e8f5e9;
-      font-size: 11px;
-      cursor: pointer;
-      margin-right: 8px;
-    }
-
-    #fawp-ai-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px;
-      background: #f7f7f7;
-    }
-
-    .fawp-ai-message {
-      margin: 8px 0;
-      padding: 10px 12px;
-      border-radius: 12px;
-      max-width: 85%;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
-    .fawp-ai-user {
-      margin-left: auto;
-      background: #dcf8df;
-      color: #173b1a;
-    }
-
-    .fawp-ai-bot {
-      margin-right: auto;
-      background: white;
-      border: 1px solid #e1e1e1;
-      color: #222;
-    }
-
-    #fawp-ai-input-area {
-      display: flex;
-      gap: 8px;
-      padding: 10px;
-      border-top: 1px solid #ddd;
-      background: white;
-    }
-
-    #fawp-ai-input {
-      flex: 1;
-      min-width: 0;
-      resize: none;
-      height: 42px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      padding: 10px;
-      font-size: 14px;
-      outline: none;
-      box-sizing: border-box;
-    }
-
-    #fawp-ai-input:focus {
-      border-color: #2e7d32;
-    }
-
-    #fawp-ai-send {
-      width: 68px;
-      border: none;
-      border-radius: 10px;
-      background: #2e7d32;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    #fawp-ai-send:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
-
-    .fawp-ai-typing {
-      opacity: .7;
-      font-style: italic;
-    }
-
-    @media (max-width: 480px) {
-      #fawp-ai-assistant {
-        right: 12px;
-        bottom: 12px;
-      }
-
-      #fawp-ai-panel {
-        width: calc(100vw - 24px);
-        height: 70vh;
-        bottom: 70px;
-      }
-    }
-  `;
-
-  document.head.appendChild(style);
-
-  // =========================
-  // HTML
-  // =========================
-
-  const root = document.createElement("div");
-
-  root.id = "fawp-ai-assistant";
-
-  root.innerHTML = `
-    <div id="fawp-ai-panel" aria-label="AI Farmer Assistant">
-
-      <div id="fawp-ai-header">
-
-        <div id="fawp-ai-header-title">
-          🤖 AI Farmer Assistant
-        </div>
-
-        <div>
-          <button id="fawp-ai-clear" type="button">
-            Clear
-          </button>
-
-          <button
-            id="fawp-ai-close"
-            type="button"
-            aria-label="Close"
-          >
-            ×
-          </button>
-        </div>
-
-      </div>
-
-      <div id="fawp-ai-messages"></div>
-
-      <div id="fawp-ai-input-area">
-
-        <textarea
-          id="fawp-ai-input"
-          placeholder="Ask about crops, soil, pests, schemes..."
-          aria-label="Ask the AI Farmer Assistant"
-        ></textarea>
-
-        <button
-          id="fawp-ai-send"
-          type="button"
-        >
-          Send
-        </button>
+    function createAssistant() {
+        if (document.getElementById("fawp-ai-button")) return;
+
+        const style = document.createElement("style");
+
+        style.textContent = `
+            #fawp-ai-button {
+                position: fixed;
+                right: 22px;
+                bottom: 22px;
+                width: 58px;
+                height: 58px;
+                border: none;
+                border-radius: 50%;
+                background: #198754;
+                color: white;
+                font-size: 28px;
+                cursor: pointer;
+                z-index: 99999;
+                box-shadow: 0 5px 18px rgba(0,0,0,.25);
+            }
+
+            #fawp-ai-panel {
+                position: fixed;
+                right: 22px;
+                bottom: 92px;
+                width: 360px;
+                max-width: calc(100vw - 30px);
+                height: 500px;
+                max-height: calc(100vh - 120px);
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 8px 30px rgba(0,0,0,.25);
+                z-index: 99998;
+                display: none;
+                flex-direction: column;
+                overflow: hidden;
+                font-family: Arial, sans-serif;
+                border: 1px solid #ddd;
+            }
+
+            #fawp-ai-header {
+                background: #198754;
+                color: white;
+                padding: 13px 14px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            #fawp-ai-title {
+                font-weight: 700;
+                font-size: 16px;
+            }
+
+            #fawp-ai-actions {
+                display: flex;
+                gap: 6px;
+            }
+
+            #fawp-ai-actions button {
+                border: none;
+                background: rgba(255,255,255,.18);
+                color: white;
+                border-radius: 6px;
+                padding: 5px 8px;
+                cursor: pointer;
+            }
+
+            #fawp-ai-messages {
+                flex: 1;
+                padding: 12px;
+                overflow-y: auto;
+                background: #f7f7f7;
+            }
+
+            .fawp-ai-message {
+                margin-bottom: 10px;
+                padding: 9px 11px;
+                border-radius: 10px;
+                line-height: 1.45;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                font-size: 14px;
+            }
+
+            .fawp-ai-user {
+                background: #dff4e8;
+                margin-left: 35px;
+            }
+
+            .fawp-ai-bot {
+                background: white;
+                border: 1px solid #e2e2e2;
+                margin-right: 20px;
+            }
+
+            #fawp-ai-input-area {
+                padding: 10px;
+                border-top: 1px solid #ddd;
+                background: white;
+            }
+
+            #fawp-ai-input-row {
+                display: flex;
+                gap: 8px;
+            }
+
+            #fawp-ai-input {
+                flex: 1;
+                resize: none;
+                min-height: 42px;
+                max-height: 110px;
+                border: 1px solid #ccc;
+                border-radius: 9px;
+                padding: 9px;
+                font-family: inherit;
+                outline: none;
+            }
+
+            #fawp-ai-input:focus {
+                border-color: #198754;
+            }
+
+            #fawp-ai-send {
+                border: none;
+                border-radius: 9px;
+                padding: 0 14px;
+                background: #198754;
+                color: white;
+                cursor: pointer;
+                font-weight: 700;
+            }
+
+            #fawp-ai-send:disabled {
+                opacity: .6;
+                cursor: not-allowed;
+            }
+
+            .fawp-ai-status {
+                font-size: 12px;
+                color: #666;
+                padding-top: 5px;
+            }
+
+            @media (max-width: 600px) {
+                #fawp-ai-button {
+                    right: 14px;
+                    bottom: 14px;
+                }
+
+                #fawp-ai-panel {
+                    right: 10px;
+                    bottom: 82px;
+                    width: calc(100vw - 20px);
+                    height: 70vh;
+                }
+            }
+        `;
+
+        document.head.appendChild(style);
+
+        const button = document.createElement("button");
+
+        button.id = "fawp-ai-button";
+        button.type = "button";
+        button.title = "AI Farmer Assistant";
+        button.textContent = "🤖";
 
-      </div>
+        const panel = document.createElement("div");
 
-    </div>
+        panel.id = "fawp-ai-panel";
 
-    <button
-      id="fawp-ai-button"
-      type="button"
-      aria-label="Open AI Farmer Assistant"
-      title="AI Farmer Assistant"
-    >
-      🤖
-    </button>
-  `;
+        panel.innerHTML = `
+            <div id="fawp-ai-header">
+                <div id="fawp-ai-title">
+                    🤖 AI Farmer Assistant
+                </div>
 
-  document.body.appendChild(root);
+                <div id="fawp-ai-actions">
+                    <button type="button" id="fawp-ai-clear">
+                        Clear
+                    </button>
 
-  // =========================
-  // Get Elements
-  // =========================
+                    <button type="button" id="fawp-ai-close">
+                        ×
+                    </button>
+                </div>
+            </div>
 
-  const button =
-    document.getElementById("fawp-ai-button");
+            <div id="fawp-ai-messages"></div>
 
-  const panel =
-    document.getElementById("fawp-ai-panel");
+            <div id="fawp-ai-input-area">
+                <div id="fawp-ai-input-row">
 
-  const closeButton =
-    document.getElementById("fawp-ai-close");
+                    <textarea
+                        id="fawp-ai-input"
+                        placeholder="Ask about crops, soil, fertilizers, irrigation, pests, diseases, or schemes..."
+                        aria-label="Ask the AI Farmer Assistant"
+                    ></textarea>
 
-  const clearButton =
-    document.getElementById("fawp-ai-clear");
+                    <button type="button" id="fawp-ai-send">
+                        Send
+                    </button>
 
-  const messages =
-    document.getElementById("fawp-ai-messages");
+                </div>
 
-  const input =
-    document.getElementById("fawp-ai-input");
+                <div class="fawp-ai-status" id="fawp-ai-status">
+                    Press Enter to send. Shift+Enter for a new line.
+                </div>
+            </div>
+        `;
 
-  const sendButton =
-    document.getElementById("fawp-ai-send");
+        document.body.appendChild(button);
+        document.body.appendChild(panel);
 
-  // =========================
-  // Chat History
-  // =========================
+        const messagesEl =
+            document.getElementById("fawp-ai-messages");
 
-  let history = [];
+        const inputEl =
+            document.getElementById("fawp-ai-input");
 
-  try {
-    history = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "[]"
-    );
+        const sendEl =
+            document.getElementById("fawp-ai-send");
 
-    if (!Array.isArray(history)) {
-      history = [];
-    }
+        const statusEl =
+            document.getElementById("fawp-ai-status");
 
-  } catch {
-    history = [];
-  }
+        const clearEl =
+            document.getElementById("fawp-ai-clear");
 
-  function saveHistory() {
+        const closeEl =
+            document.getElementById("fawp-ai-close");
 
-    try {
+        let history = loadHistory();
 
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(history.slice(-50))
-      );
+        function addMessage(text, role, save = true) {
 
-    } catch {
-      // Ignore storage errors
-    }
+            const div = document.createElement("div");
 
-  }
+            div.className =
+                "fawp-ai-message " +
+                (role === "user"
+                    ? "fawp-ai-user"
+                    : "fawp-ai-bot");
 
-  // =========================
-  // Add Message
-  // =========================
+            div.textContent = text;
 
-  function addMessage(
-    text,
-    type,
-    save = true
-  ) {
+            messagesEl.appendChild(div);
 
-    const message =
-      document.createElement("div");
+            messagesEl.scrollTop =
+                messagesEl.scrollHeight;
 
-    message.className =
-      `fawp-ai-message fawp-ai-${type}`;
+            if (save) {
 
-    message.textContent = text;
+                history.push({
+                    role: role,
+                    text: text
+                });
 
-    messages.appendChild(message);
+                saveHistory(history);
+            }
+        }
 
-    messages.scrollTop =
-      messages.scrollHeight;
+        function renderHistory() {
 
-    if (save) {
+            messagesEl.innerHTML = "";
 
-      history.push({
-        text: text,
-        type: type
-      });
+            if (!history.length) {
 
-      saveHistory();
+                addMessage(
+                    "Namaste! 👋 I am your AI Farmer Assistant. Ask me about crops, soil, fertilizers, irrigation, pests, diseases, or government schemes.",
+                    "bot"
+                );
 
-    }
-  }
+                return;
+            }
 
-  // =========================
-  // Welcome Message
-  // =========================
+            history.forEach(message => {
 
-  function showWelcomeIfNeeded() {
+                addMessage(
+                    message.text,
+                    message.role,
+                    false
+                );
 
-    if (history.length === 0) {
+            });
+        }
 
-      addMessage(
-        "Namaste! 👋 I am your AI Farmer Assistant. Ask me about crops, soil, fertilizers, irrigation, pests, diseases, or government schemes.",
-        "bot"
-      );
+        async function sendMessage() {
 
-    }
+            const question =
+                inputEl.value.trim();
 
-  }
+            if (!question || sendEl.disabled) {
+                return;
+            }
 
-  // =========================
-  // Render Old Messages
-  // =========================
+            addMessage(question, "user");
 
-  function renderHistory() {
+            inputEl.value = "";
 
-    messages.innerHTML = "";
+            sendEl.disabled = true;
 
-    history.forEach(item => {
+            statusEl.textContent = "Thinking...";
 
-      addMessage(
-        item.text,
-        item.type,
-        false
-      );
+            try {
 
-    });
+                const response = await fetch(
+                    API_URL,
+                    {
+                        method: "POST",
 
-    showWelcomeIfNeeded();
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
 
-  }
+                        body: JSON.stringify({
+                            message: question
+                        })
+                    }
+                );
 
-  // =========================
-  // Open Assistant
-  // =========================
+                let data = {};
 
-  function openAssistant() {
+                const contentType =
+                    response.headers.get(
+                        "content-type"
+                    ) || "";
 
-    panel.classList.add("open");
+                if (
+                    contentType.includes(
+                        "application/json"
+                    )
+                ) {
 
-    input.focus();
+                    data = await response.json();
 
-  }
+                } else {
 
-  // =========================
-  // Close Assistant
-  // =========================
+                    const text =
+                        await response.text();
 
-  function closeAssistant() {
+                    data = {
+                        error: text
+                    };
+                }
 
-    panel.classList.remove("open");
+                if (!response.ok) {
 
-  }
+                    throw new Error(
+                        data.error ||
+                        `Server error: HTTP ${response.status}`
+                    );
+                }
 
-  // =========================
-  // Send Message
-  // =========================
+                const answer =
+                    data.answer ||
+                    data.response ||
+                    data.message ||
+                    "I received your question, but no answer was returned.";
 
-  async function sendMessage() {
+                addMessage(
+                    answer,
+                    "bot"
+                );
 
-    const message =
-      input.value.trim();
+                statusEl.textContent =
+                    "Ready";
 
-    if (
-      !message ||
-      sendButton.disabled
-    ) {
-      return;
-    }
+            } catch (error) {
 
-    // Show user message
-    addMessage(
-      message,
-      "user"
-    );
+                console.error(
+                    "[FAWP AI ASSISTANT ERROR]",
+                    error
+                );
 
-    input.value = "";
+                addMessage(
+                    "AI Error: " +
+                    (
+                        error.message ||
+                        "Unknown error"
+                    ),
+                    "bot"
+                );
 
-    sendButton.disabled = true;
-    input.disabled = true;
+                statusEl.textContent =
+                    "AI request failed. Check the Render logs for the backend error.";
 
-    // Typing indicator
-    const typing =
-      document.createElement("div");
+            } finally {
 
-    typing.className =
-      "fawp-ai-message fawp-ai-bot fawp-ai-typing";
+                sendEl.disabled = false;
 
-    typing.textContent =
-      "Thinking...";
+                inputEl.focus();
+            }
+        }
 
-    messages.appendChild(typing);
+        button.addEventListener(
+            "click",
+            () => {
 
-    messages.scrollTop =
-      messages.scrollHeight;
+                const isOpen =
+                    panel.style.display === "flex";
 
-    try {
+                panel.style.display =
+                    isOpen ? "none" : "flex";
 
-      const response =
-        await fetch(API_URL, {
-
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json"
-          },
-
-          body: JSON.stringify({
-            message: message
-          })
-
-        });
-
-      let data = {};
-
-      try {
-
-        data =
-          await response.json();
-
-      } catch {
-
-        data = {};
-
-      }
-
-      typing.remove();
-
-      if (!response.ok) {
-
-        throw new Error(
-          data.error ||
-          "The server could not process your question."
+                if (!isOpen) {
+                    inputEl.focus();
+                }
+            }
         );
 
-      }
+        closeEl.addEventListener(
+            "click",
+            () => {
+                panel.style.display = "none";
+            }
+        );
 
-      const answer =
-        data.answer ||
-        "Sorry, I did not receive an answer.";
+        clearEl.addEventListener(
+            "click",
+            () => {
 
-      addMessage(
-        answer,
-        "bot"
-      );
+                history = [];
 
-    } catch (error) {
+                saveHistory(history);
 
-      typing.remove();
+                renderHistory();
+            }
+        );
 
-      addMessage(
-        "Sorry, I could not connect to the AI assistant right now. Please try again in a moment.",
-        "bot"
-      );
+        sendEl.addEventListener(
+            "click",
+            sendMessage
+        );
 
-      console.error(
-        "FAWP AI Assistant error:",
-        error
-      );
+        inputEl.addEventListener(
+            "keydown",
+            event => {
 
-    } finally {
+                if (
+                    event.key === "Enter" &&
+                    !event.shiftKey
+                ) {
 
-      sendButton.disabled = false;
-      input.disabled = false;
+                    event.preventDefault();
 
-      input.focus();
+                    sendMessage();
+                }
+            }
+        );
 
+        renderHistory();
     }
 
-  }
+    if (
+        document.readyState === "loading"
+    ) {
 
-  // =========================
-  // Button Events
-  // =========================
+        document.addEventListener(
+            "DOMContentLoaded",
+            createAssistant
+        );
 
-  button.addEventListener(
-    "click",
-    () => {
+    } else {
 
-      if (
-        panel.classList.contains("open")
-      ) {
-
-        closeAssistant();
-
-      } else {
-
-        openAssistant();
-
-      }
-
+        createAssistant();
     }
-  );
-
-  // Close button
-  closeButton.addEventListener(
-    "click",
-    closeAssistant
-  );
-
-  // =========================
-  // Clear Chat
-  // =========================
-
-  clearButton.addEventListener(
-    "click",
-    () => {
-
-      history = [];
-
-      saveHistory();
-
-      renderHistory();
-
-      input.focus();
-
-    }
-  );
-
-  // =========================
-  // Send Button
-  // =========================
-
-  sendButton.addEventListener(
-    "click",
-    sendMessage
-  );
-
-  // =========================
-  // Enter Key
-  // =========================
-
-  input.addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key === "Enter" &&
-        !event.shiftKey
-      ) {
-
-        event.preventDefault();
-
-        sendMessage();
-
-      }
-
-    }
-  );
-
-  // =========================
-  // Start Assistant
-  // =========================
-
-  renderHistory();
 
 })();
