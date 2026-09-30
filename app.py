@@ -26,7 +26,7 @@ DB_PATH = os.path.join(BASE_DIR, "fawp.db")
 # GEMINI AI SETUP
 # ============================================================
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
 gemini_client = None
 
@@ -34,7 +34,8 @@ if GEMINI_API_KEY:
     gemini_client = genai.Client(
         api_key=GEMINI_API_KEY
     )
-
+else:
+    print("[GEMINI] GEMINI_API_KEY is missing", flush=True)
 
 # ============================================================
 # DATABASE SCHEMA
@@ -767,7 +768,7 @@ Farmer's question:
             contents=prompt
         )
 
-        answer = response.text
+        answer = getattr(response, "text", None)
 
         if not answer:
 
@@ -776,7 +777,7 @@ Farmer's question:
             }), 500
 
         return jsonify({
-            "answer": answer
+        "answer": answer.strip()
         })
 
     except Exception as e:
